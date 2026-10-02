@@ -18,7 +18,7 @@ const ctx = { auth, jwtSecret: secret };
 
 const app = express();
 app.use(express.json());
-app.use(session({ secret, resave: false, saveUninitialized: false, cookie: { httpOnly: true, sameSite: 'lax' } }));
+app.use(session({ secret, resave: false, saveUninitialized: false, cookie: { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' } }));
 
 app.use('/api', createApiRouter(ctx));
 app.use('/ssr', createSsr(ctx));
