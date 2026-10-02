@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { PageTemplate } from '@gm/lib-client-common';
-import { GenericAuthArticleForm } from '@gm/lib-client-google';
+import { GenericAuthArticleForm, PageTemplate } from '@gm/lib-client-common';
 
 export const GoogleLandingPage = () => {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ export const GoogleLandingPage = () => {
   };
   return (
     <PageTemplate title="Sign in with Google">
-      <GenericAuthArticleForm onSubmit={login} />
+      <GenericAuthArticleForm identifierLabel="Gmail" identifierName="gmail" onSubmit={login} />
     </PageTemplate>
   );
 };

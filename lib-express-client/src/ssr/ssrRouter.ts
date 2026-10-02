@@ -1,1 +1,3 @@
-export { createSSRRouter as ssrRouter } from './createSSRRouter';
+import { createSSRRouter } from './createSSRRouter';
+
+export const ssrRouter = createSSRRouter();

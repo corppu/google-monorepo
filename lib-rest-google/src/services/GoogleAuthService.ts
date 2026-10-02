@@ -37,7 +37,25 @@ export class GoogleAuthService {
     return merged;
   }
 
-  startUrl(sessionId: string, redirectUri = this.config.redirectUri): string {
+  startUrl(sessionId: string): string {
+    return this.buildUrl(sessionId, this.config.redirectUri);
+  }
+
+  /** Native PKCE: builds the OAuth URL using the code_challenge generated on the device. */
+  nativeStartUrl(sessionId: string, codeChallenge: string, redirectUri: string): string {
+    return this.buildUrl(sessionId, redirectUri, codeChallenge);
+  }
+
+  async handleCallback(sessionId: string, code: string, state: string): Promise<void> {
+    await this.exchange(sessionId, code, state, this.config.redirectUri);
+  }
+
+  /** Native PKCE: exchanges the code with the device's code_verifier. Tokens stay on the server. */
+  async nativeExchange(sessionId: string, code: string, state: string, codeVerifier: string, redirectUri: string): Promise<void> {
+    await this.exchange(sessionId, code, state, redirectUri, codeVerifier);
+  }
+
+  private buildUrl(sessionId: string, redirectUri: string, codeChallenge?: string): string {
     const session = this.require(sessionId);
     const state = randomBytes(16).toString('hex');
     const nonce = randomBytes(16).toString('hex');
@@ -46,14 +64,21 @@ export class GoogleAuthService {
       access_type: 'offline',
       scope: session.scopes.length ? session.scopes : MINIMUM_SCOPES,
       state,
-      login_hint: session.gmail
+      login_hint: session.gmail,
+      ...(codeChallenge ? { code_challenge: codeChallenge, code_challenge_method: 'S256' as Auth.CodeChallengeMethod } : {}),
+      // generateAuthUrl forwards unknown params to the authorization URL
+      ...({ nonce } as object)
     });
   }
 
-  async handleCallback(sessionId: string, code: string, state: string): Promise<void> {
+  private async exchange(sessionId: string, code: string, state: string, redirectUri: string, codeVerifier?: string): Promise<void> {
     const session = this.require(sessionId);
     if (!session.state || session.state !== state) throw new Error('Invalid state');
-    const { tokens } = await this.client().getToken(code);
+    const client = this.client(redirectUri);
+    const { tokens } = await client.getToken({ code, codeVerifier });
+    if (!tokens.id_token) throw new Error('Missing id_token');
+    const ticket = await client.verifyIdToken({ idToken: tokens.id_token, audience: this.config.clientId });
+    if (!session.nonce || ticket.getPayload()?.nonce !== session.nonce) throw new Error('Invalid nonce');
     this.repo.update(sessionId, { tokens, state: undefined, nonce: undefined });
   }
 

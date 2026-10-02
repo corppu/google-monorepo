@@ -1,10 +1,10 @@
 import { Text } from 'react-native';
 import type { Userinfo } from '@gm/lib-common-google';
-import { Form } from '@gm/lib-native-common';
+import { GenericForm } from '@gm/lib-native-common';
 
-export const GenericUserinfoAccessForm = ({ userinfo }: { userinfo?: Userinfo }) => (
-  <Form>
+export const GoogleUserinfoAccessForm = ({ userinfo }: { userinfo?: Userinfo }) => (
+  <GenericForm>
     <Text>Userinfo</Text>
     <Text>{userinfo?.name} {userinfo?.email}</Text>
-  </Form>
+  </GenericForm>
 );

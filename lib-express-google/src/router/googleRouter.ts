@@ -4,6 +4,7 @@ import type { GoogleHandlerContext } from '../handlers/context';
 import { loginHandler } from '../handlers/loginHandler';
 import { scopesHandler, listScopesHandler } from '../handlers/scopesHandler';
 import { startHandler } from '../handlers/startHandler';
+import { nativeLoginHandler, nativeStartHandler, nativeExchangeHandler } from '../handlers/nativeHandlers';
 import { callbackHandler } from '../handlers/callbackHandler';
 import { listCalendarsHandler } from '../handlers/calendarHandlers';
 import { listEventsHandler } from '../handlers/eventHandlers';
@@ -19,6 +20,9 @@ export function createGoogleRouter(ctx: GoogleHandlerContext): Router {
   router.post('/google/auth/scopes', authed, scopesHandler(ctx));
   router.get('/google/auth/start', authed, startHandler(ctx));
   router.get('/google/auth/callback', callbackHandler(ctx));
+  router.post('/google/auth/native/login', nativeLoginHandler(ctx));
+  router.post('/google/auth/native/start', authed, nativeStartHandler(ctx));
+  router.post('/google/auth/native/exchange', authed, nativeExchangeHandler(ctx));
   router.get('/google/calendars', authed, listCalendarsHandler(ctx));
   router.get('/google/events', authed, listEventsHandler(ctx));
   router.get('/google/groups', authed, listGroupsHandler(ctx));

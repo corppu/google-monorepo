@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
-import { PageTemplate } from '@gm/lib-client-common';
+import { GenericAuthArticleForm, GenericForm, GenericScopesSelectorFieldset, PageTemplate } from '@gm/lib-client-common';
 import {
-  GenericAuthArticleForm,
-  GenericCalendarAccessForm,
-  GenericEventAccessForm,
-  GenericGroupAccessForm,
-  GenericScopesSelectorFieldset,
-  GenericUserinfoAccessForm
+  GoogleCalendarAccessForm,
+  GoogleEventAccessForm,
+  GoogleGroupAccessForm,
+  GoogleRouter,
+  GoogleUserinfoAccessForm
 } from '@gm/lib-client-google';
 import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
 import type { CalendarList, Event, Group, Userinfo } from '@gm/lib-common-google';
@@ -40,28 +39,40 @@ document.querySelector('form').addEventListener('submit', async function (e) {
   location.href = '/api/google/auth/start?target=ssr';
 });`;
 
+
+
+const page = (title: string, body: ReactElement) => <PageTemplate title={title}>{body}</PageTemplate>;
+
+/** Renders the pages of GoogleRouter (React Router) on the server with ReactDOMServer. */
 export function createSSRRenderer() {
-  const page = (title: string, body: ReactElement, script?: string) => renderPage(<PageTemplate title={title}>{body}</PageTemplate>, { title, script });
-  return {
-    landing: () => page('Sign in with Google', <GenericAuthArticleForm onSubmit={noop} />, loginScript),
-    scopes: () =>
-      page(
+  const titles: Record<string, string> = {
+    '/google': 'Sign in with Google',
+    '/google/scopes': 'Choose scopes',
+    '/dashboard': 'Dashboard'
+  };
+  const scripts: Record<string, string> = { '/google': loginScript, '/google/scopes': scopesScript };
+
+  /** `path` is relative to /ssr, e.g. `/google/scopes`. */
+  return (path: string, data: DashboardData = {}): string => {
+    const pages = {
+      landing: page('Sign in with Google', <GenericAuthArticleForm identifierLabel="Gmail" identifierName="gmail" onSubmit={noop} />),
+      scopes: page(
         'Choose scopes',
-        <form>
+        <GenericForm>
           <GenericScopesSelectorFieldset scopes={GOOGLE_SCOPES} selected={MINIMUM_SCOPES} onToggle={noop} />
           <button type="submit">Authorize</button>
-        </form>,
-        scopesScript
+        </GenericForm>
       ),
-    dashboard: (d: DashboardData) =>
-      page(
+      dashboard: page(
         'Dashboard',
         <>
-          <GenericUserinfoAccessForm userinfo={d.userinfo} />
-          <GenericCalendarAccessForm calendars={d.calendars} />
-          <GenericEventAccessForm events={d.events} />
-          <GenericGroupAccessForm groups={d.groups} />
+          <GoogleUserinfoAccessForm userinfo={data.userinfo} />
+          <GoogleCalendarAccessForm calendars={data.calendars} />
+          <GoogleEventAccessForm events={data.events} />
+          <GoogleGroupAccessForm groups={data.groups} />
         </>
       )
+    };
+    return renderPage(<GoogleRouter pages={pages} />, { title: titles[path] ?? 'Google', location: path, script: scripts[path] });
   };
 }

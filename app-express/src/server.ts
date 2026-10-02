@@ -4,7 +4,7 @@ import express from 'express';
 import session from 'express-session';
 import { GoogleAuthService, GoogleInMemoryAuthRepository } from '@gm/lib-rest-google';
 import { createApiRouter } from './routes/api';
-import { createSsr } from './ssr/ssr';
+import { ssrRouter } from '@gm/lib-express-client';
 
 const port = Number(process.env.PORT ?? 3000);
 const secret = process.env.SESSION_SECRET ?? randomBytes(32).toString('hex');
@@ -17,11 +17,12 @@ const auth = new GoogleAuthService(new GoogleInMemoryAuthRepository(), {
 const ctx = { auth, jwtSecret: secret };
 
 const app = express();
+app.locals.googleContext = ctx;
 app.use(express.json());
 app.use(session({ secret, resave: false, saveUninitialized: false, cookie: { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' } }));
 
 app.use('/api', createApiRouter(ctx));
-app.use('/ssr', createSsr(ctx));
+app.use('/ssr', ssrRouter);
 app.use('/spa', express.static(path.resolve(__dirname, '../../app-client/dist')));
 app.get('/spa/*', (_req, res) => res.sendFile(path.resolve(__dirname, '../../app-client/dist/index.html')));
 app.get('/', (_req, res) => res.redirect('/spa/google'));

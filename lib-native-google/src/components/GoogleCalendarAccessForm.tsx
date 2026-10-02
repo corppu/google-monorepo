@@ -1,10 +1,10 @@
 import { Text } from 'react-native';
 import type { CalendarList } from '@gm/lib-common-google';
-import { Form } from '@gm/lib-native-common';
+import { GenericForm } from '@gm/lib-native-common';
 
-export const GenericCalendarAccessForm = ({ calendars }: { calendars?: CalendarList }) => (
-  <Form>
+export const GoogleCalendarAccessForm = ({ calendars }: { calendars?: CalendarList }) => (
+  <GenericForm>
     <Text>Calendars</Text>
     {calendars?.items.map((c) => <Text key={c.id}>{c.summary}</Text>)}
-  </Form>
+  </GenericForm>
 );

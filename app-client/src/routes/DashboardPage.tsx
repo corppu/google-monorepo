@@ -1,9 +1,9 @@
 import { PageTemplate } from '@gm/lib-client-common';
 import {
-  GenericCalendarAccessForm,
-  GenericEventAccessForm,
-  GenericGroupAccessForm,
-  GenericUserinfoAccessForm,
+  GoogleCalendarAccessForm,
+  GoogleEventAccessForm,
+  GoogleGroupAccessForm,
+  GoogleUserinfoAccessForm,
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
@@ -12,9 +12,9 @@ import {
 
 export const DashboardPage = () => (
   <PageTemplate title="Dashboard">
-    <GenericUserinfoAccessForm userinfo={useGoogleUserinfo().data} />
-    <GenericCalendarAccessForm calendars={useGoogleCalendars().data} />
-    <GenericEventAccessForm events={useGoogleEvents().data} />
-    <GenericGroupAccessForm groups={useGoogleGroups().data} />
+    <GoogleUserinfoAccessForm userinfo={useGoogleUserinfo().data} />
+    <GoogleCalendarAccessForm calendars={useGoogleCalendars().data} />
+    <GoogleEventAccessForm events={useGoogleEvents().data} />
+    <GoogleGroupAccessForm groups={useGoogleGroups().data} />
   </PageTemplate>
 );
