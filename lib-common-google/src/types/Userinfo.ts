@@ -1,1 +1,2 @@
-export interface Userinfo { id?: string; email?: string; name?: string; picture?: string }
+import type { oauth2_v2 } from 'googleapis';
+export type Userinfo = oauth2_v2.Schema$Userinfo;

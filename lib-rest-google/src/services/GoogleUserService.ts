@@ -1,7 +1,7 @@
 import type { Auth } from 'googleapis';
 import type { Userinfo } from '@gm/lib-common-google';
 import { GoogleUserRepository } from '../repositories/GoogleUserRepository';
-import { GoogleUserinfoMapper } from '../mappers/GoogleUserinfoMapper';
+import { GoogleUserinfoMapper } from '@gm/lib-common-google';
 
 export class GoogleUserService {
   private repo: GoogleUserRepository;

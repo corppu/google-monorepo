@@ -1,7 +1,7 @@
 import type { Auth } from 'googleapis';
 import type { Event } from '@gm/lib-common-google';
 import { GoogleEventRepository } from '../repositories/GoogleEventRepository';
-import { GoogleEventMapper } from '../mappers/GoogleEventMapper';
+import { GoogleEventMapper } from '@gm/lib-common-google';
 import { GoogleEventFilter } from '../filters/GoogleEventFilter';
 
 export class GoogleEventService {

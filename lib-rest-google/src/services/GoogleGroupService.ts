@@ -1,8 +1,8 @@
 import type { Auth } from 'googleapis';
 import type { Group, Member } from '@gm/lib-common-google';
 import { GoogleGroupRepository } from '../repositories/GoogleGroupRepository';
-import { GoogleGroupMapper } from '../mappers/GoogleGroupMapper';
-import { GoogleGroupMemberMapper } from '../mappers/GoogleGroupMemberMapper';
+import { GoogleGroupMapper } from '@gm/lib-common-google';
+import { GoogleGroupMemberMapper } from '@gm/lib-common-google';
 import { GoogleGroupFilter } from '../filters/GoogleGroupFilter';
 import { GoogleGroupMemberFilter } from '../filters/GoogleGroupMemberFilter';
 

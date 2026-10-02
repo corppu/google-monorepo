@@ -1,4 +1,3 @@
-export type { Location } from './types/Location';
 export type { EventDateTime } from './types/EventDateTime';
 export type { EventReminder } from './types/EventReminder';
 export type { EventAttendee } from './types/EventAttendee';
@@ -23,3 +22,17 @@ export const GOOGLE_SCOPES: GoogleScope[] = [
 ];
 
 export const MINIMUM_SCOPES: string[] = GOOGLE_SCOPES.filter((s) => s.locked).map((s) => s.id);
+
+export type { RecordMapper } from './mappers/RecordMapper';
+export { GoogleCalendarListEntryMapper } from './mappers/GoogleCalendarListEntryMapper';
+export { GoogleCalendarListMapper } from './mappers/GoogleCalendarListMapper';
+export { GoogleCalendarMapper } from './mappers/GoogleCalendarMapper';
+export { GoogleEventAttendeeMapper } from './mappers/GoogleEventAttendeeMapper';
+export { GoogleEventCreatorMapper } from './mappers/GoogleEventCreatorMapper';
+export { GoogleEventDateTimeMapper } from './mappers/GoogleEventDateTimeMapper';
+export { GoogleEventMapper } from './mappers/GoogleEventMapper';
+export { GoogleEventOrganizerMapper } from './mappers/GoogleEventOrganizerMapper';
+export { GoogleEventReminderMapper } from './mappers/GoogleEventReminderMapper';
+export { GoogleGroupMapper } from './mappers/GoogleGroupMapper';
+export { GoogleGroupMemberMapper } from './mappers/GoogleGroupMemberMapper';
+export { GoogleUserinfoMapper } from './mappers/GoogleUserinfoMapper';

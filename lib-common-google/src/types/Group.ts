@@ -1,1 +1,2 @@
-export interface Group { id?: string; email?: string; name?: string; description?: string }
+import type { admin_directory_v1 } from 'googleapis';
+export type Group = admin_directory_v1.Schema$Group;

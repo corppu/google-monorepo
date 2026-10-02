@@ -1,8 +1,8 @@
 import type { Auth } from 'googleapis';
 import type { CalendarList, Calendar } from '@gm/lib-common-google';
 import { GoogleCalendarRepository } from '../repositories/GoogleCalendarRepository';
-import { GoogleCalendarListMapper } from '../mappers/GoogleCalendarListMapper';
-import { GoogleCalendarMapper } from '../mappers/GoogleCalendarMapper';
+import { GoogleCalendarListMapper } from '@gm/lib-common-google';
+import { GoogleCalendarMapper } from '@gm/lib-common-google';
 import { GoogleCalendarListEntryFilter } from '../filters/GoogleCalendarListEntryFilter';
 
 export class GoogleCalendarService {

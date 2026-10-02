@@ -1,1 +1,2 @@
-export interface CalendarListEntry { id?: string; summary?: string; primary?: boolean; accessRole?: string }
+import type { calendar_v3 } from 'googleapis';
+export type CalendarListEntry = calendar_v3.Schema$CalendarListEntry;
