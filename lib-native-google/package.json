@@ -1,0 +1,3 @@
+{ "name": "@gm/lib-native-google", "version": "0.0.0", "private": true, "main": "src/index.ts",
+  "dependencies": { "@gm/lib-native-common": "workspace:*", "@gm/lib-common-google": "workspace:*" },
+  "peerDependencies": { "react": "^18.3.1", "react-native": "*", "@react-navigation/native": "^6.1.0", "@react-navigation/native-stack": "^6.9.0" } }

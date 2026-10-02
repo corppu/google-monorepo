@@ -1,0 +1,6 @@
+{ "name": "app-express", "version": "0.0.0", "private": true,
+  "scripts": { "start": "tsx src/server.ts" },
+  "dependencies": { "express": "^4.19.2", "express-session": "^1.18.0",
+    "@gm/lib-express-client": "workspace:*", "@gm/lib-express-google": "workspace:*",
+    "@gm/lib-rest-google": "workspace:*", "@gm/lib-client-google": "workspace:*", "@gm/lib-client-common": "workspace:*" },
+  "devDependencies": { "tsx": "^4.19.0" } }
