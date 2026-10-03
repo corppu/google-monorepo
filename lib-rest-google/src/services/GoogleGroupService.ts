@@ -1,8 +1,7 @@
 import type { Auth } from 'googleapis';
 import type { Group, Member } from '@gm/lib-common-google';
 import { GoogleGroupRepository } from '../repositories/GoogleGroupRepository';
-import { GoogleGroupMapper } from '@gm/lib-common-google';
-import { GoogleGroupMemberMapper } from '@gm/lib-common-google';
+import { GoogleGroupValidator, GoogleGroupMemberValidator, unwrapValidationResult } from '@gm/lib-common-google';
 import { GoogleGroupFilter } from '../filters/GoogleGroupFilter';
 import { GoogleGroupMemberFilter } from '../filters/GoogleGroupMemberFilter';
 
@@ -12,9 +11,13 @@ export class GoogleGroupService {
     this.repo = new GoogleGroupRepository(auth);
   }
   async list(): Promise<Group[]> {
-    return (await this.repo.list()).map(GoogleGroupMapper).filter(GoogleGroupFilter);
+    return (await this.repo.list())
+      .map((input) => unwrapValidationResult(GoogleGroupValidator(input)))
+      .filter(GoogleGroupFilter);
   }
   async members(groupKey: string): Promise<Member[]> {
-    return (await this.repo.members(groupKey)).map(GoogleGroupMemberMapper).filter(GoogleGroupMemberFilter);
+    return (await this.repo.members(groupKey))
+      .map((input) => unwrapValidationResult(GoogleGroupMemberValidator(input)))
+      .filter(GoogleGroupMemberFilter);
   }
 }

@@ -1,3 +1,3 @@
 { "name": "@gm/lib-express-client", "version": "0.0.0", "private": true, "main": "src/index.ts",
-  "dependencies": { "express": "^4.19.2", "react": "^18.3.1", "react-dom": "^18.3.1",
-    "@gm/lib-express-google": "workspace:*", "@gm/lib-client-google": "workspace:*", "react-router-dom": "^6.26.0", "@gm/lib-client-common": "workspace:*", "@gm/lib-common-google": "workspace:*" } }
+    "dependencies": { "express": "latest", "react": "latest", "react-dom": "latest",
+        "@gm/lib-express-google": "*", "@gm/lib-client-google": "*", "react-router-dom": "latest", "@gm/lib-client-common": "*", "@gm/lib-common-google": "*" } }

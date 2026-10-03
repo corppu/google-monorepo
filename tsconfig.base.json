@@ -9,16 +9,15 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
-      "@gm/lib-common-google": ["lib-common-google/src/index.ts"],
-      "@gm/lib-rest-google": ["lib-rest-google/src/index.ts"],
-      "@gm/lib-express-google": ["lib-express-google/src/index.ts"],
-      "@gm/lib-express-client": ["lib-express-client/src/index.ts"],
-      "@gm/lib-client-common": ["lib-client-common/src/index.ts"],
-      "@gm/lib-client-google": ["lib-client-google/src/index.ts"],
-      "@gm/lib-native-common": ["lib-native-common/src/index.ts"],
-      "@gm/lib-native-google": ["lib-native-google/src/index.ts"]
+      "@gm/lib-common-google": ["./lib-common-google/src/index.ts"],
+      "@gm/lib-rest-google": ["./lib-rest-google/src/index.ts"],
+      "@gm/lib-express-google": ["./lib-express-google/src/index.ts"],
+      "@gm/lib-express-client": ["./lib-express-client/src/index.ts"],
+      "@gm/lib-client-common": ["./lib-client-common/src/index.ts"],
+      "@gm/lib-client-google": ["./lib-client-google/src/index.ts"],
+      "@gm/lib-native-common": ["./lib-native-common/src/index.ts"],
+      "@gm/lib-native-google": ["./lib-native-google/src/index.ts"]
     }
   }
 }

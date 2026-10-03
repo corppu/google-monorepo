@@ -23,16 +23,17 @@ export const GOOGLE_SCOPES: GoogleScope[] = [
 
 export const MINIMUM_SCOPES: string[] = GOOGLE_SCOPES.filter((s) => s.locked).map((s) => s.id);
 
-export type { RecordMapper } from './mappers/RecordMapper';
-export { GoogleCalendarListEntryMapper } from './mappers/GoogleCalendarListEntryMapper';
-export { GoogleCalendarListMapper } from './mappers/GoogleCalendarListMapper';
-export { GoogleCalendarMapper } from './mappers/GoogleCalendarMapper';
-export { GoogleEventAttendeeMapper } from './mappers/GoogleEventAttendeeMapper';
-export { GoogleEventCreatorMapper } from './mappers/GoogleEventCreatorMapper';
-export { GoogleEventDateTimeMapper } from './mappers/GoogleEventDateTimeMapper';
-export { GoogleEventMapper } from './mappers/GoogleEventMapper';
-export { GoogleEventOrganizerMapper } from './mappers/GoogleEventOrganizerMapper';
-export { GoogleEventReminderMapper } from './mappers/GoogleEventReminderMapper';
-export { GoogleGroupMapper } from './mappers/GoogleGroupMapper';
-export { GoogleGroupMemberMapper } from './mappers/GoogleGroupMemberMapper';
-export { GoogleUserinfoMapper } from './mappers/GoogleUserinfoMapper';
+export type { ValidationResult, Validator } from './validators/Validator';
+export { unwrapValidationResult } from './validators/Validator';
+export { GoogleCalendarListEntryValidator } from './validators/GoogleCalendarListEntryValidator';
+export { GoogleCalendarListValidator } from './validators/GoogleCalendarListValidator';
+export { GoogleCalendarValidator } from './validators/GoogleCalendarValidator';
+export { GoogleEventAttendeeValidator } from './validators/GoogleEventAttendeeValidator';
+export { GoogleEventCreatorValidator } from './validators/GoogleEventCreatorValidator';
+export { GoogleEventDateTimeValidator } from './validators/GoogleEventDateTimeValidator';
+export { GoogleEventValidator } from './validators/GoogleEventValidator';
+export { GoogleEventOrganizerValidator } from './validators/GoogleEventOrganizerValidator';
+export { GoogleEventReminderValidator } from './validators/GoogleEventReminderValidator';
+export { GoogleGroupValidator } from './validators/GoogleGroupValidator';
+export { GoogleGroupMemberValidator } from './validators/GoogleGroupMemberValidator';
+export { GoogleUserinfoValidator } from './validators/GoogleUserinfoValidator';

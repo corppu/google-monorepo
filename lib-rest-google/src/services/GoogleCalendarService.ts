@@ -1,8 +1,7 @@
 import type { Auth } from 'googleapis';
 import type { CalendarList, Calendar } from '@gm/lib-common-google';
 import { GoogleCalendarRepository } from '../repositories/GoogleCalendarRepository';
-import { GoogleCalendarListMapper } from '@gm/lib-common-google';
-import { GoogleCalendarMapper } from '@gm/lib-common-google';
+import { GoogleCalendarListValidator, GoogleCalendarValidator, unwrapValidationResult } from '@gm/lib-common-google';
 import { GoogleCalendarListEntryFilter } from '../filters/GoogleCalendarListEntryFilter';
 
 export class GoogleCalendarService {
@@ -11,10 +10,10 @@ export class GoogleCalendarService {
     this.repo = new GoogleCalendarRepository(auth);
   }
   async list(): Promise<CalendarList> {
-    const list = GoogleCalendarListMapper(await this.repo.list());
+    const list = unwrapValidationResult(GoogleCalendarListValidator(await this.repo.list()));
     return { items: list.items.filter(GoogleCalendarListEntryFilter) };
   }
   async get(id: string): Promise<Calendar> {
-    return GoogleCalendarMapper(await this.repo.get(id));
+    return unwrapValidationResult(GoogleCalendarValidator(await this.repo.get(id)));
   }
 }

@@ -1,3 +1,3 @@
 { "name": "@gm/lib-client-google", "version": "0.0.0", "private": true, "main": "src/index.ts",
-  "dependencies": { "@gm/lib-client-common": "workspace:*", "@gm/lib-common-google": "workspace:*" },
-  "peerDependencies": { "react": "^18.3.1", "react-router-dom": "^6.26.0" } }
+    "dependencies": { "@gm/lib-client-common": "*", "@gm/lib-common-google": "*" },
+  "peerDependencies": { "react": "latest", "react-router-dom": "latest" } }
