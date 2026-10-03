@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
+  "dependencies": {
+    "@gm/lib-client-theme": "*"
+  },
   "peerDependencies": {
     "react": "latest"
   }

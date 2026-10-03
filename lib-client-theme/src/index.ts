@@ -1,0 +1,42 @@
+export const theme = {
+  colors: {
+    border: '#9eafb8',
+    borderSubtle: '#e2e8eb',
+    ink: '#20272c',
+    mutedInk: '#52616b',
+    pressedSurface: '#dfe9ed',
+    scopeThumb: '#f4f6f7',
+    scopeTrack: '#aebbc2',
+    scopeTrackActive: '#9bbec8',
+    selected: '#356a79',
+    subtleSurface: '#edf3f5',
+    surface: '#ffffff',
+  },
+  radius: {
+    control: 6,
+  },
+  sizes: {
+    checkbox: 18,
+    control: 40,
+    scopeRow: 52,
+  },
+  spacing: {
+    buttonHorizontal: 14,
+    buttonVertical: 8,
+    field: 8,
+    inputHorizontal: 12,
+    inputVertical: 8,
+    scopeRowHorizontal: 12,
+    scopeRowVertical: 8,
+  },
+  typography: {
+    body: 14,
+    buttonWeight: '600',
+    heading: 20,
+    headingLineHeight: 1.3,
+    headingWeight: '600',
+    label: 13,
+    labelLineHeight: 18,
+    labelWeight: '500',
+  },
+} as const;
