@@ -8,8 +8,8 @@
     "@gm/lib-common-google": "*"
   },
   "peerDependencies": {
-    "react": "latest",
-    "react-native": "latest",
+    "react": "^19.2.3",
+    "react-native": "0.86.3",
     "@react-navigation/native": "latest",
     "@react-navigation/native-stack": "latest"
   }

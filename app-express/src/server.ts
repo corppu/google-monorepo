@@ -43,7 +43,7 @@ app.use(
   '/spa',
   express.static(path.resolve(__dirname, '../../app-client/dist')),
 );
-app.get('/spa/*', (_req, res) =>
+app.get('/spa/*splat', (_req, res) =>
   res.sendFile(path.resolve(__dirname, '../../app-client/dist/index.html')),
 );
 app.get('/', (_req, res) => res.redirect('/spa/google'));
