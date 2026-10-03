@@ -1,7 +1,9 @@
 # google-monorepo
+
 Base monorepo for developing Google related content.
 
 ## Layout
+
 `app-express` (SSR `/ssr`, SPA `/spa`, API `/api`), `app-client` (React SPA), `app-native` (React Native), plus `lib-*` packages.
 
 ```

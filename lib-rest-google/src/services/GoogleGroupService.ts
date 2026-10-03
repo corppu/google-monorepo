@@ -1,7 +1,11 @@
 import type { Auth } from 'googleapis';
 import type { Group, Member } from '@gm/lib-common-google';
 import { GoogleGroupRepository } from '../repositories/GoogleGroupRepository';
-import { GoogleGroupValidator, GoogleGroupMemberValidator, unwrapValidationResult } from '@gm/lib-common-google';
+import {
+  GoogleGroupValidator,
+  GoogleGroupMemberValidator,
+  unwrapValidationResult,
+} from '@gm/lib-common-google';
 import { GoogleGroupFilter } from '../filters/GoogleGroupFilter';
 import { GoogleGroupMemberFilter } from '../filters/GoogleGroupMemberFilter';
 

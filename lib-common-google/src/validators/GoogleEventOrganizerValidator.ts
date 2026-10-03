@@ -1,9 +1,16 @@
 import type { EventOrganizer } from '../types/EventOrganizer';
-import { ObjectValidator, OptionalValidator, StringValidator, type Validator } from './Validator';
+import {
+  ObjectValidator,
+  OptionalValidator,
+  StringValidator,
+  type Validator,
+} from './Validator';
 
-const optionalString = (fieldKey: string) => OptionalValidator(StringValidator({ fieldKey }));
+const optionalString = (fieldKey: string) =>
+  OptionalValidator(StringValidator({ fieldKey }));
 
-export const GoogleEventOrganizerValidator: Validator<EventOrganizer> = ObjectValidator<EventOrganizer>('EventOrganizer', {
-  email: optionalString('email'),
-  displayName: optionalString('displayName')
-});
+export const GoogleEventOrganizerValidator: Validator<EventOrganizer> =
+  ObjectValidator<EventOrganizer>('EventOrganizer', {
+    displayName: optionalString('displayName'),
+    email: optionalString('email'),
+  });

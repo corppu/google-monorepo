@@ -6,6 +6,12 @@ import { DashboardPage } from './routes/DashboardPage';
 
 export const App = () => (
   <BrowserRouter basename="/spa">
-    <GoogleRouter pages={{ landing: <GoogleLandingPage />, scopes: <GoogleScopesPage />, dashboard: <DashboardPage /> }} />
+    <GoogleRouter
+      pages={{
+        dashboard: <DashboardPage />,
+        landing: <GoogleLandingPage />,
+        scopes: <GoogleScopesPage />,
+      }}
+    />
   </BrowserRouter>
 );

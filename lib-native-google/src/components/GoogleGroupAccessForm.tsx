@@ -5,6 +5,8 @@ import { GenericForm } from '@gm/lib-native-common';
 export const GoogleGroupAccessForm = ({ groups }: { groups?: Group[] }) => (
   <GenericForm>
     <Text>Groups</Text>
-    {groups?.map((g) => <Text key={g.id}>{g.name}</Text>)}
+    {groups?.map((g) => (
+      <Text key={g.id}>{g.name}</Text>
+    ))}
   </GenericForm>
 );

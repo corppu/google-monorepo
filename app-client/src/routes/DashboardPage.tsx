@@ -7,7 +7,7 @@ import {
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
-  useGoogleUserinfo
+  useGoogleUserinfo,
 } from '@gm/lib-client-google';
 
 export const DashboardPage = () => (

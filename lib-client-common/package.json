@@ -1,2 +1,9 @@
-{ "name": "@gm/lib-client-common", "version": "0.0.0", "private": true, "main": "src/index.ts",
-    "peerDependencies": { "react": "latest" } }
+{
+  "name": "@gm/lib-client-common",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "react": "latest"
+  }
+}

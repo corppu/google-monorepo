@@ -1,21 +1,31 @@
 import type { ReactElement } from 'react';
-import { GenericAuthArticleForm, GenericForm, GenericScopesSelectorFieldset, PageTemplate } from '@gm/lib-client-common';
+import {
+  GenericAuthArticleForm,
+  GenericForm,
+  GenericScopesSelectorFieldset,
+  PageTemplate,
+} from '@gm/lib-client-common';
 import {
   GoogleCalendarAccessForm,
   GoogleEventAccessForm,
   GoogleGroupAccessForm,
   GoogleRouter,
-  GoogleUserinfoAccessForm
+  GoogleUserinfoAccessForm,
 } from '@gm/lib-client-google';
 import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
-import type { CalendarList, Event, Group, Userinfo } from '@gm/lib-common-google';
+import type {
+  CalendarList,
+  Event,
+  Group,
+  Userinfo,
+} from '@gm/lib-common-google';
 import { renderPage } from './renderPage';
 
 export interface DashboardData {
-  userinfo?: Userinfo;
   calendars?: CalendarList;
   events?: Event[];
   groups?: Group[];
+  userinfo?: Userinfo;
 }
 
 const noop = () => {};
@@ -39,30 +49,25 @@ document.querySelector('form').addEventListener('submit', async function (e) {
   location.href = '/api/google/auth/start?target=ssr';
 });`;
 
-
-
-const page = (title: string, body: ReactElement) => <PageTemplate title={title}>{body}</PageTemplate>;
+const page = (title: string, body: ReactElement) => (
+  <PageTemplate title={title}>{body}</PageTemplate>
+);
 
 /** Renders the pages of GoogleRouter (React Router) on the server with ReactDOMServer. */
 export function createSSRRenderer() {
   const titles: Record<string, string> = {
+    '/dashboard': 'Dashboard',
     '/google': 'Sign in with Google',
     '/google/scopes': 'Choose scopes',
-    '/dashboard': 'Dashboard'
   };
-  const scripts: Record<string, string> = { '/google': loginScript, '/google/scopes': scopesScript };
+  const scripts: Record<string, string> = {
+    '/google': loginScript,
+    '/google/scopes': scopesScript,
+  };
 
   /** `path` is relative to /ssr, e.g. `/google/scopes`. */
   return (path: string, data: DashboardData = {}): string => {
     const pages = {
-      landing: page('Sign in with Google', <GenericAuthArticleForm identifierLabel="Gmail" identifierName="gmail" onSubmit={noop} />),
-      scopes: page(
-        'Choose scopes',
-        <GenericForm>
-          <GenericScopesSelectorFieldset scopes={GOOGLE_SCOPES} selected={MINIMUM_SCOPES} onToggle={noop} />
-          <button type="submit">Authorize</button>
-        </GenericForm>
-      ),
       dashboard: page(
         'Dashboard',
         <>
@@ -70,9 +75,32 @@ export function createSSRRenderer() {
           <GoogleCalendarAccessForm calendars={data.calendars} />
           <GoogleEventAccessForm events={data.events} />
           <GoogleGroupAccessForm groups={data.groups} />
-        </>
-      )
+        </>,
+      ),
+      landing: page(
+        'Sign in with Google',
+        <GenericAuthArticleForm
+          identifierLabel="Gmail"
+          identifierName="gmail"
+          onSubmit={noop}
+        />,
+      ),
+      scopes: page(
+        'Choose scopes',
+        <GenericForm>
+          <GenericScopesSelectorFieldset
+            scopes={GOOGLE_SCOPES}
+            selected={MINIMUM_SCOPES}
+            onToggle={noop}
+          />
+          <button type="submit">Authorize</button>
+        </GenericForm>,
+      ),
     };
-    return renderPage(<GoogleRouter pages={pages} />, { title: titles[path] ?? 'Google', location: path, script: scripts[path] });
+    return renderPage(<GoogleRouter pages={pages} />, {
+      location: path,
+      script: scripts[path],
+      title: titles[path] ?? 'Google',
+    });
   };
 }

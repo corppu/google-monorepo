@@ -7,7 +7,7 @@ import {
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
-  useGoogleUserinfo
+  useGoogleUserinfo,
 } from '@gm/lib-native-google';
 import { api } from '../session';
 

@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { MINIMUM_SCOPES } from '@gm/lib-common-google';
 import type { GoogleScope } from '@gm/lib-common-google';
-import { Button, GenericScopesSelectorFieldset, PageTemplate } from '@gm/lib-client-common';
+import {
+  Button,
+  GenericScopesSelectorFieldset,
+  PageTemplate,
+} from '@gm/lib-client-common';
 
 export const GoogleScopesPage = () => {
   const [scopes, setScopes] = useState<GoogleScope[]>([]);
@@ -11,19 +15,26 @@ export const GoogleScopesPage = () => {
       .then((r) => r.json())
       .then((d) => setScopes(d.scopes));
   }, []);
-  const toggle = (id: string) => setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  const toggle = (id: string) =>
+    setSelected((s) =>
+      s.includes(id) ? s.filter((x) => x !== id) : [...s, id],
+    );
   const submit = async () => {
     await fetch('/api/google/auth/scopes', {
-      method: 'POST',
+      body: JSON.stringify({ scopes: selected }),
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scopes: selected })
+      method: 'POST',
     });
     window.location.href = '/api/google/auth/start?target=spa';
   };
   return (
     <PageTemplate title="Choose scopes">
-      <GenericScopesSelectorFieldset scopes={scopes} selected={selected} onToggle={toggle} />
+      <GenericScopesSelectorFieldset
+        scopes={scopes}
+        selected={selected}
+        onToggle={toggle}
+      />
       <Button onClick={submit}>Authorize</Button>
     </PageTemplate>
   );

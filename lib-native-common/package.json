@@ -1,2 +1,10 @@
-{ "name": "@gm/lib-native-common", "version": "0.0.0", "private": true, "main": "src/index.ts",
-    "peerDependencies": { "react": "latest", "react-native": "latest" } }
+{
+  "name": "@gm/lib-native-common",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "react": "latest",
+    "react-native": "latest"
+  }
+}

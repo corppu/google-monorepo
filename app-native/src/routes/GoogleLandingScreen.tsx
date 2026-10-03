@@ -1,12 +1,16 @@
 import { GenericAuthArticleForm, ScreenTemplate } from '@gm/lib-native-common';
 import { api } from '../session';
 
-export const GoogleLandingScreen = ({ navigation }: { navigation: { navigate: (n: string) => void } }) => {
+export const GoogleLandingScreen = ({
+  navigation,
+}: {
+  navigation: { navigate: (n: string) => void };
+}) => {
   const login = async (gmail: string, password: string) => {
     const r = await fetch(`${api.baseUrl}/api/google/auth/native/login`, {
-      method: 'POST',
+      body: JSON.stringify({ gmail, password }),
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gmail, password })
+      method: 'POST',
     });
     if (!r.ok) return;
     api.token = (await r.json()).token;

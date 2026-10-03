@@ -1,3 +1,14 @@
-{ "name": "@gm/lib-client-google", "version": "0.0.0", "private": true, "main": "src/index.ts",
-    "dependencies": { "@gm/lib-client-common": "*", "@gm/lib-common-google": "*" },
-  "peerDependencies": { "react": "latest", "react-router-dom": "latest" } }
+{
+  "name": "@gm/lib-client-google",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@gm/lib-client-common": "*",
+    "@gm/lib-common-google": "*"
+  },
+  "peerDependencies": {
+    "react": "latest",
+    "react-router-dom": "latest"
+  }
+}

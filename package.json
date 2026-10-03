@@ -1,11 +1,26 @@
 {
   "name": "google-monorepo",
   "private": true,
-  "workspaces": ["app-*", "lib-*"],
+  "workspaces": [
+    "app-*",
+    "lib-*"
+  ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build:client": "npm run build --workspace=app-client",
-    "start": "npm run start --workspace=app-express"
+    "start": "npm run start --workspace=app-express",
+    "format": "npm run sort:keys && prettier --write .",
+    "format:check": "npm run sort:keys:check && prettier --check .",
+    "sort:keys": "eslint --fix \"app-*/**/*.{ts,tsx}\" \"lib-*/**/*.{ts,tsx}\"",
+    "sort:keys:check": "eslint \"app-*/**/*.{ts,tsx}\" \"lib-*/**/*.{ts,tsx}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,mjs,cjs,json,jsonc,md,mdx,yml,yaml,css,scss,html}": "prettier --write"
   },
   "devDependencies": {
     "@types/express": "latest",
@@ -13,6 +28,14 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "husky": "latest",
+    "lint-staged": "latest",
+    "prettier": "latest",
+    "eslint": "9.39.5",
+    "eslint-plugin-perfectionist": "latest",
+    "@babel/core": "^7.29.7",
+    "@babel/eslint-parser": "latest",
+    "@babel/plugin-syntax-typescript": "^7.29.7"
   }
 }

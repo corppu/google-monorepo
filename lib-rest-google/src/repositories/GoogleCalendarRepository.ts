@@ -4,9 +4,17 @@ import type { Auth } from 'googleapis';
 export class GoogleCalendarRepository {
   constructor(private auth: Auth.OAuth2Client) {}
   async list(): Promise<Record<string, any>> {
-    return (await google.calendar({ version: 'v3', auth: this.auth }).calendarList.list()).data;
+    return (
+      await google
+        .calendar({ auth: this.auth, version: 'v3' })
+        .calendarList.list()
+    ).data;
   }
   async get(calendarId: string): Promise<Record<string, any>> {
-    return (await google.calendar({ version: 'v3', auth: this.auth }).calendars.get({ calendarId })).data;
+    return (
+      await google
+        .calendar({ auth: this.auth, version: 'v3' })
+        .calendars.get({ calendarId })
+    ).data;
   }
 }

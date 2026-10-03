@@ -1,10 +1,18 @@
 import type { Member } from '../types/Member';
-import { NullableValidator, ObjectValidator, OptionalValidator, StringValidator, type Validator } from './Validator';
+import {
+  NullableValidator,
+  ObjectValidator,
+  OptionalValidator,
+  StringValidator,
+  type Validator,
+} from './Validator';
 
-const optionalString = (fieldKey: string) => OptionalValidator(NullableValidator(StringValidator({ fieldKey })));
+const optionalString = (fieldKey: string) =>
+  OptionalValidator(NullableValidator(StringValidator({ fieldKey })));
 
-export const GoogleGroupMemberValidator: Validator<Member> = ObjectValidator<Member>('Member', {
-  id: optionalString('id'),
-  email: optionalString('email'),
-  role: optionalString('role')
-});
+export const GoogleGroupMemberValidator: Validator<Member> =
+  ObjectValidator<Member>('Member', {
+    email: optionalString('email'),
+    id: optionalString('id'),
+    role: optionalString('role'),
+  });

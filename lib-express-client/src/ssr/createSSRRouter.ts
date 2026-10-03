@@ -12,9 +12,12 @@ export function createSSRRouter(): Router {
   const render = createSSRRenderer();
   router.get('/', (_req, res) => res.redirect('/ssr/google'));
   router.get('/google', (_req, res) => res.send(render('/google')));
-  router.get('/google/scopes', (_req, res) => res.send(render('/google/scopes')));
+  router.get('/google/scopes', (_req, res) =>
+    res.send(render('/google/scopes')),
+  );
   router.get('/dashboard', async (req, res) => {
-    const ctx = req.app.locals.googleContext as GoogleHandlerContext | undefined;
+    const ctx = req.app.locals.googleContext as
+      GoogleHandlerContext | undefined;
     const sid = ctx && sessionIdOf(ctx, req);
     try {
       if (!ctx || !sid) return void res.redirect('/ssr/google');

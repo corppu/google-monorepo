@@ -1,3 +1,17 @@
-{ "name": "app-native", "version": "0.0.0", "private": true, "main": "src/App.tsx",
-    "dependencies": { "react": "latest", "react-native": "latest", "expo": "latest", "expo-crypto": "latest", "@react-navigation/native": "latest", "@react-navigation/native-stack": "latest",
-    "@gm/lib-native-google": "*", "@gm/lib-native-common": "*", "@gm/lib-common-google": "*" } }
+{
+  "name": "app-native",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/App.tsx",
+  "dependencies": {
+    "react": "latest",
+    "react-native": "latest",
+    "expo": "latest",
+    "expo-crypto": "latest",
+    "@react-navigation/native": "latest",
+    "@react-navigation/native-stack": "latest",
+    "@gm/lib-native-google": "*",
+    "@gm/lib-native-common": "*",
+    "@gm/lib-common-google": "*"
+  }
+}

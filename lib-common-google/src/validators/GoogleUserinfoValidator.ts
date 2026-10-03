@@ -1,4 +1,4 @@
-import type { Userinfo } from "../types/Userinfo";
+import type { Userinfo } from '../types/Userinfo';
 import {
   NullableValidator,
   ObjectValidator,
@@ -6,19 +6,19 @@ import {
   StringValidator,
   ValidationPattern,
   type Validator,
-} from "./Validator";
+} from './Validator';
 
 const optionalString = (fieldKey: string) =>
   OptionalValidator(NullableValidator(StringValidator({ fieldKey })));
 
 export const GoogleUserinfoValidator: Validator<Userinfo> =
-  ObjectValidator<Userinfo>("Userinfo", {
-    id: optionalString("id"),
+  ObjectValidator<Userinfo>('Userinfo', {
     email: StringValidator({
-      fieldKey: "email",
-      minLength: "a@gmail.com".length,
+      fieldKey: 'email',
+      minLength: 'a@gmail.com'.length,
       pattern: ValidationPattern.gmail,
     }),
-    name: optionalString("name"),
-    picture: optionalString("picture"),
+    id: optionalString('id'),
+    name: optionalString('name'),
+    picture: optionalString('picture'),
   });

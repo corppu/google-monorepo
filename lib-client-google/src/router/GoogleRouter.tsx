@@ -2,9 +2,9 @@ import type { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 export interface GoogleRouterPages {
+  dashboard: ReactElement;
   landing: ReactElement;
   scopes: ReactElement;
-  dashboard: ReactElement;
 }
 
 /** Expects to be rendered inside a Router whose basename is /spa. */

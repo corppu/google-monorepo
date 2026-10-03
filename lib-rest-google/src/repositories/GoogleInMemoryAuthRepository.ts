@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
 
 export interface GoogleAuthSession {
-  sessionId: string;
   gmail: string;
+  nonce?: string;
   password: string;
   scopes: string[];
+  sessionId: string;
   state?: string;
-  nonce?: string;
   tokens?: Record<string, any>;
 }
 
@@ -24,13 +24,21 @@ export class GoogleInMemoryAuthRepository {
   }
 
   create(gmail: string, password: string): GoogleAuthSession {
-    const session: GoogleAuthSession = { sessionId: randomUUID(), gmail, password, scopes: [] };
+    const session: GoogleAuthSession = {
+      gmail,
+      password,
+      scopes: [],
+      sessionId: randomUUID(),
+    };
     this.byId.set(session.sessionId, session);
     this.byGmail.set(gmail.toLowerCase(), session.sessionId);
     return session;
   }
 
-  update(sessionId: string, patch: Partial<Omit<GoogleAuthSession, 'sessionId'>>): GoogleAuthSession | undefined {
+  update(
+    sessionId: string,
+    patch: Partial<Omit<GoogleAuthSession, 'sessionId'>>,
+  ): GoogleAuthSession | undefined {
     const s = this.byId.get(sessionId);
     if (!s) return undefined;
     Object.assign(s, patch);

@@ -1,5 +1,22 @@
-{ "name": "app-client", "version": "0.0.0", "private": true, "type": "module",
-  "scripts": { "build": "vite build", "dev": "vite" },
-  "dependencies": { "react": "latest", "react-dom": "latest", "react-router-dom": "latest",
-    "@gm/lib-client-google": "*", "@gm/lib-client-common": "*", "@gm/lib-common-google": "*" },
-  "devDependencies": { "vite": "latest", "@vitejs/plugin-react": "latest" } }
+{
+  "name": "app-client",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest",
+    "@gm/lib-client-google": "*",
+    "@gm/lib-client-common": "*",
+    "@gm/lib-common-google": "*"
+  },
+  "devDependencies": {
+    "vite": "latest",
+    "@vitejs/plugin-react": "latest"
+  }
+}
