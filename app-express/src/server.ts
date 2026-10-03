@@ -1,0 +1,51 @@
+import { randomBytes } from 'node:crypto';
+import path from 'node:path';
+import express from 'express';
+import session from 'express-session';
+import {
+  GoogleAuthService,
+  GoogleInMemoryAuthRepository,
+} from '@gm/lib-rest-google';
+import { createApiRouter } from './routes/api';
+import { ssrRouter } from '@gm/lib-express-client';
+
+const port = Number(process.env.PORT ?? 3000);
+const secret = process.env.SESSION_SECRET ?? randomBytes(32).toString('hex');
+
+const auth = new GoogleAuthService(new GoogleInMemoryAuthRepository(), {
+  clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+  redirectUri:
+    process.env.GOOGLE_REDIRECT_URI ??
+    `http://localhost:${port}/api/google/auth/callback`,
+});
+const ctx = { auth, jwtSecret: secret };
+
+const app = express();
+app.locals.googleContext = ctx;
+app.use(express.json());
+app.use(
+  session({
+    cookie: {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
+    resave: false,
+    saveUninitialized: false,
+    secret,
+  }),
+);
+
+app.use('/api', createApiRouter(ctx));
+app.use('/ssr', ssrRouter);
+app.use(
+  '/spa',
+  express.static(path.resolve(__dirname, '../../app-client/dist')),
+);
+app.get('/spa/*splat', (_req, res) =>
+  res.sendFile(path.resolve(__dirname, '../../app-client/dist/index.html')),
+);
+app.get('/', (_req, res) => res.redirect('/spa/google'));
+
+app.listen(port, () => console.log(`listening on :${port}`));

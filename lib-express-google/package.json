@@ -1,0 +1,12 @@
+{
+  "name": "@gm/lib-express-google",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "express": "latest",
+    "express-session": "latest",
+    "@gm/lib-rest-google": "*",
+    "@gm/lib-common-google": "*"
+  }
+}
