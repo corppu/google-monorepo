@@ -7,9 +7,9 @@ import { createSSRRenderer } from './createSSRRenderer';
  * Handles /ssr/*. The host app shares the Google handler context via
  * `app.locals.googleContext`, so the host only has to mount this router.
  */
-export function createSSRRouter(): Router {
+export function createSSRRouter(stylesheets: string[] = []): Router {
   const router = Router();
-  const render = createSSRRenderer();
+  const render = createSSRRenderer(stylesheets);
   router.get('/', (_req, res) => res.redirect('/ssr/google'));
   router.get('/google', (_req, res) => res.send(render('/google')));
   router.get('/google/scopes', (_req, res) =>

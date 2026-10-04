@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "tsx src/server.ts"
+    "start": "node src/start.cjs"
   },
   "dependencies": {
     "express": "latest",

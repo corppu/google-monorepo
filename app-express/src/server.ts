@@ -1,4 +1,5 @@
 import { randomBytes } from 'node:crypto';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import express from 'express';
 import session from 'express-session';
@@ -7,7 +8,7 @@ import {
   GoogleInMemoryAuthRepository,
 } from '@gm/lib-rest-google';
 import { createApiRouter } from './routes/api';
-import { ssrRouter } from '@gm/lib-express-client';
+import { createSSRRouter } from '@gm/lib-express-client';
 
 const port = Number(process.env.PORT ?? 3000);
 const secret = process.env.SESSION_SECRET ?? randomBytes(32).toString('hex');
@@ -22,6 +23,17 @@ const auth = new GoogleAuthService(new GoogleInMemoryAuthRepository(), {
 const ctx = { auth, jwtSecret: secret };
 
 const app = express();
+const clientDistPath = path.resolve(__dirname, '../../app-client/dist');
+const clientManifestPath = path.join(clientDistPath, '.vite', 'manifest.json');
+const clientManifest = existsSync(clientManifestPath)
+  ? (JSON.parse(readFileSync(clientManifestPath, 'utf8')) as Record<
+      string,
+      { css?: string[] }
+    >)
+  : {};
+const ssrStylesheets = (clientManifest['index.html']?.css ?? []).map(
+  (file) => `/spa/${file}`,
+);
 app.locals.googleContext = ctx;
 app.use(express.json());
 app.use(
@@ -38,13 +50,10 @@ app.use(
 );
 
 app.use('/api', createApiRouter(ctx));
-app.use('/ssr', ssrRouter);
-app.use(
-  '/spa',
-  express.static(path.resolve(__dirname, '../../app-client/dist')),
-);
+app.use('/ssr', createSSRRouter(ssrStylesheets));
+app.use('/spa', express.static(clientDistPath));
 app.get('/spa/*splat', (_req, res) =>
-  res.sendFile(path.resolve(__dirname, '../../app-client/dist/index.html')),
+  res.sendFile(path.join(clientDistPath, 'index.html')),
 );
 app.get('/', (_req, res) => res.redirect('/spa/google'));
 

@@ -54,7 +54,7 @@ const page = (title: string, body: ReactElement) => (
 );
 
 /** Renders the pages of GoogleRouter (React Router) on the server with ReactDOMServer. */
-export function createSSRRenderer() {
+export function createSSRRenderer(stylesheets: string[] = []) {
   const titles: Record<string, string> = {
     '/dashboard': 'Dashboard',
     '/google': 'Sign in with Google',
@@ -100,6 +100,7 @@ export function createSSRRenderer() {
     return renderPage(<GoogleRouter pages={pages} />, {
       location: path,
       script: scripts[path],
+      stylesheets,
       title: titles[path] ?? 'Google',
     });
   };
