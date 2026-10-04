@@ -23,6 +23,7 @@ export const GoogleEventAccessFormFieldset = ({
         getKey={(event) => event.id!}
         items={eventItems}
         key={paginationKey}
+        selectedKey={onSelect ? selectedEventId : undefined}
         renderItem={(event) => {
           const eventLabel = event.summary?.trim() || event.id!;
           return onSelect ? (

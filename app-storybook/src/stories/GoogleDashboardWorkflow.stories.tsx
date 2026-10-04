@@ -551,14 +551,14 @@ export const LargeDataset: Story = {
 
     await userEvent.click(events.getByRole('button', { name: 'Next page' }));
 
-    await expect(events.getAllByRole('radio')).toHaveLength(50);
+    await expect(events.getAllByRole('radio')).toHaveLength(51);
     await expect(events.getByText('Items 51-100 of 9999')).toBeInTheDocument();
+    await expect(
+      events.getByRole('radio', { name: 'Load test event 00001' }),
+    ).toBeChecked();
     await expect(
       events.getByLabelText('Load test event 00051'),
     ).toBeInTheDocument();
-    await expect(
-      events.queryByLabelText('Load test event 00001'),
-    ).not.toBeInTheDocument();
   },
   render: () => <LargeDatasetWorkflow />,
 };
@@ -572,13 +572,13 @@ export const NativeLargeDataset: Story = {
       name: 'Next Events page',
     });
     await userEvent.click(nextEventsPage);
-    await expect(canvas.getAllByRole('radio')).toHaveLength(150);
+    await expect(canvas.getAllByRole('radio')).toHaveLength(151);
+    await expect(
+      canvas.getByRole('radio', { name: 'Load test event 00001' }),
+    ).toBeChecked();
     await expect(
       canvas.getByRole('radio', { name: 'Load test event 00051' }),
     ).toBeInTheDocument();
-    await expect(
-      canvas.queryByRole('radio', { name: 'Load test event 00001' }),
-    ).not.toBeInTheDocument();
   },
   render: () => <NativeLargeDatasetWorkflow />,
 };

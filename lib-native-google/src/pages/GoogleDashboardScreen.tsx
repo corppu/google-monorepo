@@ -138,6 +138,7 @@ export const GoogleDashboardScreen = ({
             accessibilityLabel="Google groups"
             getKey={(group) => group.id}
             items={groupItems}
+            selectedKey={selectedGroupEmail || 'all-calendars'}
             renderItem={(group) => (
               <Choice
                 label={group.label}
@@ -153,6 +154,7 @@ export const GoogleDashboardScreen = ({
             getKey={(calendar) => calendar.id!}
             items={calendarItems}
             key={selectedGroupEmail}
+            selectedKey={selectedCalendarId}
             renderItem={(calendar) => (
               <Choice
                 label={calendar.summary ?? calendar.id!}
@@ -169,6 +171,7 @@ export const GoogleDashboardScreen = ({
               getKey={(event) => event.id!}
               items={eventItems}
               key={selectedCalendarId}
+              selectedKey={selectedEventId}
               renderItem={(event) => (
                 <Choice
                   label={event.summary?.trim() || event.id!}

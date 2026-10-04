@@ -24,6 +24,7 @@ export const GoogleCalendarAccessFormFieldset = ({
         getKey={(calendar) => calendar.id!}
         items={calendarItems}
         key={paginationKey}
+        selectedKey={onSelect ? selectedCalendarId : undefined}
         renderItem={(calendar) =>
           calendar.id && onSelect ? (
             <label>

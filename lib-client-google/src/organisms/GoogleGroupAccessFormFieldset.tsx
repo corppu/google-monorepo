@@ -34,6 +34,9 @@ export const GoogleGroupAccessFormFieldset = ({
         ariaLabel="Google groups"
         getKey={(group) => group.id}
         items={items}
+        selectedKey={
+          onSelect ? selectedGroupEmail || 'all-calendars' : undefined
+        }
         renderItem={(group) =>
           onSelect ? (
             <label>
