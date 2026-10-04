@@ -3,12 +3,16 @@ import { GoogleCalendarService } from '@gm/lib-rest-google';
 import type { GoogleHandlerContext } from './context';
 
 export const listCalendarsHandler =
-  (ctx: GoogleHandlerContext) => async (_req: Request, res: Response) => {
+  (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {
     try {
+      const groupEmail =
+        typeof req.query.groupEmail === 'string'
+          ? req.query.groupEmail
+          : undefined;
       res.json(
         await new GoogleCalendarService(
           ctx.auth.authorizedClient((res.locals as any).sid),
-        ).list(),
+        ).list(groupEmail),
       );
     } catch (e) {
       res.status(502).json({ error: (e as Error).message });

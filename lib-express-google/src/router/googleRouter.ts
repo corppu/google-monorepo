@@ -11,7 +11,10 @@ import {
 } from '../handlers/nativeHandlers';
 import { callbackHandler } from '../handlers/callbackHandler';
 import { listCalendarsHandler } from '../handlers/calendarHandlers';
-import { listEventsHandler } from '../handlers/eventHandlers';
+import {
+  listEventsHandler,
+  updateEventHandler,
+} from '../handlers/eventHandlers';
 import { listGroupsHandler } from '../handlers/groupHandlers';
 import { userinfoHandler } from '../handlers/userinfoHandlers';
 
@@ -33,6 +36,7 @@ export function createGoogleRouter(ctx: GoogleHandlerContext): Router {
   );
   router.get('/google/calendars', authed, listCalendarsHandler(ctx));
   router.get('/google/events', authed, listEventsHandler(ctx));
+  router.patch('/google/events/:eventId', authed, updateEventHandler(ctx));
   router.get('/google/groups', authed, listGroupsHandler(ctx));
   router.get('/google/userinfo', authed, userinfoHandler(ctx));
   return router;

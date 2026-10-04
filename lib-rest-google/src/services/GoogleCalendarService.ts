@@ -13,9 +13,9 @@ export class GoogleCalendarService {
   constructor(auth: Auth.OAuth2Client) {
     this.repo = new GoogleCalendarRepository(auth);
   }
-  async list(): Promise<CalendarList> {
+  async list(groupEmail?: string): Promise<CalendarList> {
     const list = unwrapValidationResult(
-      GoogleCalendarListValidator(await this.repo.list()),
+      GoogleCalendarListValidator(await this.repo.list(groupEmail)),
     );
     return { items: list.items.filter(GoogleCalendarListEntryFilter) };
   }

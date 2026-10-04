@@ -17,4 +17,15 @@ export class GoogleEventService {
       .map((input) => unwrapValidationResult(GoogleEventValidator(input)))
       .filter(GoogleEventFilter);
   }
+  async update(
+    calendarId: string,
+    eventId: string,
+    changes: Pick<Event, 'description' | 'summary'>,
+  ): Promise<Event> {
+    return unwrapValidationResult(
+      GoogleEventValidator(
+        await this.repo.update(calendarId, eventId, changes),
+      ),
+    );
+  }
 }

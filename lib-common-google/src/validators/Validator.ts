@@ -264,7 +264,7 @@ export const ArrayValidator =
     const output: T[] = [];
     const children: ValidationError[] = [];
 
-    fieldValue.forEach((item, index) => {
+    fieldValue.forEach((item, _index) => {
       const res = itemValidator(item);
       if (res.error) {
         children.push(res.error);

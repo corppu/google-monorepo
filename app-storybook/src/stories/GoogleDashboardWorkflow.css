@@ -1,0 +1,26 @@
+.workflow-comparison {
+  box-sizing: border-box;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 24px;
+}
+
+.workflow-platform {
+  min-width: 0;
+}
+
+.workflow-platform > h2 {
+  color: #20272c;
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+
+@media (max-width: 760px) {
+  .workflow-comparison {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+}

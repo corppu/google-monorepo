@@ -1,15 +1,14 @@
 import type { Userinfo } from '@gm/lib-common-google';
-import { GenericForm } from '@gm/lib-client-common';
 
-export const GoogleUserinfoAccessForm = ({
+export const GoogleUserinfoAccessFormFieldset = ({
   userinfo,
 }: {
   userinfo?: Userinfo;
 }) => (
-  <GenericForm>
-    <h2>Userinfo</h2>
+  <fieldset>
+    <legend>Userinfo</legend>
     <p>
       {userinfo?.name} {userinfo?.email}
     </p>
-  </GenericForm>
+  </fieldset>
 );

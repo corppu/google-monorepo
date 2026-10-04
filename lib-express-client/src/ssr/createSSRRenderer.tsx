@@ -6,11 +6,11 @@ import {
   PageTemplate,
 } from '@gm/lib-client-common';
 import {
-  GoogleCalendarAccessForm,
-  GoogleEventAccessForm,
-  GoogleGroupAccessForm,
+  GoogleCalendarAccessFormFieldset,
+  GoogleEventAccessFormFieldset,
+  GoogleGroupAccessFormFieldset,
   GoogleRouter,
-  GoogleUserinfoAccessForm,
+  GoogleUserinfoAccessFormFieldset,
 } from '@gm/lib-client-google';
 import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
 import type {
@@ -70,12 +70,12 @@ export function createSSRRenderer() {
     const pages = {
       dashboard: page(
         'Dashboard',
-        <>
-          <GoogleUserinfoAccessForm userinfo={data.userinfo} />
-          <GoogleCalendarAccessForm calendars={data.calendars} />
-          <GoogleEventAccessForm events={data.events} />
-          <GoogleGroupAccessForm groups={data.groups} />
-        </>,
+        <GenericForm>
+          <GoogleUserinfoAccessFormFieldset userinfo={data.userinfo} />
+          <GoogleCalendarAccessFormFieldset calendars={data.calendars} />
+          <GoogleEventAccessFormFieldset events={data.events} />
+          <GoogleGroupAccessFormFieldset groups={data.groups} />
+        </GenericForm>,
       ),
       landing: page(
         'Sign in with Google',

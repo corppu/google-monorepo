@@ -35,6 +35,16 @@ export const GOOGLE_SCOPES: GoogleScope[] = [
     locked: false,
   },
   {
+    id: 'https://www.googleapis.com/auth/calendar.acls.readonly',
+    label: 'Calendar access lists',
+    locked: false,
+  },
+  {
+    id: 'https://www.googleapis.com/auth/calendar.events',
+    label: 'Edit calendar events',
+    locked: false,
+  },
+  {
     id: 'https://www.googleapis.com/auth/admin.directory.group.readonly',
     label: 'Groups',
     locked: false,

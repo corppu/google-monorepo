@@ -1,7 +1,7 @@
 import { GoogleRouter } from '@gm/lib-native-google';
-import { GoogleLandingScreen } from './routes/GoogleLandingScreen';
-import { GoogleScopesScreen } from './routes/GoogleScopesScreen';
-import { DashboardScreen } from './routes/DashboardScreen';
+import { GoogleLandingScreen } from './pages/GoogleLandingScreen';
+import { GoogleScopesScreen } from './pages/GoogleScopesScreen';
+import { DashboardScreen } from './pages/DashboardScreen';
 
 export default function App() {
   return (

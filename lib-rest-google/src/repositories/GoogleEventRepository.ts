@@ -1,5 +1,6 @@
 import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
+import type { Event } from '@gm/lib-common-google';
 
 export class GoogleEventRepository {
   constructor(private auth: Auth.OAuth2Client) {}
@@ -8,5 +9,15 @@ export class GoogleEventRepository {
       .calendar({ auth: this.auth, version: 'v3' })
       .events.list({ calendarId, singleEvents: true });
     return res.data.items ?? [];
+  }
+  async update(
+    calendarId: string,
+    eventId: string,
+    changes: Pick<Event, 'description' | 'summary'>,
+  ): Promise<Record<string, any>> {
+    const res = await google
+      .calendar({ auth: this.auth, version: 'v3' })
+      .events.patch({ calendarId, eventId, requestBody: changes });
+    return res.data;
   }
 }
