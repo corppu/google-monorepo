@@ -1,3 +1,6 @@
+import { createContext, createElement, useContext } from 'react';
+import type { ReactNode } from 'react';
+
 export const theme = {
   colors: {
     border: '#9eafb8',
@@ -43,3 +46,46 @@ export const theme = {
     labelWeight: '500',
   },
 } as const;
+
+export type ThemeMode = 'light' | 'dark';
+export type Theme = Omit<typeof theme, 'colors'> & {
+  colors: { [Color in keyof typeof theme.colors]: string };
+};
+
+export const darkTheme: Theme = {
+  ...theme,
+  colors: {
+    ...theme.colors,
+    border: '#526169',
+    borderSubtle: '#39464c',
+    error: '#ff8a80',
+    errorBorder: '#ff7f73',
+    errorSurface: '#3b2425',
+    ink: '#f1f4f5',
+    mutedInk: '#b0bdc2',
+    pressedSurface: '#37454b',
+    scopeThumb: '#d6e0e3',
+    scopeTrack: '#66767c',
+    scopeTrackActive: '#769ba5',
+    selected: '#8ccbd5',
+    subtleSurface: '#2c383d',
+    surface: '#1b2529',
+  },
+};
+
+const ThemeContext = createContext<Theme>(theme);
+
+export const ThemeProvider = ({
+  children,
+  mode,
+}: {
+  children: ReactNode;
+  mode: ThemeMode;
+}) =>
+  createElement(
+    ThemeContext.Provider,
+    { value: mode === 'dark' ? darkTheme : theme },
+    children,
+  );
+
+export const useTheme = () => useContext(ThemeContext);

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { ReactNode } from 'react';
-import { theme } from '@gm/lib-client-theme';
+import { useTheme } from '@gm/lib-client-theme';
 
 export interface ChunkedListProps<T> {
   accessibilityLabel: string;
@@ -12,36 +12,6 @@ export interface ChunkedListProps<T> {
   selectedKey?: string;
 }
 
-const styles = StyleSheet.create({
-  list: {
-    gap: theme.spacing.field,
-  },
-  pageButton: {
-    borderColor: theme.colors.border,
-    borderRadius: theme.radius.control,
-    borderWidth: 1,
-    paddingHorizontal: theme.spacing.buttonHorizontal,
-    paddingVertical: theme.spacing.buttonVertical,
-  },
-  pageButtonDisabled: {
-    opacity: 0.45,
-  },
-  pageButtonText: {
-    color: theme.colors.ink,
-    fontSize: theme.typography.label,
-  },
-  pagination: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 12,
-    justifyContent: 'space-between',
-  },
-  range: {
-    color: theme.colors.mutedInk,
-    fontSize: theme.typography.label,
-  },
-});
-
 export const ChunkedList = <T,>({
   accessibilityLabel,
   chunkSize = 50,
@@ -50,6 +20,41 @@ export const ChunkedList = <T,>({
   renderItem,
   selectedKey,
 }: ChunkedListProps<T>) => {
+  const theme = useTheme();
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        list: {
+          gap: theme.spacing.field,
+        },
+        pageButton: {
+          backgroundColor: theme.colors.subtleSurface,
+          borderColor: theme.colors.border,
+          borderRadius: theme.radius.control,
+          borderWidth: 1,
+          paddingHorizontal: theme.spacing.buttonHorizontal,
+          paddingVertical: theme.spacing.buttonVertical,
+        },
+        pageButtonDisabled: {
+          opacity: 0.45,
+        },
+        pageButtonText: {
+          color: theme.colors.ink,
+          fontSize: theme.typography.label,
+        },
+        pagination: {
+          alignItems: 'center',
+          flexDirection: 'row',
+          gap: 12,
+          justifyContent: 'space-between',
+        },
+        range: {
+          color: theme.colors.mutedInk,
+          fontSize: theme.typography.label,
+        },
+      }),
+    [theme],
+  );
   const pageCount = Math.max(1, Math.ceil(items.length / chunkSize));
   const selectedIndex = selectedKey
     ? items.findIndex((item) => getKey(item) === selectedKey)

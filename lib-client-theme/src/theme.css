@@ -33,3 +33,21 @@
   --gm-line-label: 18px;
   --gm-font-label-weight: 500;
 }
+
+[data-gm-theme='dark'] {
+  color-scheme: dark;
+  --gm-color-border: #526169;
+  --gm-color-border-subtle: #39464c;
+  --gm-color-error: #ff8a80;
+  --gm-color-error-border: #ff7f73;
+  --gm-color-error-surface: #3b2425;
+  --gm-color-ink: #f1f4f5;
+  --gm-color-muted-ink: #b0bdc2;
+  --gm-color-pressed-surface: #37454b;
+  --gm-color-scope-thumb: #d6e0e3;
+  --gm-color-scope-track: #66767c;
+  --gm-color-scope-track-active: #769ba5;
+  --gm-color-selected: #8ccbd5;
+  --gm-color-subtle-surface: #2c383d;
+  --gm-color-surface: #1b2529;
+}

@@ -44,8 +44,8 @@
 .gm-google-access-fieldset
   .gm-client-chunked-list__items
   > li:has(input:checked) {
-  background: #e5f1f4;
-  border-color: #236b7c;
+  background: var(--gm-color-pressed-surface);
+  border-color: var(--gm-color-selected);
 }
 
 .gm-google-access-fieldset .gm-client-chunked-list__items > li label {

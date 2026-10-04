@@ -1,37 +1,8 @@
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { TextInputProps } from 'react-native';
-import { theme } from '@gm/lib-client-theme';
+import { useTheme } from '@gm/lib-client-theme';
 import { Input } from '../atoms/Input';
-
-const styles = StyleSheet.create({
-  error: {
-    backgroundColor: theme.colors.errorSurface,
-    borderLeftColor: theme.colors.errorBorder,
-    borderLeftWidth: 3,
-    borderRadius: 4,
-    color: theme.colors.error,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  field: {
-    gap: theme.spacing.field,
-  },
-  hint: {
-    color: theme.colors.mutedInk,
-    fontSize: theme.typography.label,
-  },
-  invalidInput: {
-    backgroundColor: theme.colors.errorSurface,
-    borderColor: theme.colors.errorBorder,
-  },
-  label: {
-    color: theme.colors.ink,
-    fontSize: theme.typography.label,
-    fontWeight: theme.typography.labelWeight,
-    lineHeight: theme.typography.labelLineHeight,
-  },
-});
 
 export const Field = ({
   error,
@@ -39,6 +10,39 @@ export const Field = ({
   label,
   ...input
 }: { error?: string; hint?: string; label: string } & TextInputProps) => {
+  const theme = useTheme();
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        error: {
+          backgroundColor: theme.colors.errorSurface,
+          borderLeftColor: theme.colors.errorBorder,
+          borderLeftWidth: 3,
+          borderRadius: 4,
+          color: theme.colors.error,
+          paddingHorizontal: 12,
+          paddingVertical: 8,
+        },
+        field: {
+          gap: theme.spacing.field,
+        },
+        hint: {
+          color: theme.colors.mutedInk,
+          fontSize: theme.typography.label,
+        },
+        invalidInput: {
+          backgroundColor: theme.colors.errorSurface,
+          borderColor: theme.colors.errorBorder,
+        },
+        label: {
+          color: theme.colors.ink,
+          fontSize: theme.typography.label,
+          fontWeight: theme.typography.labelWeight,
+          lineHeight: theme.typography.labelLineHeight,
+        },
+      }),
+    [theme],
+  );
   const generatedId = useId();
   const fieldId = input.nativeID ?? generatedId;
   const hintId = `${fieldId}-hint`;

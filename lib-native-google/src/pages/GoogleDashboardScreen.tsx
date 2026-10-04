@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type {
   CalendarList,
@@ -13,6 +13,7 @@ import {
   GenericForm,
   ScreenTemplate,
 } from '@gm/lib-native-common';
+import { useTheme } from '@gm/lib-client-theme';
 
 type GoogleEventChanges = Pick<Event, 'description' | 'summary'>;
 
@@ -31,69 +32,76 @@ export interface GoogleDashboardScreenProps {
   userinfo?: Userinfo;
 }
 
-const styles = StyleSheet.create({
-  choice: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8eb',
-    borderRadius: 6,
-    borderWidth: 1,
-    flexDirection: 'row',
-    gap: 8,
-    minHeight: 40,
-    paddingHorizontal: 8,
-  },
-  choiceLabel: {
-    color: '#20272c',
-    flex: 1,
-    fontSize: 14,
-  },
-  choiceSelected: {
-    backgroundColor: '#e5f1f4',
-    borderColor: '#236b7c',
-  },
-  section: {
-    backgroundColor: '#ffffff',
-    borderColor: '#9eafb8',
-    borderRadius: 6,
-    borderWidth: 1,
-    gap: 8,
-    padding: 12,
-    paddingTop: 24,
-    position: 'relative',
-  },
-  sectionInvalid: {
-    borderColor: '#d92d20',
-  },
-  sectionTitle: {
-    backgroundColor: '#ffffff',
-    color: '#20272c',
-    fontSize: 16,
-    fontWeight: '600',
-    left: 8,
-    paddingHorizontal: 4,
-    position: 'absolute',
-    top: -9,
-  },
-  selectionIndicator: {
-    alignItems: 'center',
-    borderColor: '#9eafb8',
-    borderRadius: 9,
-    borderWidth: 1,
-    height: 18,
-    justifyContent: 'center',
-    width: 18,
-  },
-  selectionIndicatorDot: {
-    backgroundColor: '#356a79',
-    borderRadius: 5,
-    height: 10,
-    width: 10,
-  },
-  selectionIndicatorSelected: {
-    borderColor: '#356a79',
-  },
-});
+const useDashboardStyles = () => {
+  const theme = useTheme();
+  return useMemo(
+    () =>
+      StyleSheet.create({
+        choice: {
+          alignItems: 'center',
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.borderSubtle,
+          borderRadius: theme.radius.control,
+          borderWidth: 1,
+          flexDirection: 'row',
+          gap: 8,
+          minHeight: theme.sizes.control,
+          paddingHorizontal: 8,
+        },
+        choiceLabel: {
+          color: theme.colors.ink,
+          flex: 1,
+          fontSize: theme.typography.body,
+        },
+        choiceSelected: {
+          backgroundColor: theme.colors.pressedSurface,
+          borderColor: theme.colors.selected,
+        },
+        section: {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.border,
+          borderRadius: theme.radius.control,
+          borderWidth: 1,
+          gap: 8,
+          padding: 12,
+          paddingTop: 24,
+          position: 'relative',
+        },
+        sectionInvalid: {
+          borderColor: theme.colors.errorBorder,
+        },
+        sectionTitle: {
+          backgroundColor: theme.colors.surface,
+          color: theme.colors.ink,
+          fontSize: 16,
+          fontWeight: theme.typography.headingWeight,
+          left: 8,
+          paddingHorizontal: 4,
+          position: 'absolute',
+          top: -9,
+        },
+        selectionIndicator: {
+          alignItems: 'center',
+          borderColor: theme.colors.border,
+          borderRadius: 9,
+          borderWidth: 1,
+          height: theme.sizes.checkbox,
+          justifyContent: 'center',
+          width: theme.sizes.checkbox,
+        },
+        selectionIndicatorDot: {
+          backgroundColor: theme.colors.selected,
+          borderRadius: 5,
+          height: 10,
+          width: 10,
+        },
+        selectionIndicatorSelected: {
+          borderColor: theme.colors.selected,
+        },
+      }),
+    [theme],
+  );
+};
 
 export const GoogleDashboardScreen = ({
   calendars,
@@ -204,11 +212,29 @@ const Section = ({
   invalid?: boolean;
   title: string;
 }) => (
-  <View style={[styles.section, invalid && styles.sectionInvalid]}>
-    <Text style={styles.sectionTitle}>{title}</Text>
+  <ThemedSection invalid={invalid} title={title}>
     {children}
-  </View>
+  </ThemedSection>
 );
+
+const ThemedSection = ({
+  children,
+  invalid,
+  title,
+}: {
+  children: React.ReactNode;
+  invalid: boolean;
+  title: string;
+}) => {
+  const styles = useDashboardStyles();
+
+  return (
+    <View style={[styles.section, invalid && styles.sectionInvalid]}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      {children}
+    </View>
+  );
+};
 
 const Choice = ({
   label,
@@ -218,26 +244,40 @@ const Choice = ({
   label: string;
   onPress: () => void;
   selected: boolean;
-}) => (
-  <Pressable
-    aria-checked={selected}
-    accessibilityLabel={label}
-    accessibilityRole="radio"
-    accessibilityState={{ checked: selected }}
-    onPress={onPress}
-    style={[styles.choice, selected && styles.choiceSelected]}
-  >
-    <View
-      style={[
-        styles.selectionIndicator,
-        selected && styles.selectionIndicatorSelected,
-      ]}
+}) => <ThemedChoice label={label} onPress={onPress} selected={selected} />;
+
+const ThemedChoice = ({
+  label,
+  onPress,
+  selected,
+}: {
+  label: string;
+  onPress: () => void;
+  selected: boolean;
+}) => {
+  const styles = useDashboardStyles();
+
+  return (
+    <Pressable
+      aria-checked={selected}
+      accessibilityLabel={label}
+      accessibilityRole="radio"
+      accessibilityState={{ checked: selected }}
+      onPress={onPress}
+      style={[styles.choice, selected && styles.choiceSelected]}
     >
-      {selected && <View style={styles.selectionIndicatorDot} />}
-    </View>
-    <Text style={styles.choiceLabel}>{label}</Text>
-  </Pressable>
-);
+      <View
+        style={[
+          styles.selectionIndicator,
+          selected && styles.selectionIndicatorSelected,
+        ]}
+      >
+        {selected && <View style={styles.selectionIndicatorDot} />}
+      </View>
+      <Text style={styles.choiceLabel}>{label}</Text>
+    </Pressable>
+  );
+};
 
 const EventEditor = ({
   event,
