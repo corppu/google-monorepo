@@ -2,6 +2,9 @@ export const theme = {
   colors: {
     border: '#9eafb8',
     borderSubtle: '#e2e8eb',
+    error: '#b42318',
+    errorBorder: '#d92d20',
+    errorSurface: '#fef3f2',
     ink: '#20272c',
     mutedInk: '#52616b',
     pressedSurface: '#dfe9ed',

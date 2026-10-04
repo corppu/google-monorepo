@@ -32,6 +32,7 @@ export const Button = ({
   title: string;
 }) => (
   <Pressable
+    accessibilityRole="button"
     onPress={onPress}
     style={({ pressed }) => [styles.button, pressed && styles.pressed]}
   >

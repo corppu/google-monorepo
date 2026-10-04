@@ -1,6 +1,9 @@
 :root {
   --gm-color-border: #9eafb8;
   --gm-color-border-subtle: #e2e8eb;
+  --gm-color-error: #b42318;
+  --gm-color-error-border: #d92d20;
+  --gm-color-error-surface: #fef3f2;
   --gm-color-ink: #20272c;
   --gm-color-muted-ink: #52616b;
   --gm-color-pressed-surface: #dfe9ed;

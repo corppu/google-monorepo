@@ -3,6 +3,7 @@ export * from './atoms/Button';
 export * from './atoms/Input';
 export * from './atoms/Heading';
 export * from './molecules/Field';
+export * from './molecules/ChunkedList';
 export * from './organisms/GenericForm';
 export * from './templates/PageTemplate';
 export * from './molecules/GenericScopeArticle';

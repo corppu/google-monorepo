@@ -7,6 +7,7 @@
   box-sizing: border-box;
   color: var(--gm-color-ink);
   cursor: pointer;
+  font-family: inherit;
   font-size: var(--gm-font-body);
   font-weight: var(--gm-font-button-weight);
   line-height: calc(var(--gm-font-body) * 1.4);

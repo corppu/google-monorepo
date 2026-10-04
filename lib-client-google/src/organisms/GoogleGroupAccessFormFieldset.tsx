@@ -1,4 +1,6 @@
 import type { Group } from '@gm/lib-common-google';
+import { ChunkedList } from '@gm/lib-client-common';
+import './GoogleAccessFormFieldset.css';
 
 export const GoogleGroupAccessFormFieldset = ({
   groups,
@@ -8,46 +10,47 @@ export const GoogleGroupAccessFormFieldset = ({
   groups?: Group[];
   onSelect?: (groupEmail: string) => void;
   selectedGroupEmail?: string;
-}) => (
-  <fieldset>
-    <legend>Google group</legend>
-    {onSelect ? (
-      <ul>
-        <li>
-          <label>
-            <input
-              type="radio"
-              name="google-group"
-              value=""
-              checked={!selectedGroupEmail}
-              onChange={() => onSelect('')}
-            />
-            All calendars
-          </label>
-        </li>
-        {groups?.map((group) =>
-          group.email ? (
-            <li key={group.id ?? group.email}>
-              <label>
-                <input
-                  type="radio"
-                  name="google-group"
-                  value={group.email}
-                  checked={selectedGroupEmail === group.email}
-                  onChange={() => onSelect(group.email!)}
-                />
-                {group.name ?? group.email}
-              </label>
-            </li>
-          ) : null,
-        )}
-      </ul>
-    ) : (
-      <ul>
-        {groups?.map((group) => (
-          <li key={group.id ?? group.email}>{group.name ?? group.email}</li>
-        ))}
-      </ul>
-    )}
-  </fieldset>
-);
+}) => {
+  const groupItems = (groups ?? [])
+    .filter((group) => group.email)
+    .map((group) => ({
+      email: group.email!,
+      id: group.id ?? group.email!,
+      label: group.name ?? group.email!,
+    }));
+  const items = onSelect
+    ? [
+        { email: '', id: 'all-calendars', label: 'All calendars' },
+        ...groupItems,
+      ]
+    : groupItems;
+
+  return (
+    <fieldset className="gm-google-access-fieldset">
+      <legend className="gm-google-access-fieldset__legend">
+        Google group
+      </legend>
+      <ChunkedList
+        ariaLabel="Google groups"
+        getKey={(group) => group.id}
+        items={items}
+        renderItem={(group) =>
+          onSelect ? (
+            <label>
+              <input
+                type="radio"
+                name="google-group"
+                value={group.email}
+                checked={selectedGroupEmail === group.email}
+                onChange={() => onSelect(group.email)}
+              />
+              {group.label}
+            </label>
+          ) : (
+            group.label
+          )
+        }
+      />
+    </fieldset>
+  );
+};

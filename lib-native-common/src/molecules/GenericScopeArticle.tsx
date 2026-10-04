@@ -36,6 +36,7 @@ export const GenericScopeArticle = ({
       {scope.locked ? ' (required)' : ''}
     </Text>
     <Switch
+      accessibilityLabel={`${scope.label}${scope.locked ? ' (required)' : ''}`}
       value={checked || scope.locked}
       disabled={scope.locked}
       thumbColor={checked ? theme.colors.selected : theme.colors.scopeThumb}

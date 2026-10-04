@@ -8,6 +8,7 @@ import type {
 } from '@gm/lib-common-google';
 import {
   Button,
+  ChunkedList,
   Field,
   GenericForm,
   ScreenTemplate,
@@ -18,6 +19,7 @@ type GoogleEventChanges = Pick<Event, 'description' | 'summary'>;
 export interface GoogleDashboardScreenProps {
   calendars?: CalendarList;
   events?: Event[];
+  fieldIdPrefix?: string;
   groups?: Group[];
   onCalendarSelect: (calendarId: string) => void;
   onEventSelect: (eventId: string) => void;
@@ -60,6 +62,9 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     position: 'relative',
   },
+  sectionInvalid: {
+    borderColor: '#d92d20',
+  },
   sectionTitle: {
     backgroundColor: '#ffffff',
     color: '#20272c',
@@ -93,6 +98,7 @@ const styles = StyleSheet.create({
 export const GoogleDashboardScreen = ({
   calendars,
   events,
+  fieldIdPrefix = 'event',
   groups,
   onCalendarSelect,
   onEventSelect,
@@ -104,6 +110,19 @@ export const GoogleDashboardScreen = ({
   userinfo,
 }: GoogleDashboardScreenProps) => {
   const selectedEvent = events?.find((event) => event.id === selectedEventId);
+  const groupItems = [
+    { email: '', id: 'all-calendars', label: 'All calendars' },
+    ...(groups ?? [])
+      .filter((group) => group.email)
+      .map((group) => ({
+        email: group.email!,
+        id: group.id ?? group.email!,
+        label: group.name ?? group.email!,
+      })),
+  ];
+  const calendarItems =
+    calendars?.items.filter((calendar) => calendar.id) ?? [];
+  const eventItems = events?.filter((event) => event.id) ?? [];
 
   return (
     <ScreenTemplate title="Dashboard">
@@ -115,52 +134,56 @@ export const GoogleDashboardScreen = ({
           <Text>{userinfo?.email}</Text>
         </Section>
         <Section title="Google group">
-          <Choice
-            label="All calendars"
-            selected={!selectedGroupEmail}
-            onPress={() => onGroupSelect('')}
-          />
-          {groups?.map((group) =>
-            group.email ? (
+          <ChunkedList
+            accessibilityLabel="Google groups"
+            getKey={(group) => group.id}
+            items={groupItems}
+            renderItem={(group) => (
               <Choice
-                key={group.id ?? group.email}
-                label={group.name ?? group.email}
+                label={group.label}
                 selected={selectedGroupEmail === group.email}
-                onPress={() => onGroupSelect(group.email!)}
+                onPress={() => onGroupSelect(group.email)}
               />
-            ) : null,
-          )}
+            )}
+          />
         </Section>
         <Section title="Calendars">
-          {calendars?.items.map((calendar) =>
-            calendar.id ? (
+          <ChunkedList
+            accessibilityLabel="Calendars"
+            getKey={(calendar) => calendar.id!}
+            items={calendarItems}
+            key={selectedGroupEmail}
+            renderItem={(calendar) => (
               <Choice
-                key={calendar.id}
-                label={calendar.summary ?? calendar.id}
+                label={calendar.summary ?? calendar.id!}
                 selected={selectedCalendarId === calendar.id}
                 onPress={() => onCalendarSelect(calendar.id!)}
               />
-            ) : null,
-          )}
+            )}
+          />
         </Section>
         {selectedCalendarId && (
           <Section title="Events">
-            {events?.map((event) =>
-              event.id ? (
+            <ChunkedList
+              accessibilityLabel="Events"
+              getKey={(event) => event.id!}
+              items={eventItems}
+              key={selectedCalendarId}
+              renderItem={(event) => (
                 <Choice
-                  key={event.id}
-                  label={event.summary ?? event.id}
+                  label={event.summary?.trim() || event.id!}
                   selected={selectedEventId === event.id}
                   onPress={() => onEventSelect(event.id!)}
                 />
-              ) : null,
-            )}
+              )}
+            />
           </Section>
         )}
         {selectedEvent && (
           <EventEditor
             key={selectedEvent.id}
             event={selectedEvent}
+            idPrefix={fieldIdPrefix}
             onUpdate={onUpdateEvent}
           />
         )}
@@ -171,12 +194,14 @@ export const GoogleDashboardScreen = ({
 
 const Section = ({
   children,
+  invalid = false,
   title,
 }: {
   children: React.ReactNode;
+  invalid?: boolean;
   title: string;
 }) => (
-  <View style={styles.section}>
+  <View style={[styles.section, invalid && styles.sectionInvalid]}>
     <Text style={styles.sectionTitle}>{title}</Text>
     {children}
   </View>
@@ -192,6 +217,8 @@ const Choice = ({
   selected: boolean;
 }) => (
   <Pressable
+    aria-checked={selected}
+    accessibilityLabel={label}
     accessibilityRole="radio"
     accessibilityState={{ checked: selected }}
     onPress={onPress}
@@ -211,16 +238,26 @@ const Choice = ({
 
 const EventEditor = ({
   event,
+  idPrefix,
   onUpdate,
 }: {
   event: Event;
+  idPrefix: string;
   onUpdate: (changes: GoogleEventChanges) => Promise<void>;
 }) => {
   const [summary, setSummary] = useState(event.summary ?? '');
   const [description, setDescription] = useState(event.description ?? '');
   const [message, setMessage] = useState('');
+  const [titleError, setTitleError] = useState('');
 
   const save = async () => {
+    if (!summary.trim()) {
+      setTitleError('Event title is required.');
+      setMessage('');
+      return;
+    }
+
+    setTitleError('');
     try {
       await onUpdate({ description, summary });
       setMessage('Event updated.');
@@ -230,11 +267,23 @@ const EventEditor = ({
   };
 
   return (
-    <Section title="Update event">
-      <Field label="Event title" onChangeText={setSummary} value={summary} />
+    <Section invalid={Boolean(titleError)} title="Update event">
       <Field
+        error={titleError || undefined}
+        hint="Required field"
+        nativeID={`${idPrefix}-summary-input`}
+        label="Event title"
+        onChangeText={(value) => {
+          setSummary(value);
+          if (value.trim()) setTitleError('');
+        }}
+        value={summary}
+      />
+      <Field
+        hint="Optional"
         label="Description"
         multiline
+        nativeID={`${idPrefix}-description-textarea`}
         onChangeText={setDescription}
         style={{ minHeight: 80, textAlignVertical: 'top' }}
         value={description}

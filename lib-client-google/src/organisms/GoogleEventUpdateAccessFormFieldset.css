@@ -1,0 +1,9 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-event-update-fieldset--invalid {
+  border-color: var(--gm-color-error-border);
+}
+
+.gm-client-event-update-description textarea {
+  min-height: 80px;
+}

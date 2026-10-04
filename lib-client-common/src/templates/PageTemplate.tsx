@@ -3,14 +3,16 @@ import { Heading } from '../atoms/Heading';
 import './PageTemplate.css';
 
 export const PageTemplate = ({
+  as: PageElement = 'main',
   children,
   title,
 }: {
+  as?: 'div' | 'main';
   children: ReactNode;
   title: string;
 }) => (
-  <main className="gm-client-page-template">
+  <PageElement className="gm-client-page-template">
     <Heading>{title}</Heading>
     {children}
-  </main>
+  </PageElement>
 );

@@ -13,3 +13,25 @@
 .gm-client-field__label {
   display: block;
 }
+
+.gm-client-field .gm-client-input[aria-invalid='true'] {
+  background-color: var(--gm-color-error-surface);
+  border-color: var(--gm-color-error-border);
+}
+
+.gm-client-field__hint {
+  color: var(--gm-color-muted-ink);
+}
+
+.gm-client-field__error {
+  background-color: var(--gm-color-error-surface);
+  border-inline-start: 3px solid var(--gm-color-error-border);
+  border-radius: 4px;
+  color: var(--gm-color-error);
+  padding: 8px 12px;
+}
+
+.gm-client-field__textarea {
+  min-height: 80px;
+  resize: vertical;
+}

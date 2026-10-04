@@ -2,6 +2,7 @@
 
 .gm-client-heading {
   color: var(--gm-color-ink);
+  font-family: inherit;
   font-size: var(--gm-font-heading);
   font-weight: var(--gm-font-heading-weight);
   line-height: var(--gm-line-heading);
