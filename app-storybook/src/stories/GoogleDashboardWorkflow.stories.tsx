@@ -391,6 +391,11 @@ export const EmptyEventTitleComparison: Story = {
   render: () => <WorkflowComparison step="invalid-title" />,
 };
 
+export const EmptyEventTitleComparisonDark: Story = {
+  globals: { colorMode: 'dark' },
+  render: () => <WorkflowComparison step="invalid-title" />,
+};
+
 const LARGE_GROUPS: Group[] = Array.from({ length: 99 }, (_, index) => {
   const number = String(index + 1).padStart(3, '0');
   return {

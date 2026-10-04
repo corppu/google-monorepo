@@ -98,6 +98,11 @@ const useDashboardStyles = () => {
         selectionIndicatorSelected: {
           borderColor: theme.colors.selected,
         },
+        userinfoText: {
+          color: theme.colors.ink,
+          fontSize: theme.typography.body,
+          lineHeight: theme.typography.body * 1.45,
+        },
       }),
     [theme],
   );
@@ -117,6 +122,7 @@ export const GoogleDashboardScreen = ({
   selectedGroupEmail,
   userinfo,
 }: GoogleDashboardScreenProps) => {
+  const styles = useDashboardStyles();
   const selectedEvent = events?.find((event) => event.id === selectedEventId);
   const groupItems = [
     { email: '', id: 'all-calendars', label: 'All calendars' },
@@ -138,8 +144,8 @@ export const GoogleDashboardScreen = ({
         style={{ alignSelf: 'center', gap: 16, maxWidth: 560, width: '100%' }}
       >
         <Section title="Userinfo">
-          <Text>{userinfo?.name}</Text>
-          <Text>{userinfo?.email}</Text>
+          <Text style={styles.userinfoText}>{userinfo?.name}</Text>
+          <Text style={styles.userinfoText}>{userinfo?.email}</Text>
         </Section>
         <Section title="Google group">
           <ChunkedList

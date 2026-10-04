@@ -13,7 +13,7 @@
 }
 
 .workflow-platform > h2 {
-  color: #20272c;
+  color: var(--gm-color-ink);
   font-size: 20px;
   margin: 0 0 12px;
 }
