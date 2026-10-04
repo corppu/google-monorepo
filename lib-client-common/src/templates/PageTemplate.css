@@ -1,0 +1,7 @@
+.gm-client-page-template {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}

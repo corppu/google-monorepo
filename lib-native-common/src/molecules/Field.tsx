@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     color: theme.colors.ink,
     fontSize: theme.typography.label,
     fontWeight: theme.typography.labelWeight,
+    lineHeight: theme.typography.labelLineHeight,
   },
 });
 

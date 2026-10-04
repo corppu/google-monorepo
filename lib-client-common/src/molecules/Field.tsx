@@ -1,23 +1,15 @@
 import type { InputHTMLAttributes } from 'react';
-import type { CSSProperties } from 'react';
-import { theme } from '@gm/lib-client-theme';
 import { Input } from '../atoms/Input';
+import './Field.css';
 
-const fieldStyle: CSSProperties = {
-  color: theme.colors.ink,
-  display: 'flex',
-  flexDirection: 'column',
-  fontSize: theme.typography.label,
-  fontWeight: theme.typography.labelWeight,
-  gap: theme.spacing.field,
-};
+type FieldProps = {
+  className?: string;
+  label: string;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'style'>;
 
-export const Field = ({
-  label,
-  ...input
-}: { label: string } & InputHTMLAttributes<HTMLInputElement>) => (
-  <label style={fieldStyle}>
-    <span>{label}</span>
+export const Field = ({ className, label, ...input }: FieldProps) => (
+  <label className={['gm-client-field', className].filter(Boolean).join(' ')}>
+    <span className="gm-client-field__label">{label}</span>
     <Input {...input} />
   </label>
 );

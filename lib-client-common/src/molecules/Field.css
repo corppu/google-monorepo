@@ -1,0 +1,15 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-field {
+  color: var(--gm-color-ink);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--gm-font-label);
+  font-weight: var(--gm-font-label-weight);
+  gap: var(--gm-space-field);
+  line-height: var(--gm-line-label);
+}
+
+.gm-client-field__label {
+  display: block;
+}

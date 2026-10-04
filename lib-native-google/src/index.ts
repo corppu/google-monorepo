@@ -2,6 +2,7 @@ export * from './organisms/GoogleCalendarAccessForm';
 export * from './organisms/GoogleEventAccessForm';
 export * from './organisms/GoogleGroupAccessForm';
 export * from './organisms/GoogleUserinfoAccessForm';
+export * from './pages/GoogleDashboardScreen';
 export * from './hooks/useApi';
 export * from './hooks/useGoogleCalendars';
 export * from './hooks/useGoogleEvents';

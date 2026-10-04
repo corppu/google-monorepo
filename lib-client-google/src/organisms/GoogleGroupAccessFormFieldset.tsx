@@ -12,22 +12,36 @@ export const GoogleGroupAccessFormFieldset = ({
   <fieldset>
     <legend>Google group</legend>
     {onSelect ? (
-      <label>
-        Group
-        <select
-          value={selectedGroupEmail}
-          onChange={(event) => onSelect(event.currentTarget.value)}
-        >
-          <option value="">All calendars</option>
-          {groups?.map((group) =>
-            group.email ? (
-              <option key={group.id ?? group.email} value={group.email}>
+      <ul>
+        <li>
+          <label>
+            <input
+              type="radio"
+              name="google-group"
+              value=""
+              checked={!selectedGroupEmail}
+              onChange={() => onSelect('')}
+            />
+            All calendars
+          </label>
+        </li>
+        {groups?.map((group) =>
+          group.email ? (
+            <li key={group.id ?? group.email}>
+              <label>
+                <input
+                  type="radio"
+                  name="google-group"
+                  value={group.email}
+                  checked={selectedGroupEmail === group.email}
+                  onChange={() => onSelect(group.email!)}
+                />
                 {group.name ?? group.email}
-              </option>
-            ) : null,
-          )}
-        </select>
-      </label>
+              </label>
+            </li>
+          ) : null,
+        )}
+      </ul>
     ) : (
       <ul>
         {groups?.map((group) => (

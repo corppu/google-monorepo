@@ -1,0 +1,14 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-input {
+  background-color: var(--gm-color-surface);
+  border: 1px solid var(--gm-color-border);
+  border-radius: var(--gm-radius-control);
+  box-sizing: border-box;
+  color: var(--gm-color-ink);
+  font-size: var(--gm-font-body);
+  line-height: 1.45;
+  min-height: var(--gm-size-control);
+  padding: var(--gm-space-input-vertical) var(--gm-space-input-horizontal);
+  width: 100%;
+}

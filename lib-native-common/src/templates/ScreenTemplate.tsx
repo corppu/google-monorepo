@@ -1,5 +1,15 @@
 import type { ReactNode } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { theme } from '@gm/lib-client-theme';
+import { Heading } from '../atoms/Heading';
+
+const styles = StyleSheet.create({
+  content: {
+    backgroundColor: theme.colors.surface,
+    gap: 16,
+    padding: 24,
+  },
+});
 
 export const ScreenTemplate = ({
   children,
@@ -8,8 +18,8 @@ export const ScreenTemplate = ({
   children: ReactNode;
   title: string;
 }) => (
-  <ScrollView>
-    <Text>{title}</Text>
+  <ScrollView contentContainerStyle={styles.content}>
+    <Heading>{title}</Heading>
     {children}
   </ScrollView>
 );

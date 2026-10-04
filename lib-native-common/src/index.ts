@@ -1,5 +1,6 @@
 export * from './types';
 export * from './atoms/Button';
+export * from './atoms/Heading';
 export * from './atoms/Input';
 export * from './molecules/Field';
 export * from './organisms/GenericForm';

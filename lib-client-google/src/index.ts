@@ -3,6 +3,7 @@ export * from './organisms/GoogleEventAccessFormFieldset';
 export * from './organisms/GoogleEventUpdateAccessFormFieldset';
 export * from './organisms/GoogleGroupAccessFormFieldset';
 export * from './organisms/GoogleUserinfoAccessFormFieldset';
+export * from './pages/GoogleDashboardPage';
 export * from './hooks/useGoogleCalendars';
 export * from './hooks/useGoogleEvents';
 export * from './hooks/useGoogleGroups';

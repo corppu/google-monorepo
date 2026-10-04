@@ -19,6 +19,7 @@
     "@gm/lib-client-theme": "*",
     "@gm/lib-common-google": "*",
     "@gm/lib-native-common": "*",
+    "@gm/lib-native-google": "*",
     "leaflet": "latest",
     "react": "latest",
     "react-dom": "latest",

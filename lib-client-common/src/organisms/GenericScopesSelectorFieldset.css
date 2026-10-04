@@ -1,0 +1,15 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-scope-selector {
+  border: 1px solid var(--gm-color-border);
+  border-radius: var(--gm-radius-control);
+  margin: 0;
+  padding: 12px;
+}
+
+.gm-client-scope-selector__legend {
+  color: var(--gm-color-ink);
+  font-size: var(--gm-font-label);
+  font-weight: var(--gm-font-label-weight);
+  padding: 0 4px;
+}

@@ -1,0 +1,15 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-button {
+  background-color: var(--gm-color-subtle-surface);
+  border: 1px solid var(--gm-color-border);
+  border-radius: var(--gm-radius-control);
+  box-sizing: border-box;
+  color: var(--gm-color-ink);
+  cursor: pointer;
+  font-size: var(--gm-font-body);
+  font-weight: var(--gm-font-button-weight);
+  line-height: calc(var(--gm-font-body) * 1.4);
+  min-height: var(--gm-size-control);
+  padding: var(--gm-space-button-vertical) var(--gm-space-button-horizontal);
+}

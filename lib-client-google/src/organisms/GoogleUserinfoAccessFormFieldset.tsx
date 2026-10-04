@@ -7,8 +7,7 @@ export const GoogleUserinfoAccessFormFieldset = ({
 }) => (
   <fieldset>
     <legend>Userinfo</legend>
-    <p>
-      {userinfo?.name} {userinfo?.email}
-    </p>
+    <p>{userinfo?.name}</p>
+    <p>{userinfo?.email}</p>
   </fieldset>
 );

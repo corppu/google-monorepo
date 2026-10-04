@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import './ClientCommon.stories.css';
 import {
   Button,
   Field,
@@ -46,8 +47,8 @@ export const Controls: Story = {
   render: () => (
     <PageTemplate title="Client controls">
       <GenericForm
+        className="client-controls-form"
         onSubmit={(event) => event.preventDefault()}
-        style={{ display: 'grid', gap: 16, maxWidth: 360 }}
       >
         <Heading>Account details</Heading>
         <Field label="Display name" placeholder={MOCK_USER.displayName} />

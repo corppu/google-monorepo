@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     color: theme.colors.ink,
     fontSize: theme.typography.body,
     fontWeight: theme.typography.buttonWeight,
+    lineHeight: theme.typography.body * 1.4,
   },
   pressed: {
     backgroundColor: theme.colors.pressedSurface,

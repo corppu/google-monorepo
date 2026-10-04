@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color: theme.colors.ink,
     fontSize: theme.typography.body,
+    lineHeight: theme.typography.body * 1.45,
     minHeight: theme.sizes.control,
     paddingHorizontal: theme.spacing.inputHorizontal,
     paddingVertical: theme.spacing.inputVertical,
