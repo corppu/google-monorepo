@@ -10,6 +10,12 @@ export class GoogleEventRepository {
       .events.list({ calendarId, singleEvents: true });
     return res.data.items ?? [];
   }
+  async create(calendarId: string, event: Event): Promise<Record<string, any>> {
+    const res = await google
+      .calendar({ auth: this.auth, version: 'v3' })
+      .events.insert({ calendarId, requestBody: event });
+    return res.data;
+  }
   async update(
     calendarId: string,
     eventId: string,

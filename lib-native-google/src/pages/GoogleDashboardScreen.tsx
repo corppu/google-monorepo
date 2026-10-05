@@ -3,9 +3,11 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type {
   CalendarList,
   Event,
+  GoogleEventChanges,
   Group,
   Userinfo,
 } from '@gm/lib-common-google';
+import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import {
   Button,
   ChunkedList,
@@ -15,8 +17,6 @@ import {
 } from '@gm/lib-native-common';
 import { useTheme } from '@gm/lib-client-theme';
 
-type GoogleEventChanges = Pick<Event, 'description' | 'summary'>;
-
 export interface GoogleDashboardScreenProps {
   calendars?: CalendarList;
   events?: Event[];
@@ -25,7 +25,7 @@ export interface GoogleDashboardScreenProps {
   onCalendarSelect: (calendarId: string) => void;
   onEventSelect: (eventId: string) => void;
   onGroupSelect: (groupEmail: string) => void;
-  onUpdateEvent: (changes: GoogleEventChanges) => Promise<void>;
+  onSaveEvent: (changes: GoogleEventChanges) => Promise<void>;
   selectedCalendarId: string;
   selectedEventId: string;
   selectedGroupEmail: string;
@@ -116,13 +116,14 @@ export const GoogleDashboardScreen = ({
   onCalendarSelect,
   onEventSelect,
   onGroupSelect,
-  onUpdateEvent,
+  onSaveEvent,
   selectedCalendarId,
   selectedEventId,
   selectedGroupEmail,
   userinfo,
 }: GoogleDashboardScreenProps) => {
   const styles = useDashboardStyles();
+  const creatingEvent = selectedEventId === CREATE_EVENT_OPTION_ID;
   const selectedEvent = events?.find((event) => event.id === selectedEventId);
   const groupItems = [
     { email: '', id: 'all-calendars', label: 'All calendars' },
@@ -180,6 +181,11 @@ export const GoogleDashboardScreen = ({
         </Section>
         {selectedCalendarId && (
           <Section title="Events">
+            <Choice
+              label="Create event"
+              selected={selectedEventId === CREATE_EVENT_OPTION_ID}
+              onPress={() => onEventSelect(CREATE_EVENT_OPTION_ID)}
+            />
             <ChunkedList
               accessibilityLabel="Events"
               getKey={(event) => event.id!}
@@ -196,12 +202,21 @@ export const GoogleDashboardScreen = ({
             />
           </Section>
         )}
-        {selectedEvent && (
-          <EventEditor
+        {creatingEvent && (
+          <GoogleEventEditorFieldset
+            event={{}}
+            idPrefix="create-event"
+            mode="create"
+            onSave={onSaveEvent}
+          />
+        )}
+        {selectedEvent && !creatingEvent && (
+          <GoogleEventEditorFieldset
             key={selectedEvent.id}
             event={selectedEvent}
             idPrefix={fieldIdPrefix}
-            onUpdate={onUpdateEvent}
+            mode="update"
+            onSave={onSaveEvent}
           />
         )}
       </GenericForm>
@@ -285,19 +300,24 @@ const ThemedChoice = ({
   );
 };
 
-const EventEditor = ({
+const GoogleEventEditorFieldset = ({
   event,
   idPrefix,
-  onUpdate,
+  mode,
+  onSave,
 }: {
   event: Event;
   idPrefix: string;
-  onUpdate: (changes: GoogleEventChanges) => Promise<void>;
+  mode: 'create' | 'update';
+  onSave: (changes: GoogleEventChanges) => Promise<void>;
 }) => {
   const [summary, setSummary] = useState(event.summary ?? '');
   const [description, setDescription] = useState(event.description ?? '');
   const [message, setMessage] = useState('');
   const [titleError, setTitleError] = useState('');
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [dateError, setDateError] = useState('');
 
   const save = async () => {
     if (!summary.trim()) {
@@ -305,18 +325,43 @@ const EventEditor = ({
       setMessage('');
       return;
     }
+    if (mode === 'create') {
+      const startTime = Date.parse(start);
+      const endTime = Date.parse(end);
+      if (
+        Number.isNaN(startTime) ||
+        Number.isNaN(endTime) ||
+        endTime <= startTime
+      ) {
+        setDateError('Enter a valid start and end; end must be later.');
+        return;
+      }
+      setDateError('');
+    }
 
     setTitleError('');
     try {
-      await onUpdate({ description, summary });
-      setMessage('Event updated.');
+      await onSave({
+        description,
+        summary,
+        ...(mode === 'create'
+          ? {
+              end: { dateTime: new Date(end).toISOString() },
+              start: { dateTime: new Date(start).toISOString() },
+            }
+          : {}),
+      });
+      setMessage(mode === 'create' ? 'Event created.' : 'Event updated.');
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Update failed.');
     }
   };
 
   return (
-    <Section invalid={Boolean(titleError)} title="Update event">
+    <Section
+      invalid={Boolean(titleError)}
+      title={mode === 'create' ? 'Create event' : 'Update event'}
+    >
       <Field
         error={titleError || undefined}
         hint="Required field"
@@ -328,6 +373,36 @@ const EventEditor = ({
         }}
         value={summary}
       />
+      {mode === 'create' && (
+        <>
+          <Field
+            error={dateError || undefined}
+            hint="Required date and time"
+            keyboardType="numbers-and-punctuation"
+            nativeID={`${idPrefix}-start-input`}
+            label="Start date and time"
+            onChangeText={(value) => {
+              setStart(value);
+              setDateError('');
+            }}
+            placeholder="YYYY-MM-DDTHH:mm"
+            value={start}
+          />
+          <Field
+            error={dateError || undefined}
+            hint="Required date and time"
+            keyboardType="numbers-and-punctuation"
+            nativeID={`${idPrefix}-end-input`}
+            label="End date and time"
+            onChangeText={(value) => {
+              setEnd(value);
+              setDateError('');
+            }}
+            placeholder="YYYY-MM-DDTHH:mm"
+            value={end}
+          />
+        </>
+      )}
       <Field
         hint="Optional"
         label="Description"
@@ -337,7 +412,10 @@ const EventEditor = ({
         style={{ minHeight: 80, textAlignVertical: 'top' }}
         value={description}
       />
-      <Button onPress={save} title="Save changes" />
+      <Button
+        onPress={save}
+        title={mode === 'create' ? 'Create event' : 'Save changes'}
+      />
       {message !== '' && (
         <Text accessibilityLiveRegion="polite">{message}</Text>
       )}

@@ -1,6 +1,6 @@
 export * from './organisms/GoogleCalendarAccessFormFieldset';
 export * from './organisms/GoogleEventAccessFormFieldset';
-export * from './organisms/GoogleEventUpdateAccessFormFieldset';
+export * from './organisms/GoogleEventEditorFieldset';
 export * from './organisms/GoogleGroupAccessFormFieldset';
 export * from './organisms/GoogleUserinfoAccessFormFieldset';
 export * from './pages/GoogleDashboardPage';

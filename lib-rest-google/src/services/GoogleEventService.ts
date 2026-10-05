@@ -17,6 +17,11 @@ export class GoogleEventService {
       .map((input) => unwrapValidationResult(GoogleEventValidator(input)))
       .filter(GoogleEventFilter);
   }
+  async create(calendarId: string, event: Event): Promise<Event> {
+    return unwrapValidationResult(
+      GoogleEventValidator(await this.repo.create(calendarId, event)),
+    );
+  }
   async update(
     calendarId: string,
     eventId: string,

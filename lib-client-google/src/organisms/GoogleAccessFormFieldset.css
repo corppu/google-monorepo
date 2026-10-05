@@ -41,6 +41,17 @@
   padding: 8px;
 }
 
+.gm-google-access-fieldset__create-event {
+  align-items: center;
+  background: var(--gm-color-surface);
+  border: 1px solid var(--gm-color-border-subtle);
+  border-radius: var(--gm-radius-control);
+  box-sizing: border-box;
+  display: flex;
+  min-height: var(--gm-size-control);
+  padding: 8px;
+}
+
 .gm-google-access-fieldset
   .gm-client-chunked-list__items
   > li:has(input:checked) {
@@ -59,6 +70,24 @@
   gap: var(--gm-space-field);
   line-height: var(--gm-line-label);
   min-width: 0;
+}
+
+.gm-google-access-fieldset__create-event label {
+  align-items: center;
+  color: var(--gm-color-ink);
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  font-size: var(--gm-font-label);
+  font-weight: var(--gm-font-label-weight);
+  gap: var(--gm-space-field);
+  line-height: var(--gm-line-label);
+  min-width: 0;
+}
+
+.gm-google-access-fieldset__create-event:has(input:checked) {
+  background: var(--gm-color-pressed-surface);
+  border-color: var(--gm-color-selected);
 }
 
 .gm-google-access-fieldset input[type='radio'] {

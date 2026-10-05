@@ -47,21 +47,35 @@ document.querySelector('form').addEventListener('submit', async function (e) {
 });`;
 
 const dashboardScript = `
-var titleInput = document.getElementById('event-summary-input');
-var saveButton = document.querySelector('.gm-google-dashboard-page__form button[type="button"]');
-if (titleInput && saveButton) {
-  var fieldset = saveButton.closest('fieldset');
+document.querySelectorAll('input[name="google-event"]').forEach(function (radio) {
+  radio.addEventListener('change', function () {
+    var currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete('createEvent');
+    currentUrl.searchParams.delete('eventId');
+    if (radio.value === '__create_event__') {
+      currentUrl.searchParams.set('createEvent', 'true');
+    } else {
+      currentUrl.searchParams.set('eventId', radio.value);
+    }
+    window.location.assign(currentUrl.toString());
+  });
+});
+var titleInput = document.querySelector('.gm-google-dashboard-page__form input[id$="-summary-input"]');
+if (titleInput) {
+  var fieldset = titleInput.closest('fieldset');
+  var saveButton = fieldset.querySelector('button[type="button"]');
   var field = titleInput.closest('.gm-client-field');
   var hintId = titleInput.getAttribute('aria-describedby');
+  var errorId = titleInput.id + '-error';
   var errorMessage;
   var showTitleError = function () {
     titleInput.setAttribute('aria-invalid', 'true');
-    titleInput.setAttribute('aria-describedby', hintId + ' event-summary-input-error');
-    fieldset.classList.add('gm-client-event-update-fieldset--invalid');
+    titleInput.setAttribute('aria-describedby', hintId + ' ' + errorId);
+    fieldset.classList.add('gm-client-event-editor-fieldset--invalid');
     if (!errorMessage) {
       errorMessage = document.createElement('span');
       errorMessage.className = 'gm-client-field__error';
-      errorMessage.id = 'event-summary-input-error';
+      errorMessage.id = errorId;
       errorMessage.setAttribute('role', 'alert');
       errorMessage.textContent = 'Event title is required.';
       field.appendChild(errorMessage);
@@ -70,7 +84,7 @@ if (titleInput && saveButton) {
   var clearTitleError = function () {
     titleInput.setAttribute('aria-invalid', 'false');
     titleInput.setAttribute('aria-describedby', hintId);
-    fieldset.classList.remove('gm-client-event-update-fieldset--invalid');
+    fieldset.classList.remove('gm-client-event-editor-fieldset--invalid');
     if (errorMessage) {
       errorMessage.remove();
       errorMessage = undefined;
@@ -82,6 +96,45 @@ if (titleInput && saveButton) {
   titleInput.addEventListener('input', function () {
     if (titleInput.value.trim()) clearTitleError();
   });
+  var startInput = document.getElementById('create-event-start-input');
+  var endInput = document.getElementById('create-event-end-input');
+  if (startInput && endInput) {
+    var setDateError = function (input, message) {
+      var errorId = input.id + '-error';
+      input.setAttribute('aria-invalid', 'true');
+      input.setAttribute('aria-describedby', input.id + '-hint ' + errorId);
+      var error = document.getElementById(errorId);
+      if (!error) {
+        error = document.createElement('span');
+        error.className = 'gm-client-field__error';
+        error.id = errorId;
+        error.setAttribute('role', 'alert');
+        input.closest('.gm-client-field').appendChild(error);
+      }
+      error.textContent = message;
+    };
+    var clearDateError = function (input) {
+      input.setAttribute('aria-invalid', 'false');
+      input.setAttribute('aria-describedby', input.id + '-hint');
+      var error = document.getElementById(input.id + '-error');
+      if (error) error.remove();
+    };
+    saveButton.addEventListener('click', function () {
+      var startTime = Date.parse(startInput.value);
+      var endTime = Date.parse(endInput.value);
+      if (Number.isNaN(startTime)) {
+        setDateError(startInput, 'Start date and time is required.');
+      } else if (endTime <= startTime || Number.isNaN(endTime)) {
+        setDateError(endInput, 'End date and time must be after the start.');
+      }
+    });
+    startInput.addEventListener('input', function () {
+      if (!Number.isNaN(Date.parse(startInput.value))) clearDateError(startInput);
+    });
+    endInput.addEventListener('input', function () {
+      if (!Number.isNaN(Date.parse(endInput.value))) clearDateError(endInput);
+    });
+  }
 }`;
 
 const page = (title: string, body: ReactElement) => (
@@ -114,7 +167,7 @@ export function createSSRRenderer(stylesheets: string[] = []) {
           onCalendarSelect={noop}
           onEventSelect={noop}
           onGroupSelect={noop}
-          onUpdateEvent={async () => {}}
+          onSaveEvent={async () => {}}
           selectedCalendarId={
             data.selectedCalendarId ?? data.calendars?.items[0]?.id ?? ''
           }

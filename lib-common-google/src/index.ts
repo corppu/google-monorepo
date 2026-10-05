@@ -1,9 +1,15 @@
+import type { Event } from './types/Event';
+
 export type { EventDateTime } from './types/EventDateTime';
 export type { EventReminder } from './types/EventReminder';
 export type { EventAttendee } from './types/EventAttendee';
 export type { EventOrganizer } from './types/EventOrganizer';
 export type { EventCreator } from './types/EventCreator';
 export type { Event } from './types/Event';
+export type GoogleEventChanges = Pick<
+  Event,
+  'description' | 'end' | 'start' | 'summary'
+>;
 export type { CalendarListEntry } from './types/CalendarListEntry';
 export type { Calendar } from './types/Calendar';
 export type { CalendarList } from './types/CalendarList';
@@ -20,6 +26,8 @@ export {
   MOCK_USERINFO,
 } from './mockDashboardData';
 export type { MockWorkflowStep } from './mockDashboardData';
+
+export const CREATE_EVENT_OPTION_ID = '__create_event__';
 
 export interface GoogleScope {
   id: string;

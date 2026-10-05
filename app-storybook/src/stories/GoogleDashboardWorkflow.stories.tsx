@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import type { CalendarList, Event, Group } from '@gm/lib-common-google';
+import type {
+  CalendarList,
+  Event,
+  GoogleEventChanges,
+  Group,
+} from '@gm/lib-common-google';
 import {
+  CREATE_EVENT_OPTION_ID,
   INITIAL_SELECTIONS,
   MOCK_ALL_CALENDARS,
   MOCK_EVENTS,
@@ -73,12 +79,18 @@ const DashboardWorkflow = ({
   const [selectedEventId, setSelectedEventId] = useState(
     initialSelection.eventId,
   );
+  const [createdEvents, setCreatedEvents] = useState<Record<string, Event[]>>(
+    {},
+  );
   const [updatedEvents, setUpdatedEvents] = useState<Record<string, Event>>({});
   const calendars = selectedGroupEmail
     ? MOCK_GROUP_CALENDARS[selectedGroupEmail]
     : MOCK_ALL_CALENDARS;
   const events = selectedCalendarId
-    ? MOCK_EVENTS[selectedCalendarId]
+    ? [
+        ...(MOCK_EVENTS[selectedCalendarId] ?? []),
+        ...(createdEvents[selectedCalendarId] ?? []),
+      ]
     : undefined;
   const visibleEvents = events?.map((event) =>
     event.id ? (updatedEvents[event.id] ?? event) : event,
@@ -96,9 +108,22 @@ const DashboardWorkflow = ({
     setSelectedCalendarId(calendarId);
     setSelectedEventId('');
   };
-  const updateEvent = async (
-    changes: Pick<Event, 'description' | 'summary'>,
-  ) => {
+  const saveEvent = async (changes: GoogleEventChanges) => {
+    if (selectedEventId === CREATE_EVENT_OPTION_ID) {
+      const createdEvent: Event = {
+        ...changes,
+        id: `storybook-${Date.now()}`,
+      };
+      setCreatedEvents((current) => ({
+        ...current,
+        [selectedCalendarId]: [
+          ...(current[selectedCalendarId] ?? []),
+          createdEvent,
+        ],
+      }));
+      setSelectedEventId(createdEvent.id!);
+      return;
+    }
     if (!selectedEvent?.id) return;
     setUpdatedEvents((current) => ({
       ...current,
@@ -116,7 +141,7 @@ const DashboardWorkflow = ({
       onCalendarSelect={selectCalendar}
       onEventSelect={setSelectedEventId}
       onGroupSelect={selectGroup}
-      onUpdateEvent={updateEvent}
+      onSaveEvent={saveEvent}
       selectedCalendarId={selectedCalendarId}
       selectedEventId={selectedEventId}
       selectedGroupEmail={selectedGroupEmail}
@@ -142,12 +167,18 @@ const NativeDashboardWorkflow = ({
   const [selectedEventId, setSelectedEventId] = useState(
     initialSelection.eventId,
   );
+  const [createdEvents, setCreatedEvents] = useState<Record<string, Event[]>>(
+    {},
+  );
   const [updatedEvents, setUpdatedEvents] = useState<Record<string, Event>>({});
   const calendars = selectedGroupEmail
     ? MOCK_GROUP_CALENDARS[selectedGroupEmail]
     : MOCK_ALL_CALENDARS;
   const events = selectedCalendarId
-    ? MOCK_EVENTS[selectedCalendarId]
+    ? [
+        ...(MOCK_EVENTS[selectedCalendarId] ?? []),
+        ...(createdEvents[selectedCalendarId] ?? []),
+      ]
     : undefined;
   const visibleEvents = events?.map((event) =>
     event.id ? (updatedEvents[event.id] ?? event) : event,
@@ -165,9 +196,22 @@ const NativeDashboardWorkflow = ({
     setSelectedCalendarId(calendarId);
     setSelectedEventId('');
   };
-  const updateEvent = async (
-    changes: Pick<Event, 'description' | 'summary'>,
-  ) => {
+  const saveEvent = async (changes: GoogleEventChanges) => {
+    if (selectedEventId === CREATE_EVENT_OPTION_ID) {
+      const createdEvent: Event = {
+        ...changes,
+        id: `storybook-${Date.now()}`,
+      };
+      setCreatedEvents((current) => ({
+        ...current,
+        [selectedCalendarId]: [
+          ...(current[selectedCalendarId] ?? []),
+          createdEvent,
+        ],
+      }));
+      setSelectedEventId(createdEvent.id!);
+      return;
+    }
     if (!selectedEvent?.id) return;
     setUpdatedEvents((current) => ({
       ...current,
@@ -184,7 +228,7 @@ const NativeDashboardWorkflow = ({
       onCalendarSelect={chooseCalendar}
       onEventSelect={setSelectedEventId}
       onGroupSelect={chooseGroup}
-      onUpdateEvent={updateEvent}
+      onSaveEvent={saveEvent}
       selectedCalendarId={selectedCalendarId}
       selectedEventId={selectedEventId}
       selectedGroupEmail={selectedGroupEmail}
@@ -236,6 +280,25 @@ export const EventSelectionComparison: Story = {
 
 export const EventUpdateComparison: Story = {
   render: () => <WorkflowComparison step="update" />,
+};
+
+export const CreateEventComparison: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const createOptions = canvas.getAllByRole('radio', {
+      name: 'Create event',
+    });
+    expect(createOptions).toHaveLength(2);
+    await userEvent.click(createOptions[0]);
+    await userEvent.click(createOptions[1]);
+    expect(canvas.getAllByLabelText('Event title')).toHaveLength(2);
+    expect(canvas.getAllByLabelText('Start date and time')).toHaveLength(2);
+    expect(canvas.getAllByLabelText('End date and time')).toHaveLength(2);
+    expect(
+      canvas.getAllByRole('button', { name: 'Create event' }),
+    ).toHaveLength(2);
+  },
+  render: () => <WorkflowComparison step="event" />,
 };
 
 export const EmptyEventTitle: Story = {
@@ -363,9 +426,7 @@ const LargeDatasetWorkflow = () => {
     setSelectedCalendarId(calendarId);
     setSelectedEventId('');
   };
-  const updateEvent = async (
-    changes: Pick<Event, 'description' | 'summary'>,
-  ) => {
+  const saveEvent = async (changes: GoogleEventChanges) => {
     if (!selectedEvent?.id) return;
     setUpdatedEvents((current) => ({
       ...current,
@@ -381,7 +442,7 @@ const LargeDatasetWorkflow = () => {
       onCalendarSelect={selectCalendar}
       onEventSelect={setSelectedEventId}
       onGroupSelect={selectGroup}
-      onUpdateEvent={updateEvent}
+      onSaveEvent={saveEvent}
       selectedCalendarId={selectedCalendarId}
       selectedEventId={selectedEventId}
       selectedGroupEmail={selectedGroupEmail}
@@ -421,9 +482,7 @@ const NativeLargeDatasetWorkflow = () => {
     setSelectedCalendarId(calendarId);
     setSelectedEventId('');
   };
-  const onUpdateEvent = async (
-    changes: Pick<Event, 'description' | 'summary'>,
-  ) => {
+  const saveEvent = async (changes: GoogleEventChanges) => {
     if (!selectedEvent?.id) return;
     setUpdatedEvents((current) => ({
       ...current,
@@ -440,7 +499,7 @@ const NativeLargeDatasetWorkflow = () => {
       onCalendarSelect={onCalendarSelect}
       onEventSelect={setSelectedEventId}
       onGroupSelect={onGroupSelect}
-      onUpdateEvent={onUpdateEvent}
+      onSaveEvent={saveEvent}
       selectedCalendarId={selectedCalendarId}
       selectedEventId={selectedEventId}
       selectedGroupEmail={selectedGroupEmail}

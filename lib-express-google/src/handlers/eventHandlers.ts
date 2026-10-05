@@ -20,6 +20,48 @@ export const listEventsHandler =
     }
   };
 
+export const createEventHandler =
+  (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {
+    const calendarId =
+      typeof req.query.calendarId === 'string' ? req.query.calendarId : '';
+    const body = req.body as Partial<Event>;
+    const summary =
+      typeof body?.summary === 'string' ? body.summary.trim() : '';
+    const start = body?.start?.dateTime;
+    const end = body?.end?.dateTime;
+    if (
+      !calendarId ||
+      !summary ||
+      typeof start !== 'string' ||
+      typeof end !== 'string' ||
+      Number.isNaN(Date.parse(start)) ||
+      Number.isNaN(Date.parse(end)) ||
+      Date.parse(end) <= Date.parse(start)
+    ) {
+      res.status(400).json({
+        error: 'calendarId, title, and valid start/end date-times are required',
+      });
+      return;
+    }
+
+    const event: Event = {
+      description:
+        typeof body.description === 'string' ? body.description : undefined,
+      end: { dateTime: end },
+      start: { dateTime: start },
+      summary,
+    };
+    try {
+      res.json(
+        await new GoogleEventService(
+          ctx.auth.authorizedClient((res.locals as any).sid),
+        ).create(calendarId, event),
+      );
+    } catch (e) {
+      res.status(502).json({ error: (e as Error).message });
+    }
+  };
+
 export const updateEventHandler =
   (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {
     const calendarId =

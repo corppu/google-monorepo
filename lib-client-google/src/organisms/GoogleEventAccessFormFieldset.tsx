@@ -1,4 +1,5 @@
 import { ChunkedList } from '@gm/lib-client-common';
+import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import type { Event } from '@gm/lib-common-google';
 import './GoogleAccessFormFieldset.css';
 
@@ -18,6 +19,20 @@ export const GoogleEventAccessFormFieldset = ({
   return (
     <fieldset className="gm-google-access-fieldset">
       <legend className="gm-google-access-fieldset__legend">Events</legend>
+      {onSelect && (
+        <div className="gm-google-access-fieldset__create-event">
+          <label>
+            <input
+              checked={selectedEventId === CREATE_EVENT_OPTION_ID}
+              name="google-event"
+              onChange={() => onSelect(CREATE_EVENT_OPTION_ID)}
+              type="radio"
+              value={CREATE_EVENT_OPTION_ID}
+            />
+            Create event
+          </label>
+        </div>
+      )}
       <ChunkedList
         ariaLabel="Events"
         getKey={(event) => event.id!}
