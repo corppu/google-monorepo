@@ -16,6 +16,7 @@ export type { CalendarList } from './types/CalendarList';
 export type { Group } from './types/Group';
 export type { Member } from './types/Member';
 export type { Userinfo } from './types/Userinfo';
+export type { GooglePublicContactInfo } from './types/GooglePublicContactInfo';
 export {
   INITIAL_SELECTIONS,
   MOCK_ALL_CALENDARS,

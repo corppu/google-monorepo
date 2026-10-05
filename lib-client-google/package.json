@@ -5,10 +5,14 @@
   "main": "src/index.ts",
   "dependencies": {
     "@gm/lib-client-common": "*",
-    "@gm/lib-common-google": "*"
+    "@gm/lib-common-google": "*",
+    "sanitize-html": "^2.18.0"
   },
   "peerDependencies": {
     "react": "latest",
     "react-router-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.16.2"
   }
 }

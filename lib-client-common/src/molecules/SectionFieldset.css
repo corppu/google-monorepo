@@ -13,6 +13,10 @@
   position: relative;
 }
 
+.gm-client-section-fieldset--article {
+  padding-top: 12px;
+}
+
 .gm-client-section-fieldset--invalid {
   border-color: var(--gm-color-error-border);
 }
@@ -27,6 +31,11 @@
   padding: 0 4px;
   position: absolute;
   top: -9px;
+}
+
+.gm-client-section-fieldset--article > .gm-client-section-fieldset__legend {
+  margin: 0;
+  position: static;
 }
 
 .gm-client-section-fieldset p {

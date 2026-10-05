@@ -1,6 +1,6 @@
 import type { ScopeOption } from '../types';
 import { useMemo } from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@gm/lib-client-theme';
 
 export const GenericScopeArticle = ({
@@ -13,9 +13,22 @@ export const GenericScopeArticle = ({
   scope: ScopeOption;
 }) => {
   const theme = useTheme();
+  const on = checked || scope.locked;
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        box: {
+          alignItems: 'center',
+          backgroundColor: on ? theme.colors.selected : 'transparent',
+          borderColor: on ? theme.colors.selected : theme.colors.border,
+          borderRadius: 3,
+          borderWidth: 2,
+          height: theme.sizes.checkbox,
+          justifyContent: 'center',
+          marginRight: 2,
+          opacity: scope.locked ? 0.5 : 1,
+          width: theme.sizes.checkbox,
+        },
         label: {
           color: theme.colors.ink,
           flex: 1,
@@ -29,11 +42,17 @@ export const GenericScopeArticle = ({
           flexDirection: 'row',
           gap: theme.spacing.scopeRowHorizontal,
           justifyContent: 'space-between',
-          minHeight: theme.sizes.scopeRow,
+          minHeight: theme.sizes.scopeRow + theme.spacing.scopeRowVertical * 2,
           paddingVertical: theme.spacing.scopeRowVertical,
         },
+        tick: {
+          color: '#ffffff',
+          fontSize: 12,
+          fontWeight: '700',
+          lineHeight: 14,
+        },
       }),
-    [theme],
+    [theme, on, scope.locked],
   );
 
   return (
@@ -42,17 +61,16 @@ export const GenericScopeArticle = ({
         {scope.label}
         {scope.locked ? ' (required)' : ''}
       </Text>
-      <Switch
-        accessibilityLabel={`${scope.label}${scope.locked ? ' (required)' : ''}`}
-        value={checked || scope.locked}
+      <Pressable
+        accessibilityRole="checkbox"
+        accessibilityLabel={``}
+        accessibilityState={{ checked: on, disabled: scope.locked }}
         disabled={scope.locked}
-        thumbColor={checked ? theme.colors.selected : theme.colors.scopeThumb}
-        trackColor={{
-          false: theme.colors.scopeTrack,
-          true: theme.colors.scopeTrackActive,
-        }}
-        onValueChange={() => onToggle(scope.id)}
-      />
+        onPress={() => onToggle(scope.id)}
+        style={styles.box}
+      >
+        {on ? <Text style={styles.tick}>✓</Text> : null}
+      </Pressable>
     </View>
   );
 };

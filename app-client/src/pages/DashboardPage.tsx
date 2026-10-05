@@ -8,6 +8,7 @@ import {
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
+  useGooglePublicContactInfo,
   useGoogleUserinfo,
 } from '@gm/lib-client-google';
 
@@ -26,6 +27,8 @@ export const DashboardPage = () => {
   const [createdEvents, setCreatedEvents] = useState<Event[]>([]);
   const [updatedEvents, setUpdatedEvents] = useState<Record<string, Event>>({});
   const { data: loadedUserinfo } = useGoogleUserinfo(!mockMode);
+  const { data: loadedContactInfo, error: contactInfoError } =
+    useGooglePublicContactInfo(!mockMode);
   const { data: loadedGroups } = useGoogleGroups(!mockMode);
   const { data: loadedCalendars } = useGoogleCalendars(
     selectedGroupEmail || undefined,
@@ -120,6 +123,8 @@ export const DashboardPage = () => {
   return (
     <GoogleDashboardPage
       calendars={calendars}
+      contactInfo={mockMode ? undefined : loadedContactInfo}
+      contactInfoError={mockMode ? undefined : contactInfoError}
       events={visibleEvents}
       groups={groups}
       onCalendarSelect={selectCalendar}

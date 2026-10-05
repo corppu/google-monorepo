@@ -518,12 +518,12 @@ export const LargeDataset: Story = {
 
     await expect(groups.getAllByRole('radio')).toHaveLength(50);
     await expect(calendars.getAllByRole('radio')).toHaveLength(50);
-    await expect(events.getAllByRole('radio')).toHaveLength(50);
+    await expect(events.getAllByRole('radio')).toHaveLength(51);
     await expect(events.getByText('Items 1-50 of 9999')).toBeInTheDocument();
 
     await userEvent.click(events.getByRole('button', { name: 'Next page' }));
 
-    await expect(events.getAllByRole('radio')).toHaveLength(51);
+    await expect(events.getAllByRole('radio')).toHaveLength(52);
     await expect(events.getByText('Items 51-100 of 9999')).toBeInTheDocument();
     await expect(
       events.getByRole('radio', { name: 'Load test event 00001' }),
@@ -539,12 +539,12 @@ export const NativeLargeDataset: Story = {
   name: 'Native: 99 groups, 999 calendars, 9,999 events',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getAllByRole('radio')).toHaveLength(150);
+    await expect(canvas.getAllByRole('radio')).toHaveLength(151);
     const nextEventsPage = canvas.getByRole('button', {
       name: 'Next Events page',
     });
     await userEvent.click(nextEventsPage);
-    await expect(canvas.getAllByRole('radio')).toHaveLength(151);
+    await expect(canvas.getAllByRole('radio')).toHaveLength(152);
     await expect(
       canvas.getByRole('radio', { name: 'Load test event 00001' }),
     ).toBeChecked();

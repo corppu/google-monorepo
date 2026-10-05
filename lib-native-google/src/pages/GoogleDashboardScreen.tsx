@@ -4,6 +4,7 @@ import type {
   CalendarList,
   Event,
   GoogleEventChanges,
+  GooglePublicContactInfo,
   Group,
   Userinfo,
 } from '@gm/lib-common-google';
@@ -14,11 +15,17 @@ import {
   Field,
   GenericForm,
   ScreenTemplate,
+  SectionFieldset,
 } from '@gm/lib-native-common';
 import { useTheme } from '@gm/lib-client-theme';
+import { GoogleEventInfo } from '../organisms/GoogleEventInfo';
+import { GoogleGroupInfo } from '../organisms/GoogleGroupInfo';
+import { GoogleUserinfoSectionFieldset } from '../organisms/GoogleUserinfoSectionFieldset';
 
 export interface GoogleDashboardScreenProps {
   calendars?: CalendarList;
+  contactInfo?: GooglePublicContactInfo;
+  contactInfoError?: string;
   events?: Event[];
   fieldIdPrefix?: string;
   groups?: Group[];
@@ -57,29 +64,6 @@ const useDashboardStyles = () => {
           backgroundColor: theme.colors.pressedSurface,
           borderColor: theme.colors.selected,
         },
-        section: {
-          backgroundColor: theme.colors.surface,
-          borderColor: theme.colors.border,
-          borderRadius: theme.radius.control,
-          borderWidth: 1,
-          gap: 8,
-          padding: 12,
-          paddingTop: 24,
-          position: 'relative',
-        },
-        sectionInvalid: {
-          borderColor: theme.colors.errorBorder,
-        },
-        sectionTitle: {
-          backgroundColor: theme.colors.surface,
-          color: theme.colors.ink,
-          fontSize: 16,
-          fontWeight: theme.typography.headingWeight,
-          left: 8,
-          paddingHorizontal: 4,
-          position: 'absolute',
-          top: -9,
-        },
         selectionIndicator: {
           alignItems: 'center',
           borderColor: theme.colors.border,
@@ -98,11 +82,6 @@ const useDashboardStyles = () => {
         selectionIndicatorSelected: {
           borderColor: theme.colors.selected,
         },
-        userinfoText: {
-          color: theme.colors.ink,
-          fontSize: theme.typography.body,
-          lineHeight: theme.typography.body * 1.45,
-        },
       }),
     [theme],
   );
@@ -110,6 +89,8 @@ const useDashboardStyles = () => {
 
 export const GoogleDashboardScreen = ({
   calendars,
+  contactInfo,
+  contactInfoError,
   events,
   fieldIdPrefix = 'event',
   groups,
@@ -125,6 +106,9 @@ export const GoogleDashboardScreen = ({
   const styles = useDashboardStyles();
   const creatingEvent = selectedEventId === CREATE_EVENT_OPTION_ID;
   const selectedEvent = events?.find((event) => event.id === selectedEventId);
+  const selectedGroup = groups?.find(
+    (group) => group.email === selectedGroupEmail,
+  );
   const groupItems = [
     { email: '', id: 'all-calendars', label: 'All calendars' },
     ...(groups ?? [])
@@ -144,11 +128,12 @@ export const GoogleDashboardScreen = ({
       <GenericForm
         style={{ alignSelf: 'center', gap: 16, maxWidth: 560, width: '100%' }}
       >
-        <Section title="Userinfo">
-          <Text style={styles.userinfoText}>{userinfo?.name}</Text>
-          <Text style={styles.userinfoText}>{userinfo?.email}</Text>
-        </Section>
-        <Section title="Google group">
+        <GoogleUserinfoSectionFieldset
+          contactInfo={contactInfo}
+          contactInfoError={contactInfoError}
+          userinfo={userinfo}
+        />
+        <SectionFieldset legend="Google group">
           <ChunkedList
             accessibilityLabel="Google groups"
             getKey={(group) => group.id}
@@ -162,8 +147,9 @@ export const GoogleDashboardScreen = ({
               />
             )}
           />
-        </Section>
-        <Section title="Calendars">
+        </SectionFieldset>
+        {selectedGroup && <GoogleGroupInfo group={selectedGroup} />}
+        <SectionFieldset legend="Calendars">
           <ChunkedList
             accessibilityLabel="Calendars"
             getKey={(calendar) => calendar.id!}
@@ -178,9 +164,9 @@ export const GoogleDashboardScreen = ({
               />
             )}
           />
-        </Section>
-        {selectedCalendarId && (
-          <Section title="Events">
+        </SectionFieldset>
+        {Boolean(selectedCalendarId) && (
+          <SectionFieldset legend="Events">
             <Choice
               label="Create event"
               selected={selectedEventId === CREATE_EVENT_OPTION_ID}
@@ -200,7 +186,10 @@ export const GoogleDashboardScreen = ({
                 />
               )}
             />
-          </Section>
+          </SectionFieldset>
+        )}
+        {selectedEvent && !creatingEvent && (
+          <GoogleEventInfo event={selectedEvent} />
         )}
         {creatingEvent && (
           <GoogleEventEditorFieldset
@@ -221,39 +210,6 @@ export const GoogleDashboardScreen = ({
         )}
       </GenericForm>
     </ScreenTemplate>
-  );
-};
-
-const Section = ({
-  children,
-  invalid = false,
-  title,
-}: {
-  children: React.ReactNode;
-  invalid?: boolean;
-  title: string;
-}) => (
-  <ThemedSection invalid={invalid} title={title}>
-    {children}
-  </ThemedSection>
-);
-
-const ThemedSection = ({
-  children,
-  invalid,
-  title,
-}: {
-  children: React.ReactNode;
-  invalid: boolean;
-  title: string;
-}) => {
-  const styles = useDashboardStyles();
-
-  return (
-    <View style={[styles.section, invalid && styles.sectionInvalid]}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-      {children}
-    </View>
   );
 };
 
@@ -358,9 +314,9 @@ const GoogleEventEditorFieldset = ({
   };
 
   return (
-    <Section
+    <SectionFieldset
       invalid={Boolean(titleError)}
-      title={mode === 'create' ? 'Create event' : 'Update event'}
+      legend={mode === 'create' ? 'Create event' : 'Update event'}
     >
       <Field
         error={titleError || undefined}
@@ -419,6 +375,6 @@ const GoogleEventEditorFieldset = ({
       {message !== '' && (
         <Text accessibilityLiveRegion="polite">{message}</Text>
       )}
-    </Section>
+    </SectionFieldset>
   );
 };

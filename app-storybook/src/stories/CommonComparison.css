@@ -55,7 +55,14 @@
 #comparison-native-button-section,
 #comparison-native-input-section,
 #comparison-native-field-section,
-#comparison-native-scope-section {
+#comparison-native-scope-section,
+#comparison-native-heading-section,
+#comparison-native-paragraph-section,
+#comparison-native-list-section,
+#comparison-native-fieldset-section,
+#comparison-native-article-section,
+#comparison-native-address-section,
+#comparison-native-feed-section {
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -1,0 +1,17 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-feed-item {
+  color: var(--gm-color-ink);
+  font-size: var(--gm-font-body);
+  line-height: 1.45;
+}
+
+.gm-client-feed-item h4 {
+  font-size: var(--gm-font-heading);
+  line-height: var(--gm-line-heading);
+  margin: 0 0 var(--gm-space-field);
+}
+
+.gm-client-feed-item a {
+  color: var(--gm-color-selected);
+}

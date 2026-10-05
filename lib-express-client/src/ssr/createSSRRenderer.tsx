@@ -10,6 +10,7 @@ import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
 import type {
   CalendarList,
   Event,
+  GooglePublicContactInfo,
   Group,
   Userinfo,
 } from '@gm/lib-common-google';
@@ -19,6 +20,8 @@ export interface DashboardData {
   calendars?: CalendarList;
   events?: Event[];
   groups?: Group[];
+  publicContactInfo?: GooglePublicContactInfo;
+  publicContactInfoError?: string;
   selectedCalendarId?: string;
   selectedEventId?: string;
   selectedGroupEmail?: string;
@@ -162,6 +165,8 @@ export function createSSRRenderer(stylesheets: string[] = []) {
       dashboard: (
         <GoogleDashboardPage
           calendars={data.calendars}
+          contactInfo={data.publicContactInfo}
+          contactInfoError={data.publicContactInfoError}
           events={data.events}
           groups={data.groups}
           onCalendarSelect={noop}

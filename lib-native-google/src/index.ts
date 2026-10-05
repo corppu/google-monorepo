@@ -9,3 +9,5 @@ export * from './hooks/useGoogleEvents';
 export * from './hooks/useGoogleGroups';
 export * from './hooks/useGoogleUserinfo';
 export * from './router/GoogleRouter.native';
+export * from './organisms/GoogleEventInfo';
+export * from './organisms/GoogleGroupInfo';

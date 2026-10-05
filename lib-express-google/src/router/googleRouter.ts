@@ -18,6 +18,7 @@ import {
 } from '../handlers/eventHandlers';
 import { listGroupsHandler } from '../handlers/groupHandlers';
 import { userinfoHandler } from '../handlers/userinfoHandlers';
+import { publicContactInfoHandler } from '../handlers/publicContactInfoHandler';
 
 /** Mounted under /api; serves /api/google/*. */
 export function createGoogleRouter(ctx: GoogleHandlerContext): Router {
@@ -41,5 +42,10 @@ export function createGoogleRouter(ctx: GoogleHandlerContext): Router {
   router.patch('/google/events/:eventId', authed, updateEventHandler(ctx));
   router.get('/google/groups', authed, listGroupsHandler(ctx));
   router.get('/google/userinfo', authed, userinfoHandler(ctx));
+  router.get(
+    '/google/public-contact-info',
+    authed,
+    publicContactInfoHandler(ctx),
+  );
   return router;
 }

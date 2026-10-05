@@ -2,6 +2,7 @@ import { GenericForm, PageTemplate } from '@gm/lib-client-common';
 import type {
   CalendarList,
   Event,
+  GooglePublicContactInfo,
   GoogleEventChanges,
   Group,
   Userinfo,
@@ -10,13 +11,17 @@ import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import { GoogleCalendarSectionFieldset } from '../organisms/GoogleCalendarSectionFieldset';
 import { GoogleEventSectionFieldset } from '../organisms/GoogleEventSectionFieldset';
 import { GoogleEventEditorFieldset } from '../organisms/GoogleEventEditorFieldset';
+import { GoogleEventInfo } from '../organisms/GoogleEventInfo';
 import { GoogleGroupSectionFieldset } from '../organisms/GoogleGroupSectionFieldset';
+import { GoogleGroupInfo } from '../organisms/GoogleGroupInfo';
 import { GoogleUserinfoSectionFieldset } from '../organisms/GoogleUserinfoSectionFieldset';
 import './GoogleDashboardPage.css';
 
 export interface GoogleDashboardPageProps {
   as?: 'div' | 'main';
   calendars?: CalendarList;
+  contactInfo?: GooglePublicContactInfo;
+  contactInfoError?: string;
   events?: Event[];
   fieldIdPrefix?: string;
   groups?: Group[];
@@ -33,6 +38,8 @@ export interface GoogleDashboardPageProps {
 export const GoogleDashboardPage = ({
   as,
   calendars,
+  contactInfo,
+  contactInfoError,
   events,
   fieldIdPrefix = 'event',
   groups,
@@ -45,8 +52,16 @@ export const GoogleDashboardPage = ({
   selectedGroupEmail,
   userinfo,
 }: GoogleDashboardPageProps) => {
-  const selectedEvent = events?.find((event) => event.id === selectedEventId);
   const creatingEvent = selectedEventId === CREATE_EVENT_OPTION_ID;
+  const selectedEvent =
+    selectedEventId && !creatingEvent
+      ? events?.find(
+          (event) => event.id === selectedEventId && Boolean(event.id),
+        )
+      : undefined;
+  const selectedGroup = groups?.find(
+    (group) => group.email === selectedGroupEmail,
+  );
 
   return (
     <PageTemplate as={as} title="Dashboard">
@@ -54,12 +69,17 @@ export const GoogleDashboardPage = ({
         className="gm-google-dashboard-page__form"
         onSubmit={(event) => event.preventDefault()}
       >
-        <GoogleUserinfoSectionFieldset userinfo={userinfo} />
+        <GoogleUserinfoSectionFieldset
+          contactInfo={contactInfo}
+          contactInfoError={contactInfoError}
+          userinfo={userinfo}
+        />
         <GoogleGroupSectionFieldset
           groups={groups}
           onSelect={onGroupSelect}
           selectedGroupEmail={selectedGroupEmail}
         />
+        {selectedGroup && <GoogleGroupInfo group={selectedGroup} />}
         <GoogleCalendarSectionFieldset
           calendars={calendars}
           paginationKey={selectedGroupEmail}
@@ -74,6 +94,7 @@ export const GoogleDashboardPage = ({
             selectedEventId={selectedEventId}
           />
         )}
+        {selectedEvent && <GoogleEventInfo event={selectedEvent} />}
         {creatingEvent && (
           <GoogleEventEditorFieldset
             event={{}}
@@ -82,7 +103,7 @@ export const GoogleDashboardPage = ({
             onSave={onSaveEvent}
           />
         )}
-        {selectedEvent && !creatingEvent && (
+        {selectedEvent && (
           <GoogleEventEditorFieldset
             event={selectedEvent}
             idPrefix={fieldIdPrefix}
