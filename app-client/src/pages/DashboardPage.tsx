@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import { GenericForm, PageTemplate } from '@gm/lib-client-common';
+import { useLocation } from 'react-router-dom';
+import { MOCK_DASHBOARD_DATA } from '@gm/lib-common-google';
 import type { Event } from '@gm/lib-common-google';
 import {
-  GoogleCalendarAccessFormFieldset,
-  GoogleEventAccessFormFieldset,
-  GoogleEventUpdateAccessFormFieldset,
-  GoogleGroupAccessFormFieldset,
-  GoogleUserinfoAccessFormFieldset,
+  GoogleDashboardPage,
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
@@ -14,19 +11,32 @@ import {
 } from '@gm/lib-client-google';
 
 export const DashboardPage = () => {
-  const [selectedGroupEmail, setSelectedGroupEmail] = useState('');
-  const [selectedCalendarId, setSelectedCalendarId] = useState('');
-  const [selectedEventId, setSelectedEventId] = useState('');
+  const location = useLocation();
+  const mockMode = new URLSearchParams(location.search).get('mock') === 'true';
+  const [selectedGroupEmail, setSelectedGroupEmail] = useState(() =>
+    mockMode ? MOCK_DASHBOARD_DATA.selectedGroupEmail : '',
+  );
+  const [selectedCalendarId, setSelectedCalendarId] = useState(() =>
+    mockMode ? MOCK_DASHBOARD_DATA.selectedCalendarId : '',
+  );
+  const [selectedEventId, setSelectedEventId] = useState(() =>
+    mockMode ? MOCK_DASHBOARD_DATA.selectedEventId : '',
+  );
   const [updatedEvents, setUpdatedEvents] = useState<Record<string, Event>>({});
-  const { data: userinfo } = useGoogleUserinfo();
-  const { data: groups } = useGoogleGroups();
-  const { data: calendars } = useGoogleCalendars(
+  const { data: loadedUserinfo } = useGoogleUserinfo(!mockMode);
+  const { data: loadedGroups } = useGoogleGroups(!mockMode);
+  const { data: loadedCalendars } = useGoogleCalendars(
     selectedGroupEmail || undefined,
+    !mockMode,
   );
-  const { data: events } = useGoogleEvents(
+  const { data: loadedEvents } = useGoogleEvents(
     selectedCalendarId || undefined,
-    Boolean(selectedCalendarId),
+    Boolean(selectedCalendarId) && !mockMode,
   );
+  const userinfo = mockMode ? MOCK_DASHBOARD_DATA.userinfo : loadedUserinfo;
+  const groups = mockMode ? MOCK_DASHBOARD_DATA.groups : loadedGroups;
+  const calendars = mockMode ? MOCK_DASHBOARD_DATA.calendars : loadedCalendars;
+  const events = mockMode ? MOCK_DASHBOARD_DATA.events : loadedEvents;
   const visibleEvents = events?.map((event) =>
     event.id ? (updatedEvents[event.id] ?? event) : event,
   );
@@ -48,6 +58,13 @@ export const DashboardPage = () => {
   ) => {
     if (!selectedEvent?.id || !selectedCalendarId) {
       throw new Error('Select a calendar and event first.');
+    }
+    if (mockMode) {
+      setUpdatedEvents((current) => ({
+        ...current,
+        [selectedEvent.id!]: { ...selectedEvent, ...changes },
+      }));
+      return;
     }
     const query = new URLSearchParams({ calendarId: selectedCalendarId });
     const response = await fetch(
@@ -73,34 +90,18 @@ export const DashboardPage = () => {
   };
 
   return (
-    <PageTemplate title="Dashboard">
-      <GenericForm onSubmit={(event) => event.preventDefault()}>
-        <GoogleUserinfoAccessFormFieldset userinfo={userinfo} />
-        <GoogleGroupAccessFormFieldset
-          groups={groups}
-          selectedGroupEmail={selectedGroupEmail}
-          onSelect={selectGroup}
-        />
-        <GoogleCalendarAccessFormFieldset
-          calendars={calendars}
-          selectedCalendarId={selectedCalendarId}
-          onSelect={selectCalendar}
-        />
-        {selectedCalendarId && (
-          <GoogleEventAccessFormFieldset
-            events={visibleEvents}
-            selectedEventId={selectedEventId}
-            onSelect={setSelectedEventId}
-          />
-        )}
-        {selectedEvent && (
-          <GoogleEventUpdateAccessFormFieldset
-            key={selectedEvent.id}
-            event={selectedEvent}
-            onUpdate={updateSelectedEvent}
-          />
-        )}
-      </GenericForm>
-    </PageTemplate>
+    <GoogleDashboardPage
+      calendars={calendars}
+      events={visibleEvents}
+      groups={groups}
+      onCalendarSelect={selectCalendar}
+      onEventSelect={setSelectedEventId}
+      onGroupSelect={selectGroup}
+      onUpdateEvent={updateSelectedEvent}
+      selectedCalendarId={selectedCalendarId}
+      selectedEventId={selectedEventId}
+      selectedGroupEmail={selectedGroupEmail}
+      userinfo={userinfo}
+    />
   );
 };

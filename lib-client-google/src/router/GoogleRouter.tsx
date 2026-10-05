@@ -12,6 +12,7 @@ export const GoogleRouter = ({ pages }: { pages: GoogleRouterPages }) => (
   <Routes>
     <Route path="/google" element={pages.landing} />
     <Route path="/google/scopes" element={pages.scopes} />
+    <Route path="/google/dashboard" element={pages.dashboard} />
     <Route path="/dashboard" element={pages.dashboard} />
     <Route path="*" element={<Navigate to="/google" replace />} />
   </Routes>

@@ -10,6 +10,16 @@ export type { CalendarList } from './types/CalendarList';
 export type { Group } from './types/Group';
 export type { Member } from './types/Member';
 export type { Userinfo } from './types/Userinfo';
+export {
+  INITIAL_SELECTIONS,
+  MOCK_ALL_CALENDARS,
+  MOCK_DASHBOARD_DATA,
+  MOCK_EVENTS,
+  MOCK_GROUPS,
+  MOCK_GROUP_CALENDARS,
+  MOCK_USERINFO,
+} from './mockDashboardData';
+export type { MockWorkflowStep } from './mockDashboardData';
 
 export interface GoogleScope {
   id: string;
