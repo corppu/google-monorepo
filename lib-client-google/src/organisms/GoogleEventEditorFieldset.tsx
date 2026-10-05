@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Event, GoogleEventChanges } from '@gm/lib-common-google';
-import { Button, Field } from '@gm/lib-client-common';
-import './GoogleAccessFormFieldset.css';
+import { Button, Field, SectionFieldset } from '@gm/lib-client-common';
 import './GoogleEventEditorFieldset.css';
 
 const toLocalDateTime = (value?: string | null) => {
@@ -81,13 +80,11 @@ export const GoogleEventEditorFieldset = ({
   };
 
   return (
-    <fieldset
-      className={`gm-google-access-fieldset ${titleError ? 'gm-client-event-editor-fieldset--invalid' : ''}`.trim()}
+    <SectionFieldset
       id={`${idPrefix}-${mode}-fieldset`}
+      invalid={Boolean(titleError)}
+      legend={mode === 'create' ? 'Create event' : 'Update event'}
     >
-      <legend className="gm-google-access-fieldset__legend">
-        {mode === 'create' ? 'Create event' : 'Update event'}
-      </legend>
       <Field
         error={titleError || undefined}
         hint="Required field"
@@ -147,6 +144,6 @@ export const GoogleEventEditorFieldset = ({
             : 'Save changes'}
       </Button>
       {message && <p role="status">{message}</p>}
-    </fieldset>
+    </SectionFieldset>
   );
 };

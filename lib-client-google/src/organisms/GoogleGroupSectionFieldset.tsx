@@ -1,8 +1,7 @@
 import type { Group } from '@gm/lib-common-google';
-import { ChunkedList } from '@gm/lib-client-common';
-import './GoogleAccessFormFieldset.css';
+import { ChunkedList, SectionFieldset } from '@gm/lib-client-common';
 
-export const GoogleGroupAccessFormFieldset = ({
+export const GoogleGroupSectionFieldset = ({
   groups,
   onSelect,
   selectedGroupEmail = '',
@@ -26,10 +25,7 @@ export const GoogleGroupAccessFormFieldset = ({
     : groupItems;
 
   return (
-    <fieldset className="gm-google-access-fieldset">
-      <legend className="gm-google-access-fieldset__legend">
-        Google group
-      </legend>
+    <SectionFieldset legend="Google group">
       <ChunkedList
         ariaLabel="Google groups"
         getKey={(group) => group.id}
@@ -54,6 +50,6 @@ export const GoogleGroupAccessFormFieldset = ({
           )
         }
       />
-    </fieldset>
+    </SectionFieldset>
   );
 };

@@ -1,6 +1,6 @@
 @import '@gm/lib-client-theme/src/theme.css';
 
-.gm-google-access-fieldset {
+.gm-client-section-fieldset {
   background: var(--gm-color-surface);
   border: 1px solid var(--gm-color-border);
   border-radius: var(--gm-radius-control);
@@ -13,7 +13,11 @@
   position: relative;
 }
 
-.gm-google-access-fieldset__legend {
+.gm-client-section-fieldset--invalid {
+  border-color: var(--gm-color-error-border);
+}
+
+.gm-client-section-fieldset__legend {
   background: var(--gm-color-surface);
   color: var(--gm-color-ink);
   font-size: 16px;
@@ -25,12 +29,12 @@
   top: -9px;
 }
 
-.gm-google-access-fieldset p {
+.gm-client-section-fieldset p {
   line-height: 1.45;
   margin: 0;
 }
 
-.gm-google-access-fieldset .gm-client-chunked-list__items > li {
+.gm-client-section-fieldset .gm-client-chunked-list__items > li {
   align-items: center;
   background: var(--gm-color-surface);
   border: 1px solid var(--gm-color-border-subtle);
@@ -41,7 +45,7 @@
   padding: 8px;
 }
 
-.gm-google-access-fieldset__create-event {
+.gm-client-section-fieldset__create-event {
   align-items: center;
   background: var(--gm-color-surface);
   border: 1px solid var(--gm-color-border-subtle);
@@ -52,14 +56,15 @@
   padding: 8px;
 }
 
-.gm-google-access-fieldset
+.gm-client-section-fieldset
   .gm-client-chunked-list__items
   > li:has(input:checked) {
   background: var(--gm-color-pressed-surface);
   border-color: var(--gm-color-selected);
 }
 
-.gm-google-access-fieldset .gm-client-chunked-list__items > li label {
+.gm-client-section-fieldset .gm-client-chunked-list__items > li label,
+.gm-client-section-fieldset__create-event label {
   align-items: center;
   color: var(--gm-color-ink);
   display: flex;
@@ -72,25 +77,12 @@
   min-width: 0;
 }
 
-.gm-google-access-fieldset__create-event label {
-  align-items: center;
-  color: var(--gm-color-ink);
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  font-size: var(--gm-font-label);
-  font-weight: var(--gm-font-label-weight);
-  gap: var(--gm-space-field);
-  line-height: var(--gm-line-label);
-  min-width: 0;
-}
-
-.gm-google-access-fieldset__create-event:has(input:checked) {
+.gm-client-section-fieldset__create-event:has(input:checked) {
   background: var(--gm-color-pressed-surface);
   border-color: var(--gm-color-selected);
 }
 
-.gm-google-access-fieldset input[type='radio'] {
+.gm-client-section-fieldset input[type='radio'] {
   appearance: none;
   background: var(--gm-color-surface);
   border: 1px solid var(--gm-color-border);
@@ -102,11 +94,11 @@
   width: var(--gm-size-checkbox);
 }
 
-.gm-google-access-fieldset input[type='radio']:checked {
+.gm-client-section-fieldset input[type='radio']:checked {
   border-color: var(--gm-color-selected);
 }
 
-.gm-google-access-fieldset input[type='radio']:checked::after {
+.gm-client-section-fieldset input[type='radio']:checked::after {
   background: var(--gm-color-selected);
   border-radius: 50%;
   content: '';

@@ -4,6 +4,7 @@ export * from './atoms/Heading';
 export * from './atoms/Input';
 export * from './molecules/Field';
 export * from './molecules/ChunkedList';
+export * from './molecules/SectionFieldset';
 export * from './organisms/GenericForm';
 export * from './templates/ScreenTemplate';
 export * from './molecules/GenericScopeArticle';

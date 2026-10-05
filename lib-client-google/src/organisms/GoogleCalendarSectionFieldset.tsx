@@ -1,8 +1,7 @@
-import { ChunkedList } from '@gm/lib-client-common';
+import { ChunkedList, SectionFieldset } from '@gm/lib-client-common';
 import type { CalendarList } from '@gm/lib-common-google';
-import './GoogleAccessFormFieldset.css';
 
-export const GoogleCalendarAccessFormFieldset = ({
+export const GoogleCalendarSectionFieldset = ({
   calendars,
   onSelect,
   paginationKey,
@@ -17,8 +16,7 @@ export const GoogleCalendarAccessFormFieldset = ({
     calendars?.items.filter((calendar) => calendar.id) ?? [];
 
   return (
-    <fieldset className="gm-google-access-fieldset">
-      <legend className="gm-google-access-fieldset__legend">Calendars</legend>
+    <SectionFieldset legend="Calendars">
       <ChunkedList
         ariaLabel="Calendars"
         getKey={(calendar) => calendar.id!}
@@ -42,6 +40,6 @@ export const GoogleCalendarAccessFormFieldset = ({
           )
         }
       />
-    </fieldset>
+    </SectionFieldset>
   );
 };

@@ -1,9 +1,8 @@
-import { ChunkedList } from '@gm/lib-client-common';
+import { ChunkedList, SectionFieldset } from '@gm/lib-client-common';
 import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import type { Event } from '@gm/lib-common-google';
-import './GoogleAccessFormFieldset.css';
 
-export const GoogleEventAccessFormFieldset = ({
+export const GoogleEventSectionFieldset = ({
   events,
   onSelect,
   paginationKey,
@@ -17,10 +16,9 @@ export const GoogleEventAccessFormFieldset = ({
   const eventItems = events?.filter((event) => event.id) ?? [];
 
   return (
-    <fieldset className="gm-google-access-fieldset">
-      <legend className="gm-google-access-fieldset__legend">Events</legend>
+    <SectionFieldset legend="Events">
       {onSelect && (
-        <div className="gm-google-access-fieldset__create-event">
+        <div className="gm-client-section-fieldset__create-event">
           <label>
             <input
               checked={selectedEventId === CREATE_EVENT_OPTION_ID}
@@ -57,6 +55,6 @@ export const GoogleEventAccessFormFieldset = ({
           );
         }}
       />
-    </fieldset>
+    </SectionFieldset>
   );
 };

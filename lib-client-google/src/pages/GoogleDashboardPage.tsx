@@ -7,11 +7,11 @@ import type {
   Userinfo,
 } from '@gm/lib-common-google';
 import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
-import { GoogleCalendarAccessFormFieldset } from '../organisms/GoogleCalendarAccessFormFieldset';
-import { GoogleEventAccessFormFieldset } from '../organisms/GoogleEventAccessFormFieldset';
+import { GoogleCalendarSectionFieldset } from '../organisms/GoogleCalendarSectionFieldset';
+import { GoogleEventSectionFieldset } from '../organisms/GoogleEventSectionFieldset';
 import { GoogleEventEditorFieldset } from '../organisms/GoogleEventEditorFieldset';
-import { GoogleGroupAccessFormFieldset } from '../organisms/GoogleGroupAccessFormFieldset';
-import { GoogleUserinfoAccessFormFieldset } from '../organisms/GoogleUserinfoAccessFormFieldset';
+import { GoogleGroupSectionFieldset } from '../organisms/GoogleGroupSectionFieldset';
+import { GoogleUserinfoSectionFieldset } from '../organisms/GoogleUserinfoSectionFieldset';
 import './GoogleDashboardPage.css';
 
 export interface GoogleDashboardPageProps {
@@ -54,20 +54,20 @@ export const GoogleDashboardPage = ({
         className="gm-google-dashboard-page__form"
         onSubmit={(event) => event.preventDefault()}
       >
-        <GoogleUserinfoAccessFormFieldset userinfo={userinfo} />
-        <GoogleGroupAccessFormFieldset
+        <GoogleUserinfoSectionFieldset userinfo={userinfo} />
+        <GoogleGroupSectionFieldset
           groups={groups}
           onSelect={onGroupSelect}
           selectedGroupEmail={selectedGroupEmail}
         />
-        <GoogleCalendarAccessFormFieldset
+        <GoogleCalendarSectionFieldset
           calendars={calendars}
           paginationKey={selectedGroupEmail}
           onSelect={onCalendarSelect}
           selectedCalendarId={selectedCalendarId}
         />
         {selectedCalendarId && (
-          <GoogleEventAccessFormFieldset
+          <GoogleEventSectionFieldset
             events={events}
             paginationKey={selectedCalendarId}
             onSelect={onEventSelect}

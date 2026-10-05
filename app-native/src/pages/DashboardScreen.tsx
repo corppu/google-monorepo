@@ -1,9 +1,9 @@
 import { ScreenTemplate } from '@gm/lib-native-common';
 import {
-  GoogleCalendarAccessForm,
-  GoogleEventAccessForm,
-  GoogleGroupAccessForm,
-  GoogleUserinfoAccessForm,
+  GoogleCalendarSectionFieldset,
+  GoogleEventSectionFieldset,
+  GoogleGroupSectionFieldset,
+  GoogleUserinfoSectionFieldset,
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
@@ -13,9 +13,9 @@ import { api } from '../session';
 
 export const DashboardScreen = () => (
   <ScreenTemplate title="Dashboard">
-    <GoogleUserinfoAccessForm userinfo={useGoogleUserinfo(api).data} />
-    <GoogleCalendarAccessForm calendars={useGoogleCalendars(api).data} />
-    <GoogleEventAccessForm events={useGoogleEvents(api).data} />
-    <GoogleGroupAccessForm groups={useGoogleGroups(api).data} />
+    <GoogleUserinfoSectionFieldset userinfo={useGoogleUserinfo(api).data} />
+    <GoogleCalendarSectionFieldset calendars={useGoogleCalendars(api).data} />
+    <GoogleEventSectionFieldset events={useGoogleEvents(api).data} />
+    <GoogleGroupSectionFieldset groups={useGoogleGroups(api).data} />
   </ScreenTemplate>
 );
