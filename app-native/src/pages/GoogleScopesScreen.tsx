@@ -15,7 +15,7 @@ export const GoogleScopesScreen = ({
   navigation: { navigate: (n: string) => void };
 }) => {
   const [selected, setSelected] = useState<string[]>(MINIMUM_SCOPES);
-  const verifier = useRef<string>();
+  const verifier = useRef<string | undefined>(undefined);
   const toggle = (id: string) =>
     setSelected((s) =>
       s.includes(id) ? s.filter((x) => x !== id) : [...s, id],

@@ -6,5 +6,8 @@
   "dependencies": {
     "googleapis": "latest",
     "@gm/lib-common-google": "*"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }

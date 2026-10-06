@@ -8,5 +8,8 @@
   },
   "peerDependencies": {
     "react": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }

@@ -103,7 +103,6 @@ export const GoogleDashboardScreen = ({
   selectedGroupEmail,
   userinfo,
 }: GoogleDashboardScreenProps) => {
-  const styles = useDashboardStyles();
   const creatingEvent = selectedEventId === CREATE_EVENT_OPTION_ID;
   const selectedEvent = events?.find((event) => event.id === selectedEventId);
   const selectedGroup = groups?.find(

@@ -12,5 +12,8 @@
     "react-native": "0.86.3",
     "@react-navigation/native": "latest",
     "@react-navigation/native-stack": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }

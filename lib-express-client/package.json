@@ -12,5 +12,8 @@
     "react-router-dom": "latest",
     "@gm/lib-client-common": "*",
     "@gm/lib-common-google": "*"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }

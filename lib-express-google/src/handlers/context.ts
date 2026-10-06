@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import type { Request, Response, NextFunction } from 'express';
 import type { GoogleAuthService } from '@gm/lib-rest-google';
+import 'express-session';
 
 declare module 'express-session' {
   interface SessionData {

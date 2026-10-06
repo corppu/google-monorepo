@@ -5,5 +5,8 @@
   "main": "src/index.ts",
   "peerDependencies": {
     "react": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }

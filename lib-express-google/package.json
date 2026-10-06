@@ -8,5 +8,8 @@
     "express-session": "latest",
     "@gm/lib-rest-google": "*",
     "@gm/lib-common-google": "*"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }

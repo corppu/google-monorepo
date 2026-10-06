@@ -5,5 +5,8 @@
   "main": "src/index.ts",
   "dependencies": {
     "googleapis": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
   }
 }
