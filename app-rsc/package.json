@@ -1,0 +1,26 @@
+{
+  "name": "app-rsc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@gm/lib-client-common": "*",
+    "@gm/lib-client-google": "*",
+    "@gm/lib-common-google": "*",
+    "@remix-run/node-fetch-server": "0.13.0",
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@vitejs/plugin-rsc": "latest",
+    "vite": "latest"
+  }
+}
