@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { GoogleEventService } from '@gm/lib-rest-google';
+import { googleServicesFor } from './googleServices';
 import type { Event } from '@gm/lib-common-google';
 import type { GoogleHandlerContext } from './context';
 
@@ -11,9 +11,9 @@ export const listEventsHandler =
           ? req.query.calendarId
           : undefined;
       res.json(
-        await new GoogleEventService(
-          ctx.auth.authorizedClient((res.locals as any).sid),
-        ).list(calendarId),
+        await googleServicesFor(ctx, req, (res.locals as any).sid).events.list(
+          calendarId,
+        ),
       );
     } catch (e) {
       res.status(502).json({ error: (e as Error).message });
@@ -53,9 +53,11 @@ export const createEventHandler =
     };
     try {
       res.json(
-        await new GoogleEventService(
-          ctx.auth.authorizedClient((res.locals as any).sid),
-        ).create(calendarId, event),
+        await googleServicesFor(
+          ctx,
+          req,
+          (res.locals as any).sid,
+        ).events.create(calendarId, event),
       );
     } catch (e) {
       res.status(502).json({ error: (e as Error).message });
@@ -84,9 +86,11 @@ export const updateEventHandler =
 
     try {
       res.json(
-        await new GoogleEventService(
-          ctx.auth.authorizedClient((res.locals as any).sid),
-        ).update(calendarId, eventId, changes),
+        await googleServicesFor(
+          ctx,
+          req,
+          (res.locals as any).sid,
+        ).events.update(calendarId, eventId, changes),
       );
     } catch (e) {
       res.status(502).json({ error: (e as Error).message });

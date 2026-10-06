@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { GoogleCalendarService } from '@gm/lib-rest-google';
+import { googleServicesFor } from './googleServices';
 import type { GoogleHandlerContext } from './context';
 
 export const listCalendarsHandler =
@@ -10,9 +10,11 @@ export const listCalendarsHandler =
           ? req.query.groupEmail
           : undefined;
       res.json(
-        await new GoogleCalendarService(
-          ctx.auth.authorizedClient((res.locals as any).sid),
-        ).list(groupEmail),
+        await googleServicesFor(
+          ctx,
+          req,
+          (res.locals as any).sid,
+        ).calendars.list(groupEmail),
       );
     } catch (e) {
       res.status(502).json({ error: (e as Error).message });

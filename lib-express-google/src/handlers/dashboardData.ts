@@ -1,18 +1,13 @@
-import {
-  GoogleCalendarService,
-  GoogleEventService,
-  GoogleGroupService,
-  GooglePublicContactInfoService,
-  GoogleUserService,
-} from '@gm/lib-rest-google';
 import type { GoogleHandlerContext } from './context';
+import { googleServicesFor } from './googleServices';
 
 export async function loadDashboardData(
   ctx: GoogleHandlerContext,
-  sessionId: string,
+  sessionId: string | undefined,
+  req: { query: Record<string, unknown> } = { query: {} },
 ) {
-  const auth = ctx.auth.authorizedClient(sessionId);
-  const contactInfoResult = new GooglePublicContactInfoService(auth)
+  const services = googleServicesFor(ctx, req as any, sessionId);
+  const contactInfoResult = services.contactInfo
     .get()
     .then((publicContactInfo) => ({ publicContactInfo }))
     .catch((error: unknown) => ({
@@ -22,11 +17,11 @@ export async function loadDashboardData(
           : 'Unable to load public contact information.',
     }));
   const [userinfo, contactInfo, calendars, events, groups] = await Promise.all([
-    new GoogleUserService(auth).get(),
+    services.user.get(),
     contactInfoResult,
-    new GoogleCalendarService(auth).list(),
-    new GoogleEventService(auth).list(),
-    new GoogleGroupService(auth).list().catch(() => []),
+    services.calendars.list(),
+    services.events.list(),
+    services.groups.list().catch(() => []),
   ]);
   return { calendars, events, groups, ...contactInfo, userinfo };
 }
