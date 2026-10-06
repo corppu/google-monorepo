@@ -1,0 +1,19 @@
+{
+  "name": "@gm/lib-express-client",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@gm/lib-express-google": "*",
+    "@gm/lib-client-google": "*",
+    "react-router-dom": "latest",
+    "@gm/lib-client-common": "*",
+    "@gm/lib-common-google": "*"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@gm/lib-common-google",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "googleapis": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  }
+}

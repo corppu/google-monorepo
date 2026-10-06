@@ -1,0 +1,22 @@
+{
+  "name": "app-express",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node src/start.cjs",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "latest",
+    "express-session": "latest",
+    "@gm/lib-express-client": "*",
+    "@gm/lib-express-google": "*",
+    "@gm/lib-rest-google": "*",
+    "@gm/lib-client-google": "*",
+    "@gm/lib-client-common": "*",
+    "@remix-run/node-fetch-server": "0.13.0"
+  },
+  "devDependencies": {
+    "tsx": "latest"
+  }
+}

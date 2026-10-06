@@ -1,0 +1,25 @@
+{
+  "files": ["./types/css.d.ts"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "paths": {
+      "@gm/lib-common-google": ["./lib-common-google/src/index.ts"],
+      "@gm/lib-rest-google": ["./lib-rest-google/src/index.ts"],
+      "@gm/lib-express-google": ["./lib-express-google/src/index.ts"],
+      "@gm/lib-express-client": ["./lib-express-client/src/index.ts"],
+      "@gm/lib-client-common": ["./lib-client-common/src/index.ts"],
+      "@gm/lib-client-google": ["./lib-client-google/src/index.ts"],
+      "@gm/lib-client-theme": ["./lib-client-theme/src/index.ts"],
+      "@gm/lib-native-common": ["./lib-native-common/src/index.ts"],
+      "@gm/lib-native-google": ["./lib-native-google/src/index.ts"]
+    }
+  }
+}

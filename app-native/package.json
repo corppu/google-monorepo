@@ -1,0 +1,23 @@
+{
+  "name": "app-native",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/App.tsx",
+  "dependencies": {
+    "@expo/metro-runtime": "~57.0.16",
+    "@gm/lib-common-google": "*",
+    "@gm/lib-native-common": "*",
+    "@gm/lib-native-google": "*",
+    "@react-navigation/native": "latest",
+    "@react-navigation/native-stack": "latest",
+    "expo": "latest",
+    "expo-crypto": "latest",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-web": "^0.21.2"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  }
+}

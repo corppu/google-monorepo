@@ -1,0 +1,13 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-page-template {
+  box-sizing: border-box;
+  color: var(--gm-color-ink);
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, 'Segoe UI', sans-serif;
+  font-size: var(--gm-font-body);
+  gap: 16px;
+  line-height: 1.45;
+  padding: 24px;
+}

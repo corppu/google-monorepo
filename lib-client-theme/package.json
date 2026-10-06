@@ -1,0 +1,12 @@
+{
+  "name": "@gm/lib-client-theme",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "react": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  }
+}

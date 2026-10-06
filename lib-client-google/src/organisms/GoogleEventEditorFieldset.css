@@ -1,0 +1,5 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-event-editor-description textarea {
+  min-height: 80px;
+}

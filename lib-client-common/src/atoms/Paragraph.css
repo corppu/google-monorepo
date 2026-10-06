@@ -1,0 +1,14 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-paragraph {
+  color: var(--gm-color-ink);
+  font-size: var(--gm-font-body);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.gm-client-text-link {
+  color: var(--gm-color-selected);
+  font-size: var(--gm-font-body);
+  line-height: 1.45;
+}

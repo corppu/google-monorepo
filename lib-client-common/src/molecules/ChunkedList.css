@@ -1,0 +1,36 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-chunked-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gm-client-chunked-list__pagination {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.gm-client-chunked-list__pagination button {
+  background-color: var(--gm-color-subtle-surface);
+  border: 1px solid var(--gm-color-border);
+  border-radius: var(--gm-radius-control);
+  box-sizing: border-box;
+  color: var(--gm-color-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--gm-font-label);
+  font-weight: var(--gm-font-button-weight);
+  min-height: var(--gm-size-control);
+  padding: var(--gm-space-button-vertical) var(--gm-space-button-horizontal);
+}
+
+.gm-client-chunked-list__pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
