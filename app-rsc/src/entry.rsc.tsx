@@ -11,6 +11,7 @@ import { routes } from './routes/config';
 
 function fetchServer(request: Request) {
   return matchRSCServerRequest({
+    basename: '/rsc',
     createTemporaryReferenceSet,
     decodeAction,
     decodeFormState,

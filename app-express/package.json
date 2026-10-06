@@ -13,7 +13,8 @@
     "@gm/lib-express-google": "*",
     "@gm/lib-rest-google": "*",
     "@gm/lib-client-google": "*",
-    "@gm/lib-client-common": "*"
+    "@gm/lib-client-common": "*",
+    "@remix-run/node-fetch-server": "0.13.0"
   },
   "devDependencies": {
     "tsx": "latest"

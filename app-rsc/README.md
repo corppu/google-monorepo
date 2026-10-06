@@ -6,7 +6,7 @@ Server-rendered Dashboard (mock data) using [React Router RSC Data Mode](https:/
 
 ```sh
 npm run build:rsc   # from the repo root
-npm run start:rsc   # http://localhost:3001 (PORT to override)
+npm run start:rsc   # standalone: http://localhost:3001/rsc (PORT to override)
 ```
 
 `/` redirects to `/dashboard?mock=true`. Use `npm run dev --workspace=app-rsc` for development.
@@ -20,6 +20,7 @@ npm run start:rsc   # http://localhost:3001 (PORT to override)
 
 ## Notes
 
-- Runs as a separate server (port 3001); it does not replace the Express `/ssr` router.
+- Served under the `/rsc` base (Vite `base: '/rsc/'`, React Router `basename: '/rsc'`).
+- Also mounted in `app-express` at `http://localhost:3000/rsc` (run `npm run build:rsc` first; otherwise `/rsc` is disabled with a warning). It does not replace the `/ssr` router.
 - Mock data only: no Google API or auth integration.
 - React Router's RSC APIs are unstable and may change in minor releases.

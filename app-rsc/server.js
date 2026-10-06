@@ -3,12 +3,9 @@ import express from 'express';
 import build from './dist/rsc/index.js';
 
 const app = express();
-app.use(
-  '/assets',
-  express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
-);
-app.use(express.static('dist/client'));
-app.use(createRequestListener(build));
+app.use('/rsc', express.static('dist/client', { index: false, maxAge: '1y' }));
+app.all('/rsc{/*splat}', createRequestListener(build));
+app.get('/', (_req, res) => res.redirect('/rsc'));
 
 const port = Number(process.env.PORT ?? 3001);
-app.listen(port, () => console.log(`RSC app listening on :${port}`));
+app.listen(port, () => console.log(`RSC app listening on :${port}/rsc`));

@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import express from 'express';
 import session from 'express-session';
 import {
@@ -57,4 +58,29 @@ app.get('/spa/*splat', (_req, res) =>
 );
 app.get('/', (_req, res) => res.redirect('/spa/google'));
 
-app.listen(port, () => console.log(`listening on :${port}`));
+async function mountRsc() {
+  const rscDistPath = path.resolve(__dirname, '../../app-rsc/dist');
+  if (existsSync(path.join(rscDistPath, 'rsc', 'index.js'))) {
+    // The RSC build is ESM; import it natively from this CommonJS entry.
+    const nativeImport = new Function('p', 'return import(p)') as (
+      p: string,
+    ) => Promise<any>;
+    const { createRequestListener } = await nativeImport(
+      '@remix-run/node-fetch-server',
+    );
+    const rsc = await nativeImport(
+      pathToFileURL(path.join(rscDistPath, 'rsc', 'index.js')).href,
+    );
+    app.use(
+      '/rsc',
+      express.static(path.join(rscDistPath, 'client'), { index: false }),
+    );
+    app.all('/rsc{/*splat}', createRequestListener(rsc.default));
+  } else {
+    console.warn('app-rsc is not built; /rsc is disabled (npm run build:rsc).');
+  }
+}
+
+mountRsc().then(() =>
+  app.listen(port, () => console.log(`listening on :${port}`)),
+);
