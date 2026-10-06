@@ -1,3 +1,4 @@
+import type { PublicContactInfoRepository } from './interfaces';
 import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
 import type { GooglePublicContactInfo } from '@gm/lib-common-google';
@@ -7,7 +8,7 @@ const nonEmptyValues = (values: Array<string | null | undefined>) =>
     .map((value) => value?.trim())
     .filter((value): value is string => Boolean(value));
 
-export class GooglePublicContactInfoRepository {
+export class GooglePublicContactInfoRepository implements PublicContactInfoRepository {
   constructor(private auth: Auth.OAuth2Client) {}
 
   async get(): Promise<GooglePublicContactInfo> {

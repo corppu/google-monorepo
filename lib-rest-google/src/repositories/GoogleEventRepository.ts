@@ -1,8 +1,9 @@
+import type { EventRepository } from './interfaces';
 import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
 import type { Event } from '@gm/lib-common-google';
 
-export class GoogleEventRepository {
+export class GoogleEventRepository implements EventRepository {
   constructor(private auth: Auth.OAuth2Client) {}
   async list(calendarId = 'primary'): Promise<Record<string, any>[]> {
     const res = await google

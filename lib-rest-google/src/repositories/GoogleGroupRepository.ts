@@ -1,7 +1,8 @@
+import type { GroupRepository } from './interfaces';
 import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
 
-export class GoogleGroupRepository {
+export class GoogleGroupRepository implements GroupRepository {
   constructor(private auth: Auth.OAuth2Client) {}
   async list(customer = 'my_customer'): Promise<Record<string, any>[]> {
     const res = await google

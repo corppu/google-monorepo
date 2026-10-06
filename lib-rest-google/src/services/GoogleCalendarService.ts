@@ -1,3 +1,4 @@
+import type { CalendarRepository } from '../repositories/interfaces';
 import type { Auth } from 'googleapis';
 import type { CalendarList, Calendar } from '@gm/lib-common-google';
 import { GoogleCalendarRepository } from '../repositories/GoogleCalendarRepository';
@@ -9,9 +10,9 @@ import {
 import { GoogleCalendarListEntryFilter } from '../filters/GoogleCalendarListEntryFilter';
 
 export class GoogleCalendarService {
-  private repo: GoogleCalendarRepository;
-  constructor(auth: Auth.OAuth2Client) {
-    this.repo = new GoogleCalendarRepository(auth);
+  private repo: CalendarRepository;
+  constructor(auth: Auth.OAuth2Client | undefined, repo?: CalendarRepository) {
+    this.repo = repo ?? new GoogleCalendarRepository(auth!);
   }
   async list(groupEmail?: string): Promise<CalendarList> {
     const list = unwrapValidationResult(

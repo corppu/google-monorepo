@@ -1,3 +1,4 @@
+import type { UserRepository } from '../repositories/interfaces';
 import type { Auth } from 'googleapis';
 import type { Userinfo } from '@gm/lib-common-google';
 import { GoogleUserRepository } from '../repositories/GoogleUserRepository';
@@ -7,9 +8,9 @@ import {
 } from '@gm/lib-common-google';
 
 export class GoogleUserService {
-  private repo: GoogleUserRepository;
-  constructor(auth: Auth.OAuth2Client) {
-    this.repo = new GoogleUserRepository(auth);
+  private repo: UserRepository;
+  constructor(auth: Auth.OAuth2Client | undefined, repo?: UserRepository) {
+    this.repo = repo ?? new GoogleUserRepository(auth!);
   }
   async get(): Promise<Userinfo> {
     return unwrapValidationResult(

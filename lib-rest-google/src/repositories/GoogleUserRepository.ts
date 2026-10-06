@@ -1,7 +1,8 @@
+import type { UserRepository } from './interfaces';
 import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
 
-export class GoogleUserRepository {
+export class GoogleUserRepository implements UserRepository {
   constructor(private auth: Auth.OAuth2Client) {}
   async get(): Promise<Record<string, any>> {
     return (
