@@ -5,6 +5,7 @@ import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import type { Event, GoogleEventChanges } from '@gm/lib-common-google';
 import {
   GoogleDashboardPage,
+  googleApiUrl,
   useGoogleCalendars,
   useGoogleEvents,
   useGoogleGroups,
@@ -26,26 +27,25 @@ export const DashboardPage = () => {
   );
   const [createdEvents, setCreatedEvents] = useState<Event[]>([]);
   const [updatedEvents, setUpdatedEvents] = useState<Record<string, Event>>({});
-  const { data: loadedUserinfo } = useGoogleUserinfo(!mockMode);
-  const { data: loadedContactInfo, error: contactInfoError } =
-    useGooglePublicContactInfo(!mockMode);
-  const { data: loadedGroups } = useGoogleGroups(!mockMode);
-  const { data: loadedCalendars } = useGoogleCalendars(
+  const { data: userinfo } = useGoogleUserinfo();
+  const { data: contactInfo, error: contactInfoError } =
+    useGooglePublicContactInfo();
+  const { data: groups } = useGoogleGroups();
+  const { data: calendars } = useGoogleCalendars(
     selectedGroupEmail || undefined,
-    !mockMode,
   );
   const { data: loadedEvents } = useGoogleEvents(
     selectedCalendarId || undefined,
-    Boolean(selectedCalendarId) && !mockMode,
+    Boolean(selectedCalendarId),
   );
-  const userinfo = mockMode ? MOCK_DASHBOARD_DATA.userinfo : loadedUserinfo;
-  const groups = mockMode ? MOCK_DASHBOARD_DATA.groups : loadedGroups;
-  const calendars = mockMode ? MOCK_DASHBOARD_DATA.calendars : loadedCalendars;
-  const events = mockMode
-    ? [...MOCK_DASHBOARD_DATA.events, ...createdEvents]
-    : loadedEvents
-      ? [...loadedEvents, ...createdEvents]
-      : undefined;
+  const events = loadedEvents
+    ? [
+        ...loadedEvents,
+        ...createdEvents.filter(
+          (created) => !loadedEvents.some((e) => e.id === created.id),
+        ),
+      ]
+    : undefined;
   const visibleEvents = events?.map((event) =>
     event.id ? (updatedEvents[event.id] ?? event) : event,
   );
@@ -57,10 +57,14 @@ export const DashboardPage = () => {
     setSelectedGroupEmail(groupEmail);
     setSelectedCalendarId('');
     setSelectedEventId('');
+    setCreatedEvents([]);
+    setUpdatedEvents({});
   };
   const selectCalendar = (calendarId: string) => {
     setSelectedCalendarId(calendarId);
     setSelectedEventId('');
+    setCreatedEvents([]);
+    setUpdatedEvents({});
   };
   const saveSelectedEvent = async (changes: GoogleEventChanges) => {
     if (!selectedCalendarId) throw new Error('Select a calendar first.');
@@ -71,25 +75,9 @@ export const DashboardPage = () => {
     if (!creating && !selectedEvent?.id) {
       throw new Error('Select an event first.');
     }
-    if (mockMode) {
-      if (creating) {
-        const createdEvent = {
-          ...changes,
-          id: `mock-event-${Date.now()}`,
-        };
-        setCreatedEvents((current) => [...current, createdEvent]);
-        setSelectedEventId(createdEvent.id!);
-      } else if (selectedEvent?.id) {
-        setUpdatedEvents((current) => ({
-          ...current,
-          [selectedEvent.id!]: { ...selectedEvent, ...changes },
-        }));
-      }
-      return;
-    }
     const query = new URLSearchParams({ calendarId: selectedCalendarId });
     const response = creating
-      ? await fetch(`/api/google/events?${query}`, {
+      ? await fetch(googleApiUrl(`events?${query}`), {
           body: JSON.stringify(changes),
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -123,8 +111,8 @@ export const DashboardPage = () => {
   return (
     <GoogleDashboardPage
       calendars={calendars}
-      contactInfo={mockMode ? undefined : loadedContactInfo}
-      contactInfoError={mockMode ? undefined : contactInfoError}
+      contactInfo={contactInfo}
+      contactInfoError={contactInfoError}
       events={visibleEvents}
       groups={groups}
       onCalendarSelect={selectCalendar}

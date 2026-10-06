@@ -28,20 +28,50 @@ export function createSSRRouter(stylesheets: string[] = []): Router {
         : typeof req.query.eventId === 'string'
           ? req.query.eventId
           : undefined;
-    const withSelection = <T extends object>(data: T) =>
-      requestedEventId ? { ...data, selectedEventId: requestedEventId } : data;
-    if (req.query.mock === 'true') {
-      return void res.send(
-        render(renderPath, withSelection(MOCK_DASHBOARD_DATA)),
-      );
-    }
+    const str = (v: unknown) => (typeof v === 'string' ? v : undefined);
+    const groupEmail = str(req.query.groupEmail);
+    const calendarId = str(req.query.calendarId);
+    const withSelection = <T extends object>(data: T) => ({
+      ...data,
+      ...(groupEmail ? { selectedGroupEmail: groupEmail } : {}),
+      ...(calendarId ? { selectedCalendarId: calendarId } : {}),
+      ...(requestedEventId ? { selectedEventId: requestedEventId } : {}),
+    });
+    const selection = { calendarId, groupEmail };
     const ctx = req.app.locals.googleContext as
       GoogleHandlerContext | undefined;
+    if (req.query.mock === 'true') {
+      // Mock mode still goes through the services, backed by Mock*Repository.
+      const first = await loadDashboardData(ctx, undefined, req, selection);
+      const calendarsOfGroup = first.calendars;
+      const resolvedCalendarId = calendarId ?? calendarsOfGroup.items[0]?.id;
+      const data =
+        resolvedCalendarId && !calendarId
+          ? await loadDashboardData(ctx, undefined, req, {
+              ...selection,
+              calendarId: resolvedCalendarId,
+            })
+          : first;
+      return void res.send(
+        render(
+          renderPath,
+          withSelection({
+            ...data,
+            selectedCalendarId: resolvedCalendarId,
+            selectedGroupEmail:
+              groupEmail ?? MOCK_DASHBOARD_DATA.selectedGroupEmail,
+          }),
+        ),
+      );
+    }
     const sid = ctx && sessionIdOf(ctx, req);
     try {
       if (!ctx || !sid) return void res.redirect('/ssr/google');
       res.send(
-        render(renderPath, withSelection(await loadDashboardData(ctx, sid))),
+        render(
+          renderPath,
+          withSelection(await loadDashboardData(ctx, sid, req, selection)),
+        ),
       );
     } catch {
       res.redirect('/ssr/google');

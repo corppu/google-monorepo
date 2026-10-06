@@ -93,7 +93,39 @@ if (titleInput) {
       errorMessage = undefined;
     }
   };
-  saveButton.addEventListener('click', function () {
+  var descriptionInput = document.getElementById(titleInput.id.replace('-summary-input', '-description-textarea'));
+  var statusEl = document.createElement('p');
+  statusEl.setAttribute('role', 'status');
+  fieldset.appendChild(statusEl);
+  saveButton.addEventListener('click', async function () {
+    var creating = !!document.getElementById('create-event-start-input');
+    if (!titleInput.value.trim()) return;
+    var changes = { summary: titleInput.value, description: descriptionInput ? descriptionInput.value : '' };
+    if (creating) {
+      var s = Date.parse(document.getElementById('create-event-start-input').value);
+      var e = Date.parse(document.getElementById('create-event-end-input').value);
+      if (Number.isNaN(s) || Number.isNaN(e) || e <= s) return;
+      changes.start = { dateTime: new Date(s).toISOString() };
+      changes.end = { dateTime: new Date(e).toISOString() };
+    }
+    var mock = new URLSearchParams(location.search).get('mock') === 'true';
+    var q = 'calendarId=' + encodeURIComponent(SSR_STATE.calendarId) + (mock ? '&mock=true' : '');
+    var url = '/api/google/events' + (creating ? '' : '/' + encodeURIComponent(SSR_STATE.eventId)) + '?' + q;
+    saveButton.disabled = true;
+    try {
+      var r = await fetch(url, { method: creating ? 'POST' : 'PATCH', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(changes) });
+      if (!r.ok) throw new Error('Update failed (' + r.status + ').');
+      var saved = await r.json();
+      var next = new URL(location.href);
+      next.searchParams.delete('createEvent');
+      next.searchParams.set('eventId', saved.id || SSR_STATE.eventId);
+      location.assign(next.toString());
+    } catch (err) {
+      statusEl.textContent = err.message;
+      saveButton.disabled = false;
+    }
+  });  saveButton.addEventListener('click', function () {
     if (!titleInput.value.trim()) showTitleError();
   });
   titleInput.addEventListener('input', function () {
@@ -201,9 +233,16 @@ export function createSSRRenderer(stylesheets: string[] = []) {
         </GenericForm>,
       ),
     };
+    const calendarId =
+      data.selectedCalendarId ?? data.calendars?.items[0]?.id ?? '';
+    const eventId = data.selectedEventId ?? data.events?.[0]?.id ?? '';
+    const state = JSON.stringify({ calendarId, eventId }).replace(
+      /</g,
+      '\\u003c',
+    );
     return renderPage(<GoogleRouter pages={pages} />, {
       location: path,
-      script: scripts[path],
+      script: scripts[path] && `var SSR_STATE = ${state};${scripts[path]}`,
       stylesheets,
       title: titles[path] ?? 'Google',
     });

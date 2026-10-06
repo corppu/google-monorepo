@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
 
+/** Adds mock=true to API calls when the page itself was opened with ?mock=true. */
+export function googleApiUrl(path: string): string {
+  const url = `/api/google/${path}`;
+  const mock =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('mock') === 'true';
+  return mock ? `${url}${path.includes('?') ? '&' : '?'}mock=true` : url;
+}
+
 export function useApi<T>(
   path: string,
   enabled = true,
@@ -12,7 +21,7 @@ export function useApi<T>(
     }
     let live = true;
     setState({});
-    fetch(`/api/google/${path}`, { credentials: 'include' })
+    fetch(googleApiUrl(path), { credentials: 'include' })
       .then(async (r) =>
         r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
       )

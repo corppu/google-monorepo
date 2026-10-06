@@ -61,6 +61,8 @@ app.get('/', (_req, res) => res.redirect('/spa/google'));
 async function mountRsc() {
   const rscDistPath = path.resolve(__dirname, '../../app-rsc/dist');
   if (existsSync(path.join(rscDistPath, 'rsc', 'index.js'))) {
+    // The client bundle is a production build, so the RSC server must emit production payloads too.
+    process.env.NODE_ENV ??= 'production';
     // The RSC build is ESM; import it natively from this CommonJS entry.
     const nativeImport = new Function('p', 'return import(p)') as (
       p: string,

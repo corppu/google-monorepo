@@ -11,3 +11,4 @@ export * from './repositories/MockGoogleEventRepository';
 export * from './repositories/MockGoogleGroupRepository';
 export * from './repositories/MockGoogleUserRepository';
 export * from './repositories/MockGooglePublicContactInfoRepository';
+export * from './mockGoogleServices';

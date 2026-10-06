@@ -1,6 +1,7 @@
-import { createRequestListener } from '@remix-run/node-fetch-server';
-import express from 'express';
-import build from './dist/rsc/index.js';
+process.env.NODE_ENV ??= 'production';
+const { createRequestListener } = await import('@remix-run/node-fetch-server');
+const { default: express } = await import('express');
+const { default: build } = await import('./dist/rsc/index.js');
 
 const app = express();
 app.use('/rsc', express.static('dist/client', { index: false, maxAge: '1y' }));

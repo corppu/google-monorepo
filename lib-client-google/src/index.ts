@@ -12,3 +12,4 @@ export * from './hooks/useGoogleGroups';
 export * from './hooks/useGoogleUserinfo';
 export * from './hooks/useGooglePublicContactInfo';
 export * from './router/GoogleRouter';
+export { googleApiUrl } from './hooks/useApi';

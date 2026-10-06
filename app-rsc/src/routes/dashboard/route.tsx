@@ -1,29 +1,48 @@
-import {
-  CREATE_EVENT_OPTION_ID,
-  MOCK_DASHBOARD_DATA,
-} from '@gm/lib-common-google';
+import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
+import { createMockGoogleServices } from '@gm/lib-rest-google';
 import { DashboardClient } from './DashboardClient';
 
-export function loader({ request }: { request: Request }) {
+export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
+  const services = createMockGoogleServices();
+  const groupEmail =
+    url.searchParams.get('groupEmail') ?? 'product-team@example.com';
+  const calendars = await services.calendars.list(groupEmail);
+  const calendarId =
+    url.searchParams.get('calendarId') ?? calendars.items[0]?.id ?? '';
+  const [userinfo, groups, events] = await Promise.all([
+    services.user.get(),
+    services.groups.list(),
+    calendarId ? services.events.list(calendarId) : [],
+  ]);
   const eventId =
     url.searchParams.get('createEvent') === 'true'
       ? CREATE_EVENT_OPTION_ID
-      : (url.searchParams.get('eventId') ??
-        MOCK_DASHBOARD_DATA.selectedEventId);
-  return { eventId };
+      : (url.searchParams.get('eventId') ?? events[0]?.id ?? '');
+  return {
+    data: {
+      calendars,
+      events,
+      groups,
+      selectedCalendarId: calendarId,
+      selectedGroupEmail: groupEmail,
+      userinfo,
+    },
+    eventId,
+  };
 }
 
-// Server component: the mock data is rendered to HTML on the server and the
-// interactive client component hydrates from the same props.
+// Server component: data comes from the services backed by the Mock*Repository
+// classes, rendered to HTML on the server and hydrated by the client component.
 export default function DashboardRoute({
   loaderData,
 }: {
-  loaderData: { eventId: string };
+  loaderData: Awaited<ReturnType<typeof loader>>;
 }) {
   return (
     <DashboardClient
-      initialData={MOCK_DASHBOARD_DATA}
+      key={`${loaderData.data.selectedGroupEmail}/${loaderData.data.selectedCalendarId}`}
+      initialData={loaderData.data}
       initialEventId={loaderData.eventId}
     />
   );
