@@ -10,6 +10,16 @@ export function routes() {
           lazy: () => import('./redirect/route'),
         },
         {
+          id: 'landing',
+          lazy: () => import('./landing/route'),
+          path: 'google',
+        },
+        {
+          id: 'scopes',
+          lazy: () => import('./scopes/route'),
+          path: 'google/scopes',
+        },
+        {
           id: 'dashboard',
           lazy: () => import('./dashboard/route'),
           path: 'google/dashboard',

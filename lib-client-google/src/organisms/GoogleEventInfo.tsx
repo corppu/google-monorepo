@@ -40,7 +40,7 @@ export const GoogleEventInfo = ({ event }: { event: Event }) => {
           : undefined
       }
       locationText={location}
-      title={event.summary ?? ''}
+      title={event.summary?.trim() || 'Untitled event'}
     />
   );
 };

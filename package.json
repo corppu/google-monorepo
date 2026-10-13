@@ -10,6 +10,7 @@
     "build:rsc": "npm run build --workspace=lib-express-rsc",
     "build:ssr": "npm run build --workspace=lib-express-ssr",
     "build:client": "npm run build --workspace=app-client",
+    "test:e2e": "npm run build:client && npm run build:ssr && npm run build:rsc && npm run test --workspace=app-e2e",
     "start": "npm run start --workspace=app-express",
     "format": "npm run sort:keys && prettier --write .",
     "format:check": "npm run sort:keys:check && prettier --check .",

@@ -22,12 +22,25 @@ export async function loadSSRDashboard(
 ): Promise<DashboardData | undefined> {
   const ctx = req.app.locals.googleContext as GoogleHandlerContext | undefined;
   const mock = isMockRequest(req);
-  const groupEmail = str(req.query.groupEmail);
-  const requestedCalendarId = str(req.query.calendarId);
-  const requestedEventId =
+  const queryEventId =
     req.query.createEvent === 'true'
       ? CREATE_EVENT_OPTION_ID
       : str(req.query.eventId);
+  // With no selection in the URL, mock mode starts from the shared mock selection.
+  const useMockSelection =
+    mock &&
+    !str(req.query.groupEmail) &&
+    !str(req.query.calendarId) &&
+    !queryEventId;
+  const groupEmail = useMockSelection
+    ? MOCK_DASHBOARD_DATA.selectedGroupEmail
+    : str(req.query.groupEmail);
+  const requestedCalendarId = useMockSelection
+    ? MOCK_DASHBOARD_DATA.selectedCalendarId
+    : str(req.query.calendarId);
+  const requestedEventId = useMockSelection
+    ? MOCK_DASHBOARD_DATA.selectedEventId
+    : queryEventId;
 
   let calendarId = requestedCalendarId;
   let data: Awaited<ReturnType<typeof loadDashboardData>>;
@@ -59,7 +72,6 @@ export async function loadSSRDashboard(
     ...data,
     selectedCalendarId: calendarId ?? '',
     selectedEventId: requestedEventId ?? data.events[0]?.id ?? '',
-    selectedGroupEmail:
-      groupEmail ?? (mock ? MOCK_DASHBOARD_DATA.selectedGroupEmail : ''),
+    selectedGroupEmail: groupEmail ?? '',
   };
 }

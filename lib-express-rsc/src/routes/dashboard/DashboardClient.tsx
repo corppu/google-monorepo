@@ -9,6 +9,7 @@ import type {
   Event,
   GoogleEventChanges,
   Group,
+  GooglePublicContactInfo,
   Userinfo,
 } from '@gm/lib-common-google';
 import { GoogleDashboardPage } from '@gm/lib-client-google';
@@ -20,6 +21,7 @@ interface DashboardData {
   events: Event[];
   groupId: string;
   groups: Group[];
+  publicContactInfo?: GooglePublicContactInfo;
   userinfo: Userinfo;
 }
 
@@ -30,6 +32,7 @@ export const DashboardClient = ({
   events: initialEvents,
   groupId,
   groups,
+  publicContactInfo,
   userinfo,
 }: DashboardData) => {
   const navigate = useNavigate();
@@ -81,6 +84,7 @@ export const DashboardClient = ({
   return (
     <GoogleDashboardPage
       calendars={calendars}
+      contactInfo={publicContactInfo}
       events={events}
       groups={groups}
       onCalendarSelect={(id) =>

@@ -1,24 +1,39 @@
-import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
+import {
+  CREATE_EVENT_OPTION_ID,
+  MOCK_DASHBOARD_DATA,
+} from '@gm/lib-common-google';
 import { createMockGoogleServices } from '@gm/lib-rest-google';
 import { DashboardClient } from './DashboardClient';
 
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
   const services = createMockGoogleServices();
-  const [userinfo, groups] = await Promise.all([
+  const [userinfo, groups, publicContactInfo] = await Promise.all([
     services.user.get(),
     services.groups.list(),
+    services.contactInfo.get(),
   ]);
-  const selectedGroup = groups.find(
-    (group) => group.id === url.searchParams.get('groupId'),
+  const params = url.searchParams;
+  // With no selection in the URL, start from the shared mock selection.
+  const useMockSelection =
+    !params.get('groupId') &&
+    !params.get('calendarId') &&
+    !params.get('eventId');
+  const selectedGroup = groups.find((group) =>
+    useMockSelection
+      ? group.email === MOCK_DASHBOARD_DATA.selectedGroupEmail
+      : group.id === params.get('groupId'),
   );
   const calendars = await services.calendars.list(
     selectedGroup?.email || undefined,
   );
-  const calendarId = url.searchParams.get('calendarId') ?? '';
+  const calendarId = useMockSelection
+    ? MOCK_DASHBOARD_DATA.selectedCalendarId
+    : (params.get('calendarId') ?? '');
   const events = calendarId ? await services.events.list(calendarId) : [];
-  const eventId =
-    url.searchParams.get('eventId') === CREATE_EVENT_OPTION_ID
+  const eventId = useMockSelection
+    ? MOCK_DASHBOARD_DATA.selectedEventId
+    : url.searchParams.get('eventId') === CREATE_EVENT_OPTION_ID
       ? CREATE_EVENT_OPTION_ID
       : (url.searchParams.get('eventId') ?? '');
   return {
@@ -28,6 +43,7 @@ export async function loader({ request }: { request: Request }) {
     events,
     groupId: selectedGroup?.id ?? '',
     groups,
+    publicContactInfo,
     userinfo,
   };
 }
