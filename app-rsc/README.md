@@ -14,7 +14,7 @@ npm run start:rsc   # standalone: http://localhost:3001/rsc (PORT to override)
 ## How it works
 
 - Follows the official `unstable_rsc-data-mode-vite` template: `entry.rsc.tsx` (server components), `entry.ssr.tsx` (HTML), `entry.browser.tsx` (hydration).
-- The `dashboard` route ([route.tsx](./src/routes/dashboard/route.tsx)) loads data in its `loader` through the `@gm/lib-rest-google` services backed by the shared `Mock*Repository` classes. `?groupEmail=`, `?calendarId=`, `?eventId=` and `?createEvent=true` set the selection.
+- The `dashboard` route ([route.tsx](./src/routes/dashboard/route.tsx)) loads data in its `loader` through the `@gm/lib-rest-google` services backed by the shared `Mock*Repository` classes. `?groupId=`, `?calendarId=` and `?eventId=` set the selection.
 - [DashboardClient.tsx](./src/routes/dashboard/DashboardClient.tsx) renders the existing `GoogleDashboardPage`; selection navigates via the URL and saving calls the `saveEvent` server action ([actions.ts](./src/routes/dashboard/actions.ts)), which creates/updates the event in the mock repository.
 - The server HTML already contains the mock data, then the page hydrates and becomes interactive.
 

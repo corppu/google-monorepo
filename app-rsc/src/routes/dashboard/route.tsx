@@ -5,30 +5,30 @@ import { DashboardClient } from './DashboardClient';
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
   const services = createMockGoogleServices();
-  const groupEmail =
-    url.searchParams.get('groupEmail') ?? 'product-team@example.com';
-  const calendars = await services.calendars.list(groupEmail);
-  const calendarId =
-    url.searchParams.get('calendarId') ?? calendars.items[0]?.id ?? '';
-  const [userinfo, groups, events] = await Promise.all([
+  const [userinfo, groups] = await Promise.all([
     services.user.get(),
     services.groups.list(),
-    calendarId ? services.events.list(calendarId) : [],
   ]);
+  const selectedGroup = groups.find(
+    (group) => group.id === url.searchParams.get('groupId'),
+  );
+  const calendars = await services.calendars.list(
+    selectedGroup?.email || undefined,
+  );
+  const calendarId = url.searchParams.get('calendarId') ?? '';
+  const events = calendarId ? await services.events.list(calendarId) : [];
   const eventId =
-    url.searchParams.get('createEvent') === 'true'
+    url.searchParams.get('eventId') === CREATE_EVENT_OPTION_ID
       ? CREATE_EVENT_OPTION_ID
-      : (url.searchParams.get('eventId') ?? events[0]?.id ?? '');
+      : (url.searchParams.get('eventId') ?? '');
   return {
-    data: {
-      calendars,
-      events,
-      groups,
-      selectedCalendarId: calendarId,
-      selectedGroupEmail: groupEmail,
-      userinfo,
-    },
+    calendarId,
+    calendars,
     eventId,
+    events,
+    groupId: selectedGroup?.id ?? '',
+    groups,
+    userinfo,
   };
 }
 
@@ -41,9 +41,8 @@ export default function DashboardRoute({
 }) {
   return (
     <DashboardClient
-      key={`${loaderData.data.selectedGroupEmail}/${loaderData.data.selectedCalendarId}`}
-      initialData={loaderData.data}
-      initialEventId={loaderData.eventId}
+      key={`${loaderData.groupId}/${loaderData.calendarId}`}
+      {...loaderData}
     />
   );
 }

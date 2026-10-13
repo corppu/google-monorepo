@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { saveEvent as saveEventAction } from './actions';
 import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
@@ -13,31 +13,37 @@ import type {
 } from '@gm/lib-common-google';
 import { GoogleDashboardPage } from '@gm/lib-client-google';
 
-interface DashboardInitialData {
+interface DashboardData {
+  calendarId: string;
   calendars: CalendarList;
+  eventId: string;
   events: Event[];
+  groupId: string;
   groups: Group[];
-  selectedCalendarId: string;
-  selectedGroupEmail: string;
   userinfo: Userinfo;
 }
 
 export const DashboardClient = ({
-  initialData,
-  initialEventId,
-}: {
-  initialData: DashboardInitialData;
-  initialEventId: string;
-}) => {
+  calendarId,
+  calendars,
+  eventId: initialEventId,
+  events: initialEvents,
+  groupId,
+  groups,
+  userinfo,
+}: DashboardData) => {
   const navigate = useNavigate();
-  const groupEmail = initialData.selectedGroupEmail;
-  const calendarId = initialData.selectedCalendarId;
+  const groupEmail = groups.find((group) => group.id === groupId)?.email ?? '';
+  const groupSelectionParams: Record<string, string> = groupId
+    ? { groupId }
+    : {};
   const [eventId, setEventId] = useState(initialEventId);
   const [created, setCreated] = useState<Event[]>([]);
   const [updated, setUpdated] = useState<Record<string, Event>>({});
+  useEffect(() => setEventId(initialEventId), [initialEventId]);
   const events = [
-    ...initialData.events,
-    ...created.filter((c) => !initialData.events.some((e) => e.id === c.id)),
+    ...initialEvents,
+    ...created.filter((c) => !initialEvents.some((e) => e.id === c.id)),
   ].map((event) => (event.id ? (updated[event.id] ?? event) : event));
 
   const saveEvent = async (changes: GoogleEventChanges) => {
@@ -49,27 +55,53 @@ export const DashboardClient = ({
     )) as Event;
     if (creating) {
       setCreated((current) => [...current, saved]);
-      if (saved.id) setEventId(saved.id);
+      if (saved.id) {
+        setEventId(saved.id);
+        navigateTo({
+          ...groupSelectionParams,
+          calendarId,
+          eventId: saved.id,
+        });
+      }
     } else if (saved.id) {
       setUpdated((current) => ({ ...current, [saved.id!]: saved }));
     }
   };
   const navigateTo = (params: Record<string, string>) =>
     navigate(`?${new URLSearchParams({ mock: 'true', ...params })}`);
+  const selectEvent = (id: string) => {
+    setEventId(id);
+    navigateTo({
+      ...groupSelectionParams,
+      calendarId,
+      eventId: id,
+    });
+  };
 
   return (
     <GoogleDashboardPage
-      calendars={initialData.calendars}
+      calendars={calendars}
       events={events}
-      groups={initialData.groups}
-      onCalendarSelect={(id) => navigateTo({ calendarId: id, groupEmail })}
-      onEventSelect={setEventId}
-      onGroupSelect={(email) => navigateTo({ groupEmail: email })}
+      groups={groups}
+      onCalendarSelect={(id) =>
+        navigateTo({ ...groupSelectionParams, calendarId: id })
+      }
+      onEventSelect={selectEvent}
+      onGroupSelect={(email) => {
+        if (!email) {
+          navigateTo({});
+          return;
+        }
+        const selectedGroup = groups.find((group) => group.email === email);
+        if (selectedGroup?.id) {
+          navigateTo({ groupId: selectedGroup.id });
+        }
+      }}
       onSaveEvent={saveEvent}
       selectedCalendarId={calendarId}
       selectedEventId={eventId}
       selectedGroupEmail={groupEmail}
-      userinfo={initialData.userinfo}
+      userinfo={userinfo}
     />
   );
 };
