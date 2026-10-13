@@ -4,7 +4,7 @@
 #   docker stack deploy -c docker-stack.yml gm
 #   docker service scale gm_app=5      (or change REPLICAS and redeploy)
 #
-# Auth sessions, Express sessions and events are stored in the PostGIS service (DATABASE_URL),
+# OIDC users/tokens (encrypted), Express sessions and events are stored in the PostGIS service (DATABASE_URL),
 # so replicas are interchangeable and Traefik round-robins without sticky sessions.
 # Use a multi-node swarm with a registry image (IMAGE=registry/name:tag) if replicas span nodes.
 services:
@@ -54,8 +54,9 @@ services:
       NODE_ENV: production
       SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET (shared by all replicas)}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
-      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8080/api/google/auth/callback}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:?set GOOGLE_CLIENT_SECRET}
+      TOKEN_ENCRYPTION_KEY: ${TOKEN_ENCRYPTION_KEY:?set TOKEN_ENCRYPTION_KEY (encrypts Google tokens at rest)}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8080/api/auth/callback}
       DATABASE_URL: postgres://gm:${DB_PASSWORD}@db:5432/gm
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
     networks: [web, backend]

@@ -22,17 +22,6 @@ export function ensurePgSchema(db: Pool = getPgPool()): Promise<void> {
       await client.query('SELECT pg_advisory_lock($1)', [SCHEMA_LOCK]);
       await client.query('CREATE EXTENSION IF NOT EXISTS postgis');
       await client.query(`
-        CREATE TABLE IF NOT EXISTS google_auth_sessions (
-          session_id text PRIMARY KEY,
-          gmail text NOT NULL,
-          password_hash text NOT NULL,
-          scopes text[] NOT NULL DEFAULT '{}',
-          nonce text,
-          state text,
-          tokens jsonb
-        );
-        CREATE UNIQUE INDEX IF NOT EXISTS google_auth_sessions_gmail_idx
-          ON google_auth_sessions (lower(gmail));
         CREATE TABLE IF NOT EXISTS google_events (
           calendar_id text NOT NULL,
           id text NOT NULL,

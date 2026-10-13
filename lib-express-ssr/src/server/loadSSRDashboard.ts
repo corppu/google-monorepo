@@ -3,7 +3,11 @@ import {
   CREATE_EVENT_OPTION_ID,
   MOCK_DASHBOARD_DATA,
 } from '@gm/lib-common-google';
-import { loadDashboardData, sessionIdOf } from '@gm/lib-express-google';
+import {
+  isMockRequest,
+  loadDashboardData,
+  userIdOf,
+} from '@gm/lib-express-google';
 import type { GoogleHandlerContext } from '@gm/lib-express-google';
 import type { DashboardData } from '../types';
 
@@ -17,7 +21,7 @@ export async function loadSSRDashboard(
   req: Request,
 ): Promise<DashboardData | undefined> {
   const ctx = req.app.locals.googleContext as GoogleHandlerContext | undefined;
-  const mock = req.query.mock === 'true';
+  const mock = isMockRequest(req);
   const groupEmail = str(req.query.groupEmail);
   const requestedCalendarId = str(req.query.calendarId);
   const requestedEventId =
@@ -39,7 +43,7 @@ export async function loadSSRDashboard(
       });
     }
   } else {
-    const sid = ctx && sessionIdOf(ctx, req);
+    const sid = ctx && userIdOf(ctx, req);
     if (!ctx || !sid) return undefined;
     try {
       data = await loadDashboardData(ctx, sid, req, {

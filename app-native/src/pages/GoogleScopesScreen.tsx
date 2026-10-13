@@ -6,7 +6,7 @@ import {
   GenericScopesSelectorFieldset,
   ScreenTemplate,
 } from '@gm/lib-native-common';
-import { api, jsonHeaders, REDIRECT_URI } from '../session';
+import { api, jsonHeaders, REDIRECT_URI, storeTokens } from '../session';
 import { createPkcePair } from '../pkce';
 
 export const GoogleScopesScreen = ({
@@ -25,7 +25,7 @@ export const GoogleScopesScreen = ({
     const sub = Linking.addEventListener('url', async ({ url }) => {
       if (!url.startsWith(REDIRECT_URI) || !verifier.current) return;
       const params = new URL(url).searchParams;
-      const r = await fetch(`${api.baseUrl}/api/google/auth/native/exchange`, {
+      const r = await fetch(`${api.baseUrl}/api/auth/native/exchange`, {
         body: JSON.stringify({
           code: params.get('code'),
           codeVerifier: verifier.current,
@@ -36,7 +36,9 @@ export const GoogleScopesScreen = ({
         method: 'POST',
       });
       verifier.current = undefined;
-      if (r.ok) navigation.navigate('Dashboard');
+      if (!r.ok) return;
+      await storeTokens(await r.json());
+      navigation.navigate('Dashboard');
     });
     return () => sub.remove();
   }, [navigation]);
@@ -44,7 +46,7 @@ export const GoogleScopesScreen = ({
   const authorize = async () => {
     const { codeChallenge, codeVerifier } = await createPkcePair();
     verifier.current = codeVerifier;
-    const r = await fetch(`${api.baseUrl}/api/google/auth/native/start`, {
+    const r = await fetch(`${api.baseUrl}/api/auth/native/start`, {
       body: JSON.stringify({
         codeChallenge,
         redirectUri: REDIRECT_URI,

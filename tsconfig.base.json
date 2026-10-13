@@ -12,6 +12,8 @@
     "noEmit": true,
     "paths": {
       "@gm/lib-common-google": ["./lib-common-google/src/index.ts"],
+      "@gm/lib-rest-auth": ["./lib-rest-auth/src/index.ts"],
+      "@gm/lib-express-auth": ["./lib-express-auth/src/index.ts"],
       "@gm/lib-rest-google": ["./lib-rest-google/src/index.ts"],
       "@gm/lib-express-google": ["./lib-express-google/src/index.ts"],
       "@gm/lib-express-rsc": ["./lib-express-rsc/src/index.cts"],

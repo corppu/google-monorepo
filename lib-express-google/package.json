@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "latest",
     "express-session": "latest",
+    "@gm/lib-express-auth": "*",
     "@gm/lib-rest-google": "*",
     "@gm/lib-common-google": "*"
   },

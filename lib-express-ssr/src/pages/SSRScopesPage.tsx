@@ -14,14 +14,12 @@ export const SSRScopesPage = () => {
         ? current.filter((scope) => scope !== id)
         : [...current, id],
     );
-  const submit = async () => {
-    await fetch('/api/google/auth/scopes', {
-      body: JSON.stringify({ scopes: selected }),
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
+  const submit = () => {
+    const query = new URLSearchParams({
+      returnTo: '/ssr/google/dashboard',
+      scopes: selected.join(' '),
     });
-    window.location.href = '/api/google/auth/start?target=ssr';
+    window.location.href = `/api/auth/login?${query}`;
   };
   return (
     <PageTemplate title="Choose scopes">

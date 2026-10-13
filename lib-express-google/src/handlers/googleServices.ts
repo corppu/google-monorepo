@@ -1,4 +1,5 @@
 import type { Request } from 'express';
+import { isMockRequest } from '@gm/lib-express-auth';
 import {
   GoogleCalendarService,
   GoogleEventService,
@@ -8,9 +9,6 @@ import {
   createMockGoogleServices,
 } from '@gm/lib-rest-google';
 import type { Auth } from 'googleapis';
-
-export const isMockRequest = (req: Pick<Request, 'query'>) =>
-  req.query.mock === 'true';
 
 /** Builds the services with Mock*Repository when `mock` is set, otherwise with the real repositories. */
 export async function createGoogleServices(
