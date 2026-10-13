@@ -1,9 +1,30 @@
-import { randomBytes } from 'node:crypto';
+import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto';
 import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
 import { MINIMUM_SCOPES } from '@gm/lib-common-google';
-import { GoogleInMemoryAuthRepository } from '../repositories/GoogleInMemoryAuthRepository';
-import type { GoogleAuthSession } from '../repositories/GoogleInMemoryAuthRepository';
+import type {
+  AuthRepository,
+  GoogleAuthSession,
+} from '../repositories/authRepository';
+
+const scryptAsync = (password: string, salt: Buffer) =>
+  new Promise<Buffer>((resolve, reject) =>
+    scrypt(password, salt, 64, (e, key) => (e ? reject(e) : resolve(key))),
+  );
+
+async function hashPassword(password: string) {
+  const salt = randomBytes(16);
+  const hash = await scryptAsync(password, salt);
+  return `${salt.toString('hex')}:${hash.toString('hex')}`;
+}
+
+async function verifyPassword(password: string, stored: string) {
+  const [salt, hash] = stored.split(':');
+  if (!salt || !hash) return false;
+  const expected = Buffer.from(hash, 'hex');
+  const actual = await scryptAsync(password, Buffer.from(salt, 'hex'));
+  return expected.length === actual.length && timingSafeEqual(expected, actual);
+}
 
 export interface GoogleOAuthConfig {
   clientId: string;
@@ -13,31 +34,32 @@ export interface GoogleOAuthConfig {
 
 export class GoogleAuthService {
   constructor(
-    private repo: GoogleInMemoryAuthRepository,
+    private repo: AuthRepository,
     private config: GoogleOAuthConfig,
   ) {}
 
   /** Creates a session, or validates the password of an existing one. */
-  login(gmail: string, password: string): GoogleAuthSession {
-    const existing = this.repo.findByGmail(gmail);
-    if (!existing) return this.repo.create(gmail, password);
-    if (existing.password !== password) throw new Error('Invalid credentials');
+  async login(gmail: string, password: string): Promise<GoogleAuthSession> {
+    const existing = await this.repo.findByGmail(gmail);
+    if (!existing) return this.repo.create(gmail, await hashPassword(password));
+    if (!(await verifyPassword(password, existing.password)))
+      throw new Error('Invalid credentials');
     return existing;
   }
 
-  getSession(sessionId: string): GoogleAuthSession | undefined {
+  async getSession(sessionId: string): Promise<GoogleAuthSession | undefined> {
     return this.repo.findBySessionId(sessionId);
   }
 
   /** Stores scopes; minimum scopes are always included. */
-  setScopes(sessionId: string, scopes: string[]): string[] {
+  async setScopes(sessionId: string, scopes: string[]): Promise<string[]> {
     const merged = Array.from(new Set([...MINIMUM_SCOPES, ...scopes]));
-    this.require(sessionId);
-    this.repo.update(sessionId, { scopes: merged });
+    await this.require(sessionId);
+    await this.repo.update(sessionId, { scopes: merged });
     return merged;
   }
 
-  startUrl(sessionId: string): string {
+  startUrl(sessionId: string): Promise<string> {
     return this.buildUrl(sessionId, this.config.redirectUri);
   }
 
@@ -46,7 +68,7 @@ export class GoogleAuthService {
     sessionId: string,
     codeChallenge: string,
     redirectUri: string,
-  ): string {
+  ): Promise<string> {
     return this.buildUrl(sessionId, redirectUri, codeChallenge);
   }
 
@@ -69,15 +91,15 @@ export class GoogleAuthService {
     await this.exchange(sessionId, code, state, redirectUri, codeVerifier);
   }
 
-  private buildUrl(
+  private async buildUrl(
     sessionId: string,
     redirectUri: string,
     codeChallenge?: string,
-  ): string {
-    const session = this.require(sessionId);
+  ): Promise<string> {
+    const session = await this.require(sessionId);
     const state = randomBytes(16).toString('hex');
     const nonce = randomBytes(16).toString('hex');
-    this.repo.update(sessionId, { nonce, state });
+    await this.repo.update(sessionId, { nonce, state });
     return this.client(redirectUri).generateAuthUrl({
       access_type: 'offline',
       login_hint: session.gmail,
@@ -101,7 +123,7 @@ export class GoogleAuthService {
     redirectUri: string,
     codeVerifier?: string,
   ): Promise<void> {
-    const session = this.require(sessionId);
+    const session = await this.require(sessionId);
     if (!session.state || session.state !== state)
       throw new Error('Invalid state');
     const client = this.client(redirectUri);
@@ -113,11 +135,15 @@ export class GoogleAuthService {
     });
     if (!session.nonce || ticket.getPayload()?.nonce !== session.nonce)
       throw new Error('Invalid nonce');
-    this.repo.update(sessionId, { nonce: undefined, state: undefined, tokens });
+    await this.repo.update(sessionId, {
+      nonce: undefined,
+      state: undefined,
+      tokens,
+    });
   }
 
-  authorizedClient(sessionId: string): Auth.OAuth2Client {
-    const session = this.require(sessionId);
+  async authorizedClient(sessionId: string): Promise<Auth.OAuth2Client> {
+    const session = await this.require(sessionId);
     if (!session.tokens) throw new Error('Not authorized with Google');
     const c = this.client();
     c.setCredentials(session.tokens);
@@ -132,8 +158,8 @@ export class GoogleAuthService {
     );
   }
 
-  private require(sessionId: string): GoogleAuthSession {
-    const s = this.repo.findBySessionId(sessionId);
+  private async require(sessionId: string): Promise<GoogleAuthSession> {
+    const s = await this.repo.findBySessionId(sessionId);
     if (!s) throw new Error('Unknown session');
     return s;
   }

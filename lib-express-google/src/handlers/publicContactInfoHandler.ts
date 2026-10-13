@@ -6,10 +6,8 @@ export const publicContactInfoHandler =
   (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {
     try {
       res.json(
-        await googleServicesFor(
-          ctx,
-          req,
-          (res.locals as any).sid,
+        await (
+          await googleServicesFor(ctx, req, (res.locals as any).sid)
         ).contactInfo.get(),
       );
     } catch (error) {

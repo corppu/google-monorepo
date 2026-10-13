@@ -10,10 +10,8 @@ export const listCalendarsHandler =
           ? req.query.groupEmail
           : undefined;
       res.json(
-        await googleServicesFor(
-          ctx,
-          req,
-          (res.locals as any).sid,
+        await (
+          await googleServicesFor(ctx, req, (res.locals as any).sid)
         ).calendars.list(groupEmail),
       );
     } catch (e) {

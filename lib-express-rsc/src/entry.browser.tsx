@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+/// <reference types="@vitejs/plugin-rsc/types" />
 import {
   createFromReadableStream,
   createTemporaryReferenceSet,

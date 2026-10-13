@@ -1,12 +1,12 @@
 {
-  "name": "app-rsc",
+  "name": "@gm/lib-express-rsc",
   "version": "0.0.0",
   "private": true,
+  "main": "src/index.cts",
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
-    "start": "node server.js"
+    "dev": "vite"
   },
   "dependencies": {
     "@gm/lib-client-common": "*",

@@ -12,7 +12,7 @@ export function routes() {
         {
           id: 'dashboard',
           lazy: () => import('./dashboard/route'),
-          path: 'dashboard',
+          path: 'google/dashboard',
         },
       ],
       id: 'root',

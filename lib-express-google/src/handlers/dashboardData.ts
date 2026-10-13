@@ -7,7 +7,7 @@ export async function loadDashboardData(
   req: { query: Record<string, unknown> } = { query: {} },
   selection: { calendarId?: string; groupEmail?: string } = {},
 ) {
-  const services = googleServicesFor(ctx, req as any, sessionId);
+  const services = await googleServicesFor(ctx, req as any, sessionId);
   const contactInfoResult = services.contactInfo
     .get()
     .then((publicContactInfo) => ({ publicContactInfo }))

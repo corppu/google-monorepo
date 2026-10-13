@@ -3,11 +3,13 @@ import { GOOGLE_SCOPES } from '@gm/lib-common-google';
 import type { GoogleHandlerContext } from './context';
 
 export const scopesHandler =
-  (ctx: GoogleHandlerContext) => (req: Request, res: Response) => {
+  (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {
     const scopes = Array.isArray(req.body?.scopes)
       ? req.body.scopes.filter((s: unknown) => typeof s === 'string')
       : [];
-    res.json({ scopes: ctx.auth.setScopes((res.locals as any).sid, scopes) });
+    res.json({
+      scopes: await ctx.auth.setScopes((res.locals as any).sid, scopes),
+    });
   };
 
 export const listScopesHandler =

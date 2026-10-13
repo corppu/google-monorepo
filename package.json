@@ -7,8 +7,8 @@
   ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "build:rsc": "npm run build --workspace=app-rsc",
-    "start:rsc": "npm run start --workspace=app-rsc",
+    "build:rsc": "npm run build --workspace=lib-express-rsc",
+    "build:ssr": "npm run build --workspace=lib-express-ssr",
     "build:client": "npm run build --workspace=app-client",
     "start": "npm run start --workspace=app-express",
     "format": "npm run sort:keys && prettier --write .",

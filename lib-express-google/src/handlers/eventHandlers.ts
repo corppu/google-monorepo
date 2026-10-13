@@ -11,9 +11,9 @@ export const listEventsHandler =
           ? req.query.calendarId
           : undefined;
       res.json(
-        await googleServicesFor(ctx, req, (res.locals as any).sid).events.list(
-          calendarId,
-        ),
+        await (
+          await googleServicesFor(ctx, req, (res.locals as any).sid)
+        ).events.list(calendarId),
       );
     } catch (e) {
       res.status(502).json({ error: (e as Error).message });
@@ -53,10 +53,8 @@ export const createEventHandler =
     };
     try {
       res.json(
-        await googleServicesFor(
-          ctx,
-          req,
-          (res.locals as any).sid,
+        await (
+          await googleServicesFor(ctx, req, (res.locals as any).sid)
         ).events.create(calendarId, event),
       );
     } catch (e) {
@@ -86,10 +84,8 @@ export const updateEventHandler =
 
     try {
       res.json(
-        await googleServicesFor(
-          ctx,
-          req,
-          (res.locals as any).sid,
+        await (
+          await googleServicesFor(ctx, req, (res.locals as any).sid)
         ).events.update(calendarId, eventId, changes),
       );
     } catch (e) {

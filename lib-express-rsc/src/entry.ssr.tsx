@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+/// <reference types="@vitejs/plugin-rsc/types" />
 import { createFromReadableStream } from '@vitejs/plugin-rsc/ssr';
 import type { ReactFormState } from 'react-dom/client';
 import { renderToReadableStream as renderHTMLToReadableStream } from 'react-dom/server.edge';

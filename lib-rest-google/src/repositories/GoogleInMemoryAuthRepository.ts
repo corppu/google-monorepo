@@ -1,16 +1,9 @@
 import { randomUUID } from 'node:crypto';
+import type { AuthRepository, GoogleAuthSession } from './authRepository';
 
-export interface GoogleAuthSession {
-  gmail: string;
-  nonce?: string;
-  password: string;
-  scopes: string[];
-  sessionId: string;
-  state?: string;
-  tokens?: Record<string, any>;
-}
+export type { GoogleAuthSession } from './authRepository';
 
-export class GoogleInMemoryAuthRepository {
+export class GoogleInMemoryAuthRepository implements AuthRepository {
   private byId = new Map<string, GoogleAuthSession>();
   private byGmail = new Map<string, string>();
 

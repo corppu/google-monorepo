@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import type { GoogleHandlerContext } from './context';
 
 export const loginHandler =
-  (ctx: GoogleHandlerContext) => (req: Request, res: Response) => {
+  (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {
     const { gmail, password } = req.body ?? {};
     if (
       typeof gmail !== 'string' ||
@@ -15,7 +15,7 @@ export const loginHandler =
         .json({ error: 'gmail and password required' });
     }
     try {
-      const session = ctx.auth.login(gmail, password);
+      const session = await ctx.auth.login(gmail, password);
       req.session.gsid = session.sessionId;
       res.json({ ok: true });
     } catch {

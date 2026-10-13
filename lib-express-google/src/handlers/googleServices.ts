@@ -13,12 +13,12 @@ export const isMockRequest = (req: Pick<Request, 'query'>) =>
   req.query.mock === 'true';
 
 /** Builds the services with Mock*Repository when `mock` is set, otherwise with the real repositories. */
-export function createGoogleServices(
-  auth: () => Auth.OAuth2Client,
+export async function createGoogleServices(
+  auth: () => Promise<Auth.OAuth2Client>,
   mock: boolean,
 ) {
   if (mock) return createMockGoogleServices();
-  const client = auth();
+  const client = await auth();
   return {
     calendars: new GoogleCalendarService(client),
     contactInfo: new GooglePublicContactInfoService(client),
@@ -30,7 +30,8 @@ export function createGoogleServices(
 
 export const googleServicesFor = (
   ctx:
-    { auth: { authorizedClient(sid: string): Auth.OAuth2Client } } | undefined,
+    | { auth: { authorizedClient(sid: string): Promise<Auth.OAuth2Client> } }
+    | undefined,
   req: Pick<Request, 'query'>,
   sid: string | undefined,
 ) =>

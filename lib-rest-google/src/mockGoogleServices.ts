@@ -1,3 +1,5 @@
+import { hasDatabase } from './db/pg';
+import { PgGoogleEventRepository } from './repositories/PgGoogleEventRepository';
 import { MockGoogleCalendarRepository } from './repositories/MockGoogleCalendarRepository';
 import { MockGoogleEventRepository } from './repositories/MockGoogleEventRepository';
 import { MockGoogleGroupRepository } from './repositories/MockGoogleGroupRepository';
@@ -10,10 +12,13 @@ import { GooglePublicContactInfoService } from './services/GooglePublicContactIn
 import { GoogleUserService } from './services/GoogleUserService';
 
 // Process-wide repositories so mock creates/updates persist between requests.
+// With DATABASE_URL set, events live in PostgreSQL so all replicas share them.
 const repositories = {
   calendar: new MockGoogleCalendarRepository(),
   contactInfo: new MockGooglePublicContactInfoRepository(),
-  event: new MockGoogleEventRepository(),
+  event: hasDatabase()
+    ? new PgGoogleEventRepository()
+    : new MockGoogleEventRepository(),
   group: new MockGoogleGroupRepository(),
   user: new MockGoogleUserRepository(),
 };
