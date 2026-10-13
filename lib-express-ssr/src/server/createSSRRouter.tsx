@@ -99,7 +99,7 @@ export function createSSRRouter(assets: SSRAssets = readSSRAssets()): Router {
       .status(context.statusCode)
       .type('html')
       .send(
-        `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(handle?.title ?? 'Google')}</title>${stylesheets}</head><body><div id="${SSR_ROOT_ELEMENT_ID}">${body}</div>${hydration}</body></html>`,
+        `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><title>${escapeHtml(handle?.title ?? 'Google')}</title>${stylesheets}</head><body><div id="${SSR_ROOT_ELEMENT_ID}">${body}</div>${hydration}</body></html>`,
       );
   });
   return router;

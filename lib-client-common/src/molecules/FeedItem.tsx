@@ -31,11 +31,11 @@ export const FeedItem = ({
   title: ReactNode;
 }) => (
   <article className="gm-client-feed-item">
-    <h4>
+    <h3>
       <time dateTime={dateTimeISO}>{dateTimeLocalized}</time>
       <br />
       {title}
-    </h4>
+    </h3>
     {description}
     <br />
     {locationHref ? (

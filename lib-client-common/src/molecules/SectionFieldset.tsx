@@ -24,7 +24,7 @@ export const SectionFieldset = ({
 
   return as === 'article' ? (
     <article className={className} id={id}>
-      <h3 className="gm-client-section-fieldset__legend">{legend}</h3>
+      <h2 className="gm-client-section-fieldset__legend">{legend}</h2>
       {children}
     </article>
   ) : (

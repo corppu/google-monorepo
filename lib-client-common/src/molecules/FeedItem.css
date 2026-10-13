@@ -6,7 +6,7 @@
   line-height: 1.45;
 }
 
-.gm-client-feed-item h4 {
+.gm-client-feed-item h3 {
   font-size: var(--gm-font-heading);
   line-height: var(--gm-line-heading);
   margin: 0 0 var(--gm-space-field);
