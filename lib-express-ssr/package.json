@@ -1,0 +1,23 @@
+{
+  "name": "@gm/lib-express-ssr",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router": "latest",
+    "@gm/lib-express-google": "*",
+    "@gm/lib-client-google": "*",
+    "@gm/lib-client-common": "*",
+    "@gm/lib-common-google": "*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest"
+  },
+  "scripts": {
+    "build": "vite build"
+  }
+}

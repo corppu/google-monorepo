@@ -1,0 +1,91 @@
+# Build the image first (swarm does not build):
+#   docker build -t google-monorepo:latest .
+# Deploy / scale:
+#   docker stack deploy -c docker-stack.yml gm
+#   docker service scale gm_app=5      (or change REPLICAS and redeploy)
+#
+# OIDC users/tokens (encrypted), Express sessions and events are stored in the PostGIS service (DATABASE_URL),
+# so replicas are interchangeable and Traefik round-robins without sticky sessions.
+# Use a multi-node swarm with a registry image (IMAGE=registry/name:tag) if replicas span nodes.
+services:
+  db:
+    image: postgis/postgis:17-3.5-alpine
+    environment:
+      POSTGRES_DB: gm
+      POSTGRES_USER: gm
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U gm -d gm]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      placement:
+        constraints: [node.role == manager]
+
+  proxy:
+    image: traefik:v3.1
+    command:
+      - --providers.swarm=true
+      - --providers.swarm.exposedByDefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - target: 80
+        published: ${PORT:-8080}
+        protocol: tcp
+        mode: ingress
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: [web]
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  app:
+    image: ${IMAGE:-google-monorepo:latest}
+    environment:
+      PORT: '3000'
+      NODE_ENV: production
+      SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET (shared by all replicas)}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:?set GOOGLE_CLIENT_SECRET}
+      TOKEN_ENCRYPTION_KEY: ${TOKEN_ENCRYPTION_KEY:?set TOKEN_ENCRYPTION_KEY (encrypts Google tokens at rest)}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8080/api/auth/callback}
+      DATABASE_URL: postgres://gm:${DB_PASSWORD}@db:5432/gm
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    networks: [web, backend]
+    deploy:
+      replicas: ${REPLICAS:-3}
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        order: start-first
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.app.rule=PathPrefix(`/`)
+        - traefik.http.routers.app.entrypoints=web
+        - traefik.http.services.app.loadbalancer.server.port=3000
+
+networks:
+  web:
+    driver: overlay
+  backend:
+    driver: overlay
+    internal: true
+
+volumes:
+  db-data:

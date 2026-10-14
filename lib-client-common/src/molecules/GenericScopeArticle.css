@@ -1,0 +1,25 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-scope-article {
+  border-bottom: 1px solid var(--gm-color-border-subtle);
+  margin: 0;
+  padding: var(--gm-space-scope-row-vertical) 0;
+}
+
+.gm-client-scope-article__label {
+  align-items: center;
+  color: var(--gm-color-ink);
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: var(--gm-font-label);
+  justify-content: space-between;
+  line-height: var(--gm-line-label);
+  min-height: var(--gm-size-scope-row);
+}
+
+.gm-client-scope-article__checkbox {
+  accent-color: var(--gm-color-selected);
+  height: var(--gm-size-checkbox);
+  margin: 0 2px 0 var(--gm-space-scope-row-horizontal);
+  width: var(--gm-size-checkbox);
+}

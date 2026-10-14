@@ -1,0 +1,17 @@
+{
+  "name": "@gm/lib-rest-google",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@gm/lib-common-google": "*",
+    "googleapis": "latest",
+    "pg": "^8.23.1"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1"
+  }
+}
