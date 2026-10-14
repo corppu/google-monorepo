@@ -75,7 +75,9 @@ export const DashboardPage = () => {
     if (!creating && !selectedEvent?.id) {
       throw new Error('Select an event first.');
     }
-    const query = new URLSearchParams({ calendarId: selectedCalendarId });
+    const query = new URLSearchParams({
+      calendarId: selectedCalendarId,
+    });
     const response = creating
       ? await fetch(googleApiUrl(`events?${query}`), {
           body: JSON.stringify(changes),
@@ -84,7 +86,9 @@ export const DashboardPage = () => {
           method: 'POST',
         })
       : await fetch(
-          `/api/google/events/${encodeURIComponent(selectedEvent!.id!)}?${query}`,
+          googleApiUrl(
+            `events/${encodeURIComponent(selectedEvent!.id!)}?${query}`,
+          ),
           {
             body: JSON.stringify(changes),
             credentials: 'include',

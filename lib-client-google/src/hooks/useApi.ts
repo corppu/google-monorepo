@@ -3,9 +3,7 @@ import { useEffect, useState } from 'react';
 /** Adds mock=true to API calls when the page itself was opened with ?mock=true. */
 export function googleApiUrl(path: string): string {
   const url = `/api/google/${path}`;
-  const mock =
-    typeof window !== 'undefined' &&
-    new URLSearchParams(window.location.search).get('mock') === 'true';
+  const mock = window?.location?.search?.includes?.('mock=true') ? true : false;
   return mock ? `${url}${path.includes('?') ? '&' : '?'}mock=true` : url;
 }
 
