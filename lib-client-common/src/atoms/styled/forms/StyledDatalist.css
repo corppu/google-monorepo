@@ -1,0 +1,4 @@
+/* Datalist itself has no visual box, but we keep a class for consistency */
+.styled-datalist {
+  display: block;
+}

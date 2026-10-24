@@ -1,0 +1,7 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-storybook-theme {
+  background-color: var(--gm-color-surface);
+  color: var(--gm-color-ink);
+  min-height: 100vh;
+}

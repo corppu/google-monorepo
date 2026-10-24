@@ -1,0 +1,13 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.styled-label {
+  display: block;
+
+  font-size: var(--gm-font-label);
+  font-weight: var(--gm-font-label-weight);
+  line-height: var(--gm-line-label);
+
+  color: var(--gm-color-ink);
+
+  margin-bottom: var(--gm-space-field);
+}

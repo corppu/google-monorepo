@@ -1,0 +1,89 @@
+.comparison-page {
+  box-sizing: border-box;
+  color: #20272c;
+  font-family: system-ui, sans-serif;
+  margin: 0 auto;
+  max-width: 1120px;
+  min-height: 100%;
+  padding: 32px;
+}
+
+.comparison-header {
+  margin-bottom: 24px;
+}
+
+.comparison-header h1 {
+  font-size: 28px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.comparison-header p {
+  color: #52616b;
+  margin: 0;
+}
+
+.comparison-grid {
+  align-items: stretch;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.comparison-panel,
+#comparison-native-panel {
+  background: #ffffff;
+  border: 1px solid #d7e0e5;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  padding: 24px;
+}
+
+#comparison-native-title {
+  color: #20272c;
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.comparison-section,
+#comparison-native-button-section,
+#comparison-native-input-section,
+#comparison-native-field-section,
+#comparison-native-scope-section,
+#comparison-native-heading-section,
+#comparison-native-paragraph-section,
+#comparison-native-list-section,
+#comparison-native-fieldset-section,
+#comparison-native-article-section,
+#comparison-native-address-section,
+#comparison-native-feed-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.comparison-section-label,
+#comparison-native-section-label {
+  color: #52616b;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .comparison-page {
+    padding: 20px;
+  }
+
+  .comparison-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

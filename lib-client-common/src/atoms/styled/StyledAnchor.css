@@ -1,0 +1,5 @@
+.styled-anchor {
+  color: var(--gm-color-selected);
+  font-size: var(--gm-font-body);
+  line-height: 1.45;
+}

@@ -1,0 +1,5 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.styled-form {
+  display: block;
+}

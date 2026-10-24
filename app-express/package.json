@@ -1,0 +1,30 @@
+{
+  "name": "app-express",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node src/start.cjs",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gm/lib-client-common": "*",
+    "@gm/lib-client-google": "*",
+    "@gm/lib-express-auth": "*",
+    "@gm/lib-express-google": "*",
+    "@gm/lib-express-rsc": "*",
+    "@gm/lib-express-ssr": "*",
+    "@gm/lib-rest-auth": "*",
+    "@gm/lib-rest-google": "*",
+    "@remix-run/node-fetch-server": "0.13.0",
+    "connect-pg-simple": "^10.0.0",
+    "express": "latest",
+    "express-session": "latest",
+    "helmet": "^8.3.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/pg": "^8.23.1",
+    "tsx": "latest"
+  }
+}

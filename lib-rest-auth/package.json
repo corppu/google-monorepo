@@ -1,0 +1,16 @@
+{
+  "name": "@gm/lib-rest-auth",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "googleapis": "latest",
+    "pg": "^8.23.1"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1"
+  }
+}

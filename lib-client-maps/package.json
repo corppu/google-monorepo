@@ -1,0 +1,17 @@
+{
+  "name": "@gm/lib-client-maps",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@gm/lib-client-theme": "*",
+    "@gm/lib-client-common": "*",
+    "@gm/lib-contracts-maps": "*"
+  },
+  "peerDependencies": {
+    "react": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  }
+}

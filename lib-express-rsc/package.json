@@ -1,0 +1,27 @@
+{
+  "name": "@gm/lib-express-rsc",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.cts",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@gm/lib-client-common": "*",
+    "@gm/lib-client-google": "*",
+    "@gm/lib-common-google": "*",
+    "@gm/lib-rest-google": "*",
+    "@remix-run/node-fetch-server": "0.13.0",
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@vitejs/plugin-rsc": "latest",
+    "vite": "latest"
+  }
+}

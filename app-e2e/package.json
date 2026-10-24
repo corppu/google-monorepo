@@ -1,0 +1,17 @@
+{
+  "name": "app-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "latest",
+    "@playwright/test": "latest",
+    "@types/pngjs": "latest",
+    "pixelmatch": "latest",
+    "pngjs": "latest"
+  }
+}

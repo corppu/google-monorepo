@@ -1,0 +1,7 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.gm-client-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gm-space-field);
+}
