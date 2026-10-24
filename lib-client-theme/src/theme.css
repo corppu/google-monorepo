@@ -51,3 +51,14 @@
   --gm-color-subtle-surface: #2c383d;
   --gm-color-surface: #1b2529;
 }
+
+.fullscreen {
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  z-index: 0; /* map behind sidebar */
+}

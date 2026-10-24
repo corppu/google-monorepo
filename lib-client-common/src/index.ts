@@ -13,3 +13,6 @@ export * from './templates/PageTemplate';
 export * from './molecules/GenericScopeArticle';
 export * from './organisms/GenericAuthArticleForm';
 export * from './organisms/GenericScopesSelectorFieldset';
+
+export * from './atoms/styled';
+export * from './molecules/forms/FieldMolecule';

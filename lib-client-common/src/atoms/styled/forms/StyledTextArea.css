@@ -1,0 +1,46 @@
+@import '@gm/lib-client-theme/src/theme.css';
+
+.styled-textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: var(--gm-space-input-vertical) var(--gm-space-input-horizontal);
+
+  font-size: var(--gm-font-body);
+  font-family: inherit;
+  color: var(--gm-color-ink);
+
+  background-color: var(--gm-color-surface);
+  border: 1px solid var(--gm-color-border);
+  border-radius: var(--gm-radius-control);
+
+  resize: vertical;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.styled-textarea:focus {
+  outline: none;
+  border-color: var(--gm-color-selected);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--gm-color-selected) 30%, transparent);
+}
+
+.styled-textarea[aria-invalid='true'] {
+  border-color: var(--gm-color-error-border);
+  background-color: var(--gm-color-error-surface);
+}
+
+.styled-textarea[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--gm-color-error-border) 30%, transparent);
+}
+
+.styled-textarea:disabled {
+  background-color: var(--gm-color-subtle-surface);
+  color: var(--gm-color-muted-ink);
+  cursor: not-allowed;
+}
