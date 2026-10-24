@@ -1,4 +1,4 @@
-import { AnchorHTMLAttributes } from 'react';
+import type { AnchorHTMLAttributes } from 'react';
 import './StyledAnchor.css';
 
 type StyledAnchorProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'style'>;

@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
-import { StyledInputProps } from '../../atoms/styled/forms/StyledInput';
-import { StyledSelectProps } from '../../atoms/styled/forms/StyledSelect';
-import { StyledTextAreaProps } from '../../atoms/styled/forms/StyledTextArea';
+import type { StyledInputProps } from '../../atoms/styled/forms/StyledInput';
+import type { StyledSelectProps } from '../../atoms/styled/forms/StyledSelect';
+import type { StyledTextAreaProps } from '../../atoms/styled/forms/StyledTextArea';
 import { StyledField } from '../../atoms/styled/forms/StyledField';
 import { StyledLabel } from '../../atoms/styled/forms/StyledLabel';
 import { StyledParagraph } from '../../atoms/styled/StyledParagraph';
