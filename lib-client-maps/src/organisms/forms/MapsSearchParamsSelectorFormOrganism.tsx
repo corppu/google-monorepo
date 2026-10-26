@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   StyledSection,
@@ -33,7 +33,7 @@ export const MapsSearchParamsSelectorFormOrganism = ({ onSubmit }: Props) => {
 
   const addEurostat = () => {
     const next: MapsEurostatSearchParams = {
-      countries: ['FI', 'SE', 'EE', 'LV', 'LT', 'NO'],
+      countries: ['FI'],
       dataset: 'nuts',
       nutsLevel: 0,
       origin: 'eurostat',
@@ -49,7 +49,7 @@ export const MapsSearchParamsSelectorFormOrganism = ({ onSubmit }: Props) => {
     const next: MapsStatFiSearchParams = {
       dataset: 'municipalities',
       origin: 'statfi',
-      year: new Date().getFullYear(),
+      year: new Date().getFullYear() - 1,
     };
 
     if (!hasLayer(next, layers)) {
@@ -61,7 +61,7 @@ export const MapsSearchParamsSelectorFormOrganism = ({ onSubmit }: Props) => {
     const next: MapsNlsFiSearchParams = {
       dataset: 'municipalities',
       origin: 'nlsfi',
-      year: new Date().getFullYear(),
+      year: new Date().getFullYear() - 1,
     };
 
     if (!hasLayer(next, layers)) {

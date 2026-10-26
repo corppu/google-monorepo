@@ -1,0 +1,16 @@
+{
+  "name": "@gm/lib-rest-maps",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@gm/lib-contracts-maps": "*",
+    "zod": "latest"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5"
+  }
+}

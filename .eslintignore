@@ -1,0 +1,7 @@
+**/dist
+**/build
+**/.next
+**/.turbo
+**/storybook-static
+**/coverage
+**/node_modules

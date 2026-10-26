@@ -1,9 +1,7 @@
 import { randomBytes } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 import express from 'express';
-import helmet from 'helmet';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { getPgPool, hasDatabase } from '@gm/lib-rest-google';
@@ -60,25 +58,9 @@ const ctx = {
   jwtSecret: secret,
 };
 const app = express();
-const clientDistPath = path.resolve(__dirname, '../../app-client/dist');
 app.locals.googleContext = ctx;
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
-// Strict CSP; RSC streams inline bootstrap scripts, so only /rsc may run inline scripts.
-const csp = (scriptSrc: string[]) => {
-  const directives: Record<string, Iterable<string> | null> = {
-    ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-    'img-src': ["'self'", 'data:', 'https:'],
-    'script-src': scriptSrc,
-    'style-src': ["'self'", "'unsafe-inline'"],
-  };
-  if (!production) directives['upgrade-insecure-requests'] = null;
-  return helmet({ contentSecurityPolicy: { directives } });
-};
-app.use('/rsc', csp(["'self'", "'unsafe-inline'"]));
-app.use((req, res, next) =>
-  req.path.startsWith('/rsc') ? next() : csp(["'self'"])(req, res, next),
-);
 app.use(express.json());
 app.use(
   session({
@@ -106,10 +88,19 @@ app.use(
 app.use('/api', createApiRouter(ctx));
 app.use('/ssr', createSSRRouter());
 app.use('/rsc', createRSCRouter());
-app.use('/spa', express.static(clientDistPath));
+
+const spaClientDistPath = path.resolve(__dirname, '../../app-client/dist');
+app.use('/spa', express.static(spaClientDistPath));
 app.get('/spa/*splat', (_req, res) =>
-  res.sendFile(path.join(clientDistPath, 'index.html')),
+  res.sendFile(path.join(spaClientDistPath, 'index.html')),
 );
+
+const storybookDistPath = path.resolve(__dirname, '../../app-storybook/dist');
+app.use('/storybook', express.static(storybookDistPath));
+app.get('/storybook/*splat', (_req, res) =>
+  res.sendFile(path.join(storybookDistPath, 'index.html')),
+);
+
 app.get('/', (_req, res) => res.redirect('/spa/google'));
 
 app.listen(port, () => console.log(`listening on :${port}`));

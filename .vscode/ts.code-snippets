@@ -1,0 +1,21 @@
+{
+  "For Of Loop": {
+    "prefix": "forof",
+    "body": [
+      "for (const ${1:item} of ${2:items}) {",
+      "  ${3:// TODO}",
+      "}"
+    ],
+    "description": "Typed for-of loop"
+  },
+  "For Indexed Loop": {
+    "prefix": "fori",
+    "body": [
+      "for (let i = 0; i < ${1:array}.length; i++) {",
+      "  const ${2:item} = ${1:array}[i];",
+      "  ${3:// TODO}",
+      "}"
+    ],
+    "description": "Typed indexed loop"
+  }
+}

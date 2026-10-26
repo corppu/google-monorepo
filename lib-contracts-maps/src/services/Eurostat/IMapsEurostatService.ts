@@ -10,7 +10,8 @@ import { IMapsRepository } from '../../repositories/IMapsRepository';
 /*                         Shared Country Enum                                */
 /* -------------------------------------------------------------------------- */
 
-export const CountryCodeEnum = z.enum(['EE', 'FI', 'NO', 'SE', 'LV', 'LT']);
+export const SupportedCountries = ['EE', 'FI', 'NO', 'SE', 'LV', 'LT'] as const;
+export const CountryCodeEnum = z.enum(SupportedCountries);
 export type CountryCode = z.infer<typeof CountryCodeEnum>;
 
 /* -------------------------------------------------------------------------- */
@@ -60,34 +61,59 @@ export type LauPopKey = PopKey<LauYear>;
 export type LauPopDensKey = PopDensKey<LauYear>;
 
 // Zod numeric enums (must have at least 2 elements)
-export const SupportedNutsYearEnum = z
-  .enum(SupportedNutsYears.map(String) as [string, ...string[]])
-  .transform(Number);
+export const SupportedNutsYearSchema = z
+  .number()
+  .int()
+  .refine((year) => SupportedNutsYears.includes(year as any), {
+    message: 'Unsupported NUTS year',
+  });
+export const SupportedLauYearSchema = z
+  .number()
+  .int()
+  .refine((year) => SupportedLauYears.includes(year as any), {
+    message: 'Unsupported LAU year',
+  });
 
-export const SupportedLauYearEnum = z
-  .enum(SupportedLauYears.map(String) as [string, ...string[]])
-  .transform(Number);
 /* -------------------------------------------------------------------------- */
 /*                         Strict Eurostat Search Params                      */
 /* -------------------------------------------------------------------------- */
 
-export const MapsEurostatSearchParamsSchema = z.discriminatedUnion('dataset', [
-  z.object({
-    countries: z.array(CountryCodeEnum).optional(),
-    dataset: z.literal('nuts'),
-    nutsLevel: z.number().int().min(0).max(3).optional(),
-    origin: z.literal('eurostat'),
-    year: SupportedNutsYearEnum,
-  }),
+export const MapsEurostatSearchParamsSchema = z.preprocess(
+  (raw) => {
+    const v = raw as Record<string, unknown>;
 
-  z.object({
-    countries: z.array(CountryCodeEnum).optional(),
-    dataset: z.literal('lau'),
-    nutsLevel: z.never().optional(),
-    origin: z.literal('eurostat'),
-    year: SupportedLauYearEnum,
-  }),
-]);
+    return {
+      ...v,
+
+      countries:
+        typeof v.countries === 'string'
+          ? (v.countries as string).split(',')
+          : v.countries,
+
+      nutsLevel:
+        typeof v.nutsLevel === 'string' ? Number(v.nutsLevel) : v.nutsLevel,
+
+      year: typeof v.year === 'string' ? Number(v.year) : v.year,
+    };
+  },
+  z.discriminatedUnion('dataset', [
+    z.object({
+      countries: z.array(CountryCodeEnum).optional(),
+      dataset: z.literal('nuts'),
+      nutsLevel: z.number().int().min(0).max(3).optional(),
+      origin: z.literal('eurostat'),
+      year: SupportedNutsYearSchema,
+    }),
+
+    z.object({
+      countries: z.array(CountryCodeEnum).optional(),
+      dataset: z.literal('lau'),
+      nutsLevel: z.never().optional(),
+      origin: z.literal('eurostat'),
+      year: SupportedLauYearSchema,
+    }),
+  ]),
+);
 
 export type MapsEurostatSearchParams = z.infer<
   typeof MapsEurostatSearchParamsSchema
@@ -169,7 +195,7 @@ export const EurostatNutsPropertiesSchema =
     LEVL_CODE: z.number().int().min(0).max(3),
     NUTS_ID: z.string().nonempty(),
     NUTS_NAME: z.string().nonempty(),
-    YEAR: SupportedNutsYearEnum,
+    YEAR: SupportedNutsYearSchema,
     ...Object.fromEntries(
       SupportedNutsYears.map((year) => [
         `POP_${year}`,
@@ -193,7 +219,7 @@ export const EurostatLauPropertiesSchema =
   EurostatCommonPropertiesSchema.extend({
     LAU_ID: z.string().nonempty(),
     LAU_NAME: z.string().nonempty(),
-    YEAR: SupportedLauYearEnum,
+    YEAR: SupportedLauYearSchema,
     ...Object.fromEntries(
       SupportedLauYears.map((year) => [
         `POP_${year}`,

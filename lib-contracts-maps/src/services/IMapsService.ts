@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { unknown, z } from 'zod';
 
 export const CoordinateSchema = z
   .tuple([
@@ -43,11 +43,8 @@ export const GeometrySchema = z.union([
 /* -------------------------------------------------------------------------- */
 
 export const MapsSearchParamsSchema = z.object({
-  countries: z.array(z.string()).optional(),
   dataset: z.string(), // provider decides allowed values
-  nutsLevel: z.number().min(0).max(3).optional(),
   origin: z.enum(['eurostat', 'statfi', 'nlsfi']),
-  year: z.number().int(), // ANY year allowed
 });
 
 export type MapsSearchParams = z.infer<typeof MapsSearchParamsSchema>;
@@ -58,7 +55,7 @@ export type MapsSearchParams = z.infer<typeof MapsSearchParamsSchema>;
 
 export const GeoJSONFeatureSchema = z.object({
   geometry: GeometrySchema,
-  properties: z.record(z.any()),
+  properties: z.record(z.any(), z.any()),
   type: z.literal('Feature'),
 });
 

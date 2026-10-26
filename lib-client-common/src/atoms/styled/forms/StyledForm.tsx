@@ -1,14 +1,11 @@
-import type { FieldsetHTMLAttributes } from 'react';
+import type { FormHTMLAttributes } from 'react';
 import './StyledForm.css';
 
-type StyledFormProps = Omit<
-  FieldsetHTMLAttributes<HTMLFieldSetElement>,
-  'style'
->;
+type StyledFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'style'>;
 
 export const StyledForm = ({ className, ...props }: StyledFormProps) => (
-  <fieldset
+  <form
     {...props}
-    className={['styled-fieldset', className].filter(Boolean).join(' ')}
+    className={['styled-form', className].filter(Boolean).join(' ')}
   />
 );

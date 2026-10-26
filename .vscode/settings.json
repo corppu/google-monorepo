@@ -1,0 +1,18 @@
+{
+  "cSpell.words": [
+    "CNTR",
+    "Eurostat",
+    "GISCO",
+    "INLSFI",
+    "LEVL",
+    "maplibre",
+    "maplibregl",
+    "NLSFI",
+    "STATFI"
+  ],
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggest.showSnippets": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  }
+}

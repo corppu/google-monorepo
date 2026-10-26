@@ -13,7 +13,6 @@
     "@gm/lib-client-google": "*",
     "@gm/lib-common-google": "*",
     "@gm/lib-rest-google": "*",
-    "@remix-run/node-fetch-server": "0.13.0",
     "express": "latest",
     "react": "latest",
     "react-dom": "latest",

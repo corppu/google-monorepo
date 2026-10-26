@@ -20,14 +20,12 @@
     "@gm/lib-common-google": "*",
     "@gm/lib-native-common": "*",
     "@gm/lib-native-google": "*",
-    "leaflet": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest",
     "react-hook-form": "latest",
     "react-intl": "latest",
-    "react-native-web": "latest",
-    "styled-components": "latest"
+    "react-native-web": "latest"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "latest",
@@ -46,7 +44,6 @@
     "oxlint": "latest",
     "playwright": "latest",
     "storybook": "latest",
-    "typescript": "latest",
     "vite": "latest",
     "vitest": "latest"
   }

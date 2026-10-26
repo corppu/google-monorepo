@@ -1,32 +1,20 @@
 import { StyledSection, StyledHeading } from '@gm/lib-client-common';
-
 import {
-  MapsEurostatSearchParams,
-  MapsStatFiSearchParams,
-  MapsNlsFiSearchParams,
-} from '@gm/lib-contracts-maps';
-
-type AnyParams =
-  MapsEurostatSearchParams | MapsStatFiSearchParams | MapsNlsFiSearchParams;
-
-type StreamState = {
-  data: any[];
-  error: unknown;
-  loading: boolean;
-};
+  AnyParams,
+  useClientMapsStreams,
+} from '../../hooks/useClientMapsStreams';
+import { MapLibreGlOrganism } from './MapLibreGlOrganism';
 
 type Props = {
   layers: AnyParams[];
-  streams: StreamState[];
 };
 
-export const MapsOutputOrganism = ({ layers, streams }: Props) => {
+export const MapsOutputOrganism = ({ layers }: Props) => {
+  const streams = useClientMapsStreams(layers);
+
   return (
     <StyledSection as="section" fullScreen id="map-output">
       <StyledHeading as="h2">Map</StyledHeading>
-
-      {/* MapLibre goes here */}
-      {/* <MapLibreMap features={streams.flatMap(s => s.data)} /> */}
 
       <StyledHeading as="h3">Legend</StyledHeading>
       <ul>
@@ -39,16 +27,15 @@ export const MapsOutputOrganism = ({ layers, streams }: Props) => {
 
       <StyledHeading as="h3">Streamed Features</StyledHeading>
       <ul>
-        {streams.map((stream, i) => (
-          <li key={`stream-${i}`}>
+        {streams.map((stream) => (
+          <li key={stream.id}>
             {stream.loading && <div>Loading…</div>}
             {Boolean(stream.error) && <div>{JSON.stringify(stream.error)}</div>}
-            {stream.data.length > 0 && (
-              <code>{JSON.stringify(stream.data, null, 2)}</code>
-            )}
           </li>
         ))}
       </ul>
+
+      <MapLibreGlOrganism streams={streams} />
     </StyledSection>
   );
 };

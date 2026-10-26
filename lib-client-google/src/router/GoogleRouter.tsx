@@ -4,12 +4,14 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 export interface GoogleRouterPages {
   dashboard: ReactElement;
   landing: ReactElement;
+  maps: ReactElement;
   scopes: ReactElement;
 }
 
 /** Expects to be rendered inside a Router whose basename is /spa. */
 export const GoogleRouter = ({ pages }: { pages: GoogleRouterPages }) => (
   <Routes>
+    <Route path="/maps" element={pages.maps} />
     <Route path="/google" element={pages.landing} />
     <Route path="/google/scopes" element={pages.scopes} />
     <Route path="/google/dashboard" element={pages.dashboard} />

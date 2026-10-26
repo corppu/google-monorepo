@@ -12,14 +12,18 @@
     "noEmit": true,
     "paths": {
       "@gm/lib-common-google": ["./lib-common-google/src/index.ts"],
+      "@gm/lib-contracts-maps": ["./lib-contracts-maps/src/index.ts"],
       "@gm/lib-rest-auth": ["./lib-rest-auth/src/index.ts"],
       "@gm/lib-express-auth": ["./lib-express-auth/src/index.ts"],
       "@gm/lib-rest-google": ["./lib-rest-google/src/index.ts"],
+      "@gm/lib-rest-maps": ["./lib-rest-maps/src/index.ts"],
       "@gm/lib-express-google": ["./lib-express-google/src/index.ts"],
+      "@gm/lib-express-maps": ["./lib-express-maps/src/index.ts"],
       "@gm/lib-express-rsc": ["./lib-express-rsc/src/index.cts"],
       "@gm/lib-express-ssr": ["./lib-express-ssr/src/index.ts"],
       "@gm/lib-client-common": ["./lib-client-common/src/index.ts"],
       "@gm/lib-client-google": ["./lib-client-google/src/index.ts"],
+      "@gm/lib-client-maps": ["./lib-client-maps/src/index.ts"],
       "@gm/lib-client-theme": ["./lib-client-theme/src/index.ts"],
       "@gm/lib-native-common": ["./lib-native-common/src/index.ts"],
       "@gm/lib-native-google": ["./lib-native-google/src/index.ts"]

@@ -1,18 +1,22 @@
-import babelParser from '@babel/eslint-parser';
+import tsParser from '@typescript-eslint/parser';
 import perfectionist from 'eslint-plugin-perfectionist';
 
 const alphabetical = { type: 'alphabetical', order: 'asc' };
 
 export default [
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['lib-*/src/**/*.{ts,tsx}'],
     languageOptions: {
-      parser: babelParser,
+      parser: tsParser,
       parserOptions: {
-        requireConfigFile: false,
-        babelOptions: {
-          plugins: [['@babel/plugin-syntax-typescript', { isTSX: true }]],
-        },
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        project: [
+          './tsconfig.json',
+          './app-*/tsconfig.json',
+          './lib-*/tsconfig.json',
+        ],
       },
     },
     plugins: { perfectionist },

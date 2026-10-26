@@ -3,7 +3,6 @@ import {
   StyledLegend,
   FieldMolecule,
   StyledSelect,
-  StyledInput,
 } from '@gm/lib-client-common';
 
 import {
@@ -28,7 +27,11 @@ const safeUpdate = (
   if (parsed.success) {
     onChange(parsed.data);
   } else {
-    console.warn('Invalid Eurostat params', parsed.error);
+    console.warn(
+      'Invalid Eurostat params',
+      parsed.error.issues.map((it) => it.message).join(' '),
+    );
+    console.warn(next);
   }
 };
 
@@ -39,7 +42,7 @@ export const MapsEurostatSearchParamsFieldsetOrganism = ({
   const handleDataset = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const dataset = e.target.value as MapsEurostatSearchParams['dataset'];
 
-    const next: MapsEurostatSearchParams =
+    const next =
       dataset === 'nuts'
         ? {
             countries: value.countries ?? [],
@@ -47,18 +50,18 @@ export const MapsEurostatSearchParamsFieldsetOrganism = ({
             nutsLevel: value.nutsLevel ?? 0,
             origin: 'eurostat',
             year:
-              value.dataset === 'nuts'
+              (value.dataset === 'nuts'
                 ? value.year
-                : SupportedNutsYears[SupportedNutsYears.length - 1],
+                : SupportedNutsYears[SupportedNutsYears.length - 1]) + '',
           }
         : {
             countries: value.countries ?? [],
             dataset: 'lau',
             origin: 'eurostat',
             year:
-              value.dataset === 'lau'
+              (value.dataset === 'lau'
                 ? value.year
-                : SupportedLauYears[SupportedLauYears.length - 1],
+                : SupportedLauYears[SupportedLauYears.length - 1]) + '',
           };
 
     safeUpdate(next, onChange);
@@ -78,7 +81,7 @@ export const MapsEurostatSearchParamsFieldsetOrganism = ({
     const selected: CountryCode[] = Array.from(e.target.selectedOptions)
       .map((o) => o.value)
       .filter((v): v is CountryCode =>
-        CountryCodeEnum._def.values.includes(v as CountryCode),
+        CountryCodeEnum.options.includes(v as CountryCode),
       );
 
     safeUpdate(
@@ -124,7 +127,7 @@ export const MapsEurostatSearchParamsFieldsetOrganism = ({
           value={value.countries ?? []}
           onChange={handleCountries}
         >
-          {CountryCodeEnum._def.values.map((code) => (
+          {CountryCodeEnum.options.map((code) => (
             <option key={code} value={code}>
               {code}
             </option>

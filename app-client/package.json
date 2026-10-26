@@ -12,6 +12,7 @@
     "react-dom": "latest",
     "react-router-dom": "latest",
     "@gm/lib-client-google": "*",
+    "@gm/lib-client-maps": "*",
     "@gm/lib-client-common": "*",
     "@gm/lib-common-google": "*"
   },

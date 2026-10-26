@@ -6,7 +6,8 @@
   "dependencies": {
     "@gm/lib-client-theme": "*",
     "@gm/lib-client-common": "*",
-    "@gm/lib-contracts-maps": "*"
+    "@gm/lib-contracts-maps": "*",
+    "maplibre-gl": "6.16.0"
   },
   "peerDependencies": {
     "react": "latest"
