@@ -21,7 +21,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*.{cjs,mjs,js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
@@ -29,7 +29,7 @@
       "stylelint --fix",
       "prettier --write"
     ],
-    "*.{js,jsx,mjs,cjs,json,jsonc,md,mdx,yml,yaml,css,scss,html}": "prettier --write"
+    "*.{json,jsonc,md,mdx,yml,yaml,html}": "prettier --write"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
