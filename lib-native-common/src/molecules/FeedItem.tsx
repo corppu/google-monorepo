@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '@gm/lib-client-theme';
+
 import { TextLink } from '../atoms/Paragraph';
 
 export const FeedItem = ({

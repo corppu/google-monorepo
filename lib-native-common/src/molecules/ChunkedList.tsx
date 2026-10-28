@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import type { ReactNode } from 'react';
-import { useTheme } from '@gm/lib-client-theme';
 
 export interface ChunkedListProps<T> {
   accessibilityLabel: string;

@@ -18,7 +18,7 @@
   margin: 0 0 12px;
 }
 
-@media (max-width: 760px) {
+@media (width <= 760px) {
   .workflow-comparison {
     grid-template-columns: minmax(0, 1fr);
     padding: 16px;

@@ -12,10 +12,12 @@
     "build:client": "npm run build --workspace=app-client",
     "test:e2e": "npm run build:client && npm run build:ssr && npm run build:rsc && npm run test --workspace=app-e2e",
     "start": "npm run start --workspace=app-express",
-    "format": "npm run sort:keys && prettier --write .",
-    "format:check": "npm run sort:keys:check && prettier --check .",
-    "sort:keys": "eslint --fix \"app-*/**/*.{ts,tsx}\" \"lib-*/**/*.{ts,tsx}\"",
-    "sort:keys:check": "eslint \"app-*/**/*.{ts,tsx}\" \"lib-*/**/*.{ts,tsx}\"",
+    "format": "npm run lint:fix --workspaces && prettier --write .",
+    "format:check": "npm run lint --workspaces && prettier --check .",
+    "lint": "eslint \"lib-client-*/src/**/*.{ts,tsx}\" \"app-*/src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint --fix \"lib-client-*/src/**/*.{ts,tsx}\" \"app-*/src/**/*.{ts,tsx}\"",
+    "lint:css": "stylelint \"lib-client-*/src/**/*.{css,scss}\" \"app-*/src/**/*.{css,scss}\"",
+    "lint:css:fix": "stylelint --fix \"lib-client-*/src/**/*.{css,scss}\" \"app-*/src/**/*.{css,scss}\"",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -23,23 +25,29 @@
       "eslint --fix",
       "prettier --write"
     ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
     "*.{js,jsx,mjs,cjs,json,jsonc,md,mdx,yml,yaml,css,scss,html}": "prettier --write"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/express": "5.0.6",
     "@types/express-session": "1.19.0",
-    "@types/node": "26.6.5",
+    "@types/node": "^26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.72.1",
     "@typescript-eslint/parser": "^8.72.1",
     "eslint": "^10.13.0",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
     "eslint-plugin-perfectionist": "5.13.0",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
-    "prettier": "3.9.10"
+    "prettier": "3.9.10",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard": "^40.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
   }
 }

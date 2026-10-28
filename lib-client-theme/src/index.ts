@@ -1,5 +1,6 @@
-import { createContext, createElement, useContext } from 'react';
 import type { ReactNode } from 'react';
+
+import { createContext, createElement, useContext } from 'react';
 
 export const theme = {
   colors: {

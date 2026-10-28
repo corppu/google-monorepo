@@ -1,4 +1,5 @@
 import type { Event } from '@gm/lib-common-google';
+
 import { FeedItem } from '@gm/lib-native-common';
 
 const formatDateTime = (dateTime?: string | null, date?: string | null) => {

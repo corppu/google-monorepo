@@ -1,4 +1,5 @@
 import type { FC, InputHTMLAttributes, ReactElement } from 'react';
+
 import './StyledInput.css';
 
 export type StyledInputProps = Omit<

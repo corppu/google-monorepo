@@ -1,6 +1,7 @@
+import type { Event } from '@gm/lib-common-google';
+
 import { ChunkedList, SectionFieldset } from '@gm/lib-client-common';
 import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
-import type { Event } from '@gm/lib-common-google';
 
 export const GoogleEventSectionFieldset = ({
   events,

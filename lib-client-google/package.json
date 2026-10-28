@@ -17,6 +17,8 @@
     "@types/sanitize-html": "^2.16.2"
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   }
 }

@@ -1,4 +1,5 @@
 import type { HTMLAttributes, DetailedHTMLProps } from 'react';
+
 import './StyledHeading.css';
 
 type StyledHeadingProps = Omit<

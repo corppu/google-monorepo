@@ -1,14 +1,17 @@
-import type { GroupRepository } from '../repositories/interfaces';
-import type { Auth } from 'googleapis';
 import type { Group, Member } from '@gm/lib-common-google';
-import { GoogleGroupRepository } from '../repositories/GoogleGroupRepository';
+import type { Auth } from 'googleapis';
+
 import {
   GoogleGroupValidator,
   GoogleGroupMemberValidator,
   unwrapValidationResult,
 } from '@gm/lib-common-google';
+
+import type { GroupRepository } from '../repositories/interfaces';
+
 import { GoogleGroupFilter } from '../filters/GoogleGroupFilter';
 import { GoogleGroupMemberFilter } from '../filters/GoogleGroupMemberFilter';
+import { GoogleGroupRepository } from '../repositories/GoogleGroupRepository';
 
 export class GoogleGroupService {
   private repo: GroupRepository;

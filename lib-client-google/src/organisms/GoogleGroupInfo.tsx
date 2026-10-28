@@ -1,6 +1,8 @@
 import type { Group } from '@gm/lib-common-google';
+
 import { SectionFieldset } from '@gm/lib-client-common';
 import sanitizeHtml from 'sanitize-html';
+
 import './GoogleGroupInfo.css';
 
 const sanitizeGroupDescription = (description: string) =>

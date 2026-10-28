@@ -1,0 +1,12 @@
+{
+  "name": "@gm/app-cli",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {},
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  }
+}

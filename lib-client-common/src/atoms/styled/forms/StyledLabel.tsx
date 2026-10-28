@@ -1,4 +1,5 @@
 import type { LabelHTMLAttributes } from 'react';
+
 import './StyledLabel.css';
 
 type StyledLabelProps = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'style'>;

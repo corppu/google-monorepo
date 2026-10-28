@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+
 import { SSR_ASSETS_PATH } from '../types';
 
 export interface SSRAssets {

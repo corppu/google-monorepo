@@ -1,4 +1,5 @@
 import type { EventAttendee } from '../types/EventAttendee';
+
 import {
   NullableValidator,
   ObjectValidator,

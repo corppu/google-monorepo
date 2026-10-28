@@ -1,4 +1,5 @@
 import type { ScopeOption } from '../types';
+
 import './GenericScopeArticle.css';
 
 export const GenericScopeArticle = ({

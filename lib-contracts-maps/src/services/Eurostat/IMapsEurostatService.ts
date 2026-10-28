@@ -1,10 +1,11 @@
 import { z } from 'zod';
+
+import { IMapsRepository } from '../../repositories/IMapsRepository';
 import {
   IMapsService,
   GeoJSONFeatureSchema,
   GeoJSONFeatureCollectionSchema,
 } from '../IMapsService';
-import { IMapsRepository } from '../../repositories/IMapsRepository';
 
 /* -------------------------------------------------------------------------- */
 /*                         Shared Country Enum                                */

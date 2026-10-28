@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 import { Heading } from '../atoms/Heading';
 import './PageTemplate.css';
 

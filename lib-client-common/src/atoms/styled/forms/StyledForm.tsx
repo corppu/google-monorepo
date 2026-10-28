@@ -1,4 +1,5 @@
 import type { FormHTMLAttributes } from 'react';
+
 import './StyledForm.css';
 
 type StyledFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'style'>;

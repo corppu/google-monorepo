@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react';
+
 import './StyledOutput.css';
 
 type StyledOutputProps = Omit<HTMLAttributes<HTMLOutputElement>, 'style'>;

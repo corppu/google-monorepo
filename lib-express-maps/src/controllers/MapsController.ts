@@ -1,5 +1,6 @@
-import express, { Request, Response } from 'express';
 import type { IMapsService } from '@gm/lib-contracts-maps';
+
+import express, { Request, Response } from 'express';
 
 const RS = String.fromCharCode(0x1e);
 

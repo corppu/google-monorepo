@@ -1,4 +1,5 @@
 import type { CalendarListEntry } from '../types/CalendarListEntry';
+
 import {
   BooleanValidator,
   NullableValidator,

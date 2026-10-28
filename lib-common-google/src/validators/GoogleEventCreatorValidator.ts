@@ -1,4 +1,5 @@
 import type { EventCreator } from '../types/EventCreator';
+
 import {
   ObjectValidator,
   OptionalValidator,

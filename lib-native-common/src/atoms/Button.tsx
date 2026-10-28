@@ -1,6 +1,6 @@
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { useTheme } from '@gm/lib-client-theme';
 
 export const Button = ({
   onPress,

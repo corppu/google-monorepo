@@ -1,6 +1,7 @@
-import { Text } from 'react-native';
 import type { Group } from '@gm/lib-common-google';
+
 import { SectionFieldset } from '@gm/lib-native-common';
+import { Text } from 'react-native';
 
 export const GoogleGroupSectionFieldset = ({
   groups,

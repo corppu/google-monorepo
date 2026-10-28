@@ -2,6 +2,7 @@ import type {
   Request as ExpressRequest,
   Response as ExpressResponse,
 } from 'express';
+
 import express, { Router } from 'express';
 import { renderToString } from 'react-dom/server';
 import {
@@ -10,15 +11,17 @@ import {
   redirect,
   StaticRouterProvider,
 } from 'react-router';
-import { createSSRRoutes } from '../routes';
+
 import type { SSRRouteHandle } from '../routes';
+import type { SSRAssets } from './assets';
+
+import { createSSRRoutes } from '../routes';
 import {
   SSR_BASENAME,
   SSR_DATA_ELEMENT_ID,
   SSR_ROOT_ELEMENT_ID,
 } from '../types';
 import { readSSRAssets, ssrClientDistPath } from './assets';
-import type { SSRAssets } from './assets';
 import { loadSSRDashboard } from './loadSSRDashboard';
 
 const escapeHtml = (value: string) =>

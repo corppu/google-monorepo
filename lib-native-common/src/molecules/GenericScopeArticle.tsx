@@ -1,7 +1,8 @@
-import type { ScopeOption } from '../types';
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '@gm/lib-client-theme';
+
+import type { ScopeOption } from '../types';
 
 export const GenericScopeArticle = ({
   checked,

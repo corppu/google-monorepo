@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express';
-import { googleServicesFor } from './googleServices';
+
 import type { GoogleHandlerContext } from './context';
+
+import { googleServicesFor } from './googleServices';
 
 export const publicContactInfoHandler =
   (ctx: GoogleHandlerContext) => async (req: Request, res: Response) => {

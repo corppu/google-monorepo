@@ -1,10 +1,10 @@
 import { hasDatabase } from './db/pg';
-import { PgGoogleEventRepository } from './repositories/PgGoogleEventRepository';
 import { MockGoogleCalendarRepository } from './repositories/MockGoogleCalendarRepository';
 import { MockGoogleEventRepository } from './repositories/MockGoogleEventRepository';
 import { MockGoogleGroupRepository } from './repositories/MockGoogleGroupRepository';
 import { MockGooglePublicContactInfoRepository } from './repositories/MockGooglePublicContactInfoRepository';
 import { MockGoogleUserRepository } from './repositories/MockGoogleUserRepository';
+import { PgGoogleEventRepository } from './repositories/PgGoogleEventRepository';
 import { GoogleCalendarService } from './services/GoogleCalendarService';
 import { GoogleEventService } from './services/GoogleEventService';
 import { GoogleGroupService } from './services/GoogleGroupService';

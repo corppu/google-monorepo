@@ -1,4 +1,5 @@
 import type { FC, ReactElement, SelectHTMLAttributes } from 'react';
+
 import './StyledSelect.css';
 
 export type StyledSelectProps = Omit<

@@ -1,9 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { saveEvent as saveEventAction } from './actions';
-import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import type {
   CalendarList,
   Event,
@@ -12,7 +8,13 @@ import type {
   GooglePublicContactInfo,
   Userinfo,
 } from '@gm/lib-common-google';
+
 import { GoogleDashboardPage } from '@gm/lib-client-google';
+import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import { saveEvent as saveEventAction } from './actions';
 
 interface DashboardData {
   calendarId: string;

@@ -2,9 +2,7 @@
 
 .styled-output {
   display: block;
-
   font-size: var(--gm-font-body);
   color: var(--gm-color-muted-ink);
-
   margin-top: var(--gm-space-field);
 }

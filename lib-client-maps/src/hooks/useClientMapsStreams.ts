@@ -5,8 +5,8 @@ import {
 } from '@gm/lib-contracts-maps';
 
 import { useClientMapsEurostatStream } from './useClientMapsEurostatStream';
-import { useClientMapsStatFiStream } from './useClientMapsStatFiStream';
 import { useClientMapsNlsFiStream } from './useClientMapsNlsFiStream';
+import { useClientMapsStatFiStream } from './useClientMapsStatFiStream';
 
 export type AnyParams =
   MapsEurostatSearchParams | MapsStatFiSearchParams | MapsNlsFiSearchParams;

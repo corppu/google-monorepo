@@ -1,9 +1,12 @@
-import { Router } from 'express';
 import type { NextFunction, Request, Response } from 'express';
-import { rateLimit } from 'express-rate-limit';
+
 import { AuthError, safeReturnTo } from '@gm/lib-rest-auth';
-import { requireAuth, signJwt, userIdOf, verifyJwtClaims } from './context';
+import { Router } from 'express';
+import { rateLimit } from 'express-rate-limit';
+
 import type { AuthContext } from './context';
+
+import { requireAuth, signJwt, userIdOf, verifyJwtClaims } from './context';
 
 const str = (v: unknown): v is string => typeof v === 'string' && v.length > 0;
 const scopeList = (v: unknown): string[] =>

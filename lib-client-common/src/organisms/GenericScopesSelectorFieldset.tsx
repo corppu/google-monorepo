@@ -1,4 +1,5 @@
 import type { ScopeOption } from '../types';
+
 import { GenericScopeArticle } from '../molecules/GenericScopeArticle';
 import { SectionFieldset } from '../molecules/SectionFieldset';
 

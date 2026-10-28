@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { useMemo } from 'react';
+
 import { useTheme } from '@gm/lib-client-theme';
+import { useMemo } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+
 import { Heading } from '../atoms/Heading';
 
 export const ScreenTemplate = ({

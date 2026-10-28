@@ -18,6 +18,8 @@
     "vite": "latest"
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   }
 }

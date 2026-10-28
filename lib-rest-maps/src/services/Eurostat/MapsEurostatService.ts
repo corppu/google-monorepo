@@ -6,12 +6,13 @@ import {
   validateEurostatFeature,
   SupportedCommonYears,
 } from '@gm/lib-contracts-maps';
+
 import { MapsRepository } from '../../repositories/MapsRepository';
 
 export class MapsEurostatService implements IMapsEurostatService {
   readonly contentType = 'application/geo+json-seq';
-  readonly searchParams;
   readonly mapsRepository = new MapsRepository();
+  readonly searchParams;
 
   constructor(rawParams: unknown) {
     this.searchParams = MapsEurostatSearchParamsSchema.parse(rawParams);
@@ -28,6 +29,25 @@ export class MapsEurostatService implements IMapsEurostatService {
 
     return new URL(`${base}/${file}`);
   }
+  async *stream(
+    signal: AbortSignal,
+  ): AsyncGenerator<EurostatNutsFeature | EurostatLauFeature> {
+    const url = this.buildUrl();
+
+    for await (const feature of this.mapsRepository.stream(url, signal)) {
+      const parsed = validateEurostatFeature(
+        this.searchParams.dataset,
+        feature,
+      );
+
+      if (parsed.success && this.passesFilters(parsed.data)) {
+        console.log('SUCCESS');
+        yield parsed.data;
+      }
+
+      // invalid features are silently dropped
+    }
+  }
   private closestSupportedYear(): number {
     const requested = this.searchParams.year;
     const supported = SupportedCommonYears;
@@ -38,6 +58,7 @@ export class MapsEurostatService implements IMapsEurostatService {
     }
     return closest;
   }
+
   private passesFilters(
     feature: EurostatNutsFeature | EurostatLauFeature,
   ): boolean {
@@ -60,25 +81,5 @@ export class MapsEurostatService implements IMapsEurostatService {
 
     // LAU dataset never checks LEVL_CODE
     return true;
-  }
-
-  async *stream(
-    signal: AbortSignal,
-  ): AsyncGenerator<EurostatNutsFeature | EurostatLauFeature> {
-    const url = this.buildUrl();
-
-    for await (const feature of this.mapsRepository.stream(url, signal)) {
-      const parsed = validateEurostatFeature(
-        this.searchParams.dataset,
-        feature,
-      );
-
-      if (parsed.success && this.passesFilters(parsed.data)) {
-        console.log('SUCCESS');
-        yield parsed.data;
-      }
-
-      // invalid features are silently dropped
-    }
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { useNavigate } from 'react-router';
 import { Button, PageTemplate } from '@gm/lib-client-common';
+import { useNavigate } from 'react-router';
 
 export const LandingClient = () => {
   const navigate = useNavigate();

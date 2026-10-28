@@ -1,8 +1,10 @@
-import type { ScopeOption } from '../types';
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
+import type { ScopeOption } from '../types';
+
 import { GenericScopeArticle } from '../molecules/GenericScopeArticle';
-import { useTheme } from '@gm/lib-client-theme';
 
 export const GenericScopesSelectorFieldset = ({
   onToggle,

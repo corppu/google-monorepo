@@ -1,4 +1,10 @@
 import type { Event } from '../types/Event';
+
+import { GoogleEventAttendeeValidator } from './GoogleEventAttendeeValidator';
+import { GoogleEventCreatorValidator } from './GoogleEventCreatorValidator';
+import { GoogleEventDateTimeValidator } from './GoogleEventDateTimeValidator';
+import { GoogleEventOrganizerValidator } from './GoogleEventOrganizerValidator';
+import { GoogleEventReminderValidator } from './GoogleEventReminderValidator';
 import {
   ArrayValidator,
   BooleanValidator,
@@ -8,11 +14,6 @@ import {
   StringValidator,
   type Validator,
 } from './Validator';
-import { GoogleEventAttendeeValidator } from './GoogleEventAttendeeValidator';
-import { GoogleEventCreatorValidator } from './GoogleEventCreatorValidator';
-import { GoogleEventDateTimeValidator } from './GoogleEventDateTimeValidator';
-import { GoogleEventOrganizerValidator } from './GoogleEventOrganizerValidator';
-import { GoogleEventReminderValidator } from './GoogleEventReminderValidator';
 
 const optionalString = (fieldKey: string) =>
   OptionalValidator(NullableValidator(StringValidator({ fieldKey })));

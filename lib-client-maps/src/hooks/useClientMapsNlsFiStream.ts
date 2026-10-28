@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
 import { ClientMapsNlsFiService, NlsFiFeature } from '@gm/lib-contracts-maps';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export const useClientMapsNlsFiStream = (params: unknown) => {
   const [data, setData] = useState<NlsFiFeature[]>([]);

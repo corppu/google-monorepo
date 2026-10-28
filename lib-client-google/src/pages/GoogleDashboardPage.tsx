@@ -1,4 +1,3 @@
-import { GenericForm, PageTemplate } from '@gm/lib-client-common';
 import type {
   CalendarList,
   Event,
@@ -7,13 +6,16 @@ import type {
   Group,
   Userinfo,
 } from '@gm/lib-common-google';
+
+import { GenericForm, PageTemplate } from '@gm/lib-client-common';
 import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
+
 import { GoogleCalendarSectionFieldset } from '../organisms/GoogleCalendarSectionFieldset';
-import { GoogleEventSectionFieldset } from '../organisms/GoogleEventSectionFieldset';
 import { GoogleEventEditorFieldset } from '../organisms/GoogleEventEditorFieldset';
 import { GoogleEventInfo } from '../organisms/GoogleEventInfo';
-import { GoogleGroupSectionFieldset } from '../organisms/GoogleGroupSectionFieldset';
+import { GoogleEventSectionFieldset } from '../organisms/GoogleEventSectionFieldset';
 import { GoogleGroupInfo } from '../organisms/GoogleGroupInfo';
+import { GoogleGroupSectionFieldset } from '../organisms/GoogleGroupSectionFieldset';
 import { GoogleUserinfoSectionFieldset } from '../organisms/GoogleUserinfoSectionFieldset';
 import './GoogleDashboardPage.css';
 

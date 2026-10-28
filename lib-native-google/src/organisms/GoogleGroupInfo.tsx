@@ -1,6 +1,7 @@
-import { Fragment } from 'react';
 import type { Group } from '@gm/lib-common-google';
+
 import { Paragraph, SectionFieldset, TextLink } from '@gm/lib-native-common';
+import { Fragment } from 'react';
 
 const ENTITIES: Record<string, string> = {
   '&#39;': "'",

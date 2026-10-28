@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
+import type { TextProps } from 'react-native';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { Linking, StyleSheet, Text } from 'react-native';
-import type { TextProps } from 'react-native';
-import { useTheme } from '@gm/lib-client-theme';
 
 export const Paragraph = ({ children, ...props }: TextProps) => {
   const theme = useTheme();

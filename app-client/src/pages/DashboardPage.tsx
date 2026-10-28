@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { MOCK_DASHBOARD_DATA } from '@gm/lib-common-google';
-import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import type { Event, GoogleEventChanges } from '@gm/lib-common-google';
+
 import {
   GoogleDashboardPage,
   googleApiUrl,
@@ -12,6 +9,10 @@ import {
   useGooglePublicContactInfo,
   useGoogleUserinfo,
 } from '@gm/lib-client-google';
+import { MOCK_DASHBOARD_DATA } from '@gm/lib-common-google';
+import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const DashboardPage = () => {
   const location = useLocation();

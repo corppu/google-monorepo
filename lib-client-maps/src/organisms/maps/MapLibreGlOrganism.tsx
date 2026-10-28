@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { Map } from 'maplibre-gl';
+import { useEffect, useRef } from 'react';
 
 type StreamState = {
   data: any[];

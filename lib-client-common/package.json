@@ -10,6 +10,8 @@
     "react": "latest"
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   }
 }

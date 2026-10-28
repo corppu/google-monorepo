@@ -1,6 +1,7 @@
-import { View } from 'react-native';
 import type { ViewProps } from 'react-native';
+
 import { useTheme } from '@gm/lib-client-theme';
+import { View } from 'react-native';
 
 export const GenericForm = (props: ViewProps) => {
   const theme = useTheme();

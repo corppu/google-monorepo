@@ -1,4 +1,5 @@
 import type { FieldsetHTMLAttributes } from 'react';
+
 import './StyledFieldset.css';
 
 type StyledFieldsetProps = Omit<

@@ -1,22 +1,20 @@
-import { useMemo, useState } from 'react';
-
 import {
   StyledSection,
   StyledForm,
   StyledHeading,
   StyledButton,
 } from '@gm/lib-client-common';
-
 import {
   MapsEurostatSearchParams,
   MapsStatFiSearchParams,
   MapsNlsFiSearchParams,
   SupportedNutsYears,
 } from '@gm/lib-contracts-maps';
+import { useMemo, useState } from 'react';
 
 import { MapsEurostatSearchParamsFieldsetOrganism } from './Eurostat/MapsEurostatSearchParamsFieldsetOrganism';
-import { MapsStatFiSearchParamsFieldsetOrganism } from './StatFi/MapsStatFiSearchParamsFieldsetOrganism';
 import { MapsNlsFiSearchParamsFieldsetOrganism } from './NlsFi/MapsNlsFiSearchParamsFieldsetOrganism';
+import { MapsStatFiSearchParamsFieldsetOrganism } from './StatFi/MapsStatFiSearchParamsFieldsetOrganism';
 
 const hasLayer = (next: AnyParams, layers: AnyParams[]) =>
   layers.some((l) => JSON.stringify(l) === JSON.stringify(next));

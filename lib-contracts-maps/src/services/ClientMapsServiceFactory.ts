@@ -9,11 +9,11 @@ export function createClientMapsService(params: MapsSearchParams) {
     case 'eurostat':
       return new ClientMapsEurostatService(params);
 
-    case 'statfi':
-      return new ClientMapsStatFiService(params);
-
     case 'nlsfi':
       return new ClientMapsNlsFiService(params);
+
+    case 'statfi':
+      return new ClientMapsStatFiService(params);
 
     default:
       throw new Error(`Unknown maps origin: ${params.origin}`);

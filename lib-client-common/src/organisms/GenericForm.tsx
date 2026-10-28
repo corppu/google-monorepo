@@ -1,4 +1,5 @@
 import type { FormHTMLAttributes } from 'react';
+
 import './GenericForm.css';
 
 type GenericFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'style'>;

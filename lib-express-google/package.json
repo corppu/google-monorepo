@@ -11,6 +11,8 @@
     "@gm/lib-common-google": "*"
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   }
 }

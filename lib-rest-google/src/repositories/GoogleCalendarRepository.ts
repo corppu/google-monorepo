@@ -1,9 +1,18 @@
-import type { CalendarRepository } from './interfaces';
-import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
+
+import { google } from 'googleapis';
+
+import type { CalendarRepository } from './interfaces';
 
 export class GoogleCalendarRepository implements CalendarRepository {
   constructor(private auth: Auth.OAuth2Client) {}
+  async get(calendarId: string): Promise<Record<string, any>> {
+    return (
+      await google
+        .calendar({ auth: this.auth, version: 'v3' })
+        .calendars.get({ calendarId })
+    ).data;
+  }
   async list(groupEmail?: string): Promise<Record<string, any>> {
     const calendar = google.calendar({ auth: this.auth, version: 'v3' });
     const calendarList = (await calendar.calendarList.list()).data;
@@ -26,12 +35,5 @@ export class GoogleCalendarRepository implements CalendarRepository {
       ...calendarList,
       items: items.filter((item): item is Record<string, any> => item !== null),
     };
-  }
-  async get(calendarId: string): Promise<Record<string, any>> {
-    return (
-      await google
-        .calendar({ auth: this.auth, version: 'v3' })
-        .calendars.get({ calendarId })
-    ).data;
   }
 }

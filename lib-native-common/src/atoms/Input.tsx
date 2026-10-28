@@ -1,7 +1,8 @@
+import type { TextInputProps } from 'react-native';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import type { TextInputProps } from 'react-native';
-import { useTheme } from '@gm/lib-client-theme';
 
 export const Input = (props: TextInputProps) => {
   const theme = useTheme();

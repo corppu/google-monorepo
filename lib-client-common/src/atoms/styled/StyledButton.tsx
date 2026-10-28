@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
+
 import './StyledButton.css';
 
 type StyledButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;

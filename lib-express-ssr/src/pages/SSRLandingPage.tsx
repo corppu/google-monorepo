@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router';
 import { Button, PageTemplate } from '@gm/lib-client-common';
+import { useNavigate } from 'react-router';
 
 export const SSRLandingPage = () => {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
-import { ChunkedList, SectionFieldset } from '@gm/lib-client-common';
 import type { CalendarList } from '@gm/lib-common-google';
+
+import { ChunkedList, SectionFieldset } from '@gm/lib-client-common';
 
 export const GoogleCalendarSectionFieldset = ({
   calendars,

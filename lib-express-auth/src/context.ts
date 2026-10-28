@@ -1,6 +1,7 @@
-import { createHmac, timingSafeEqual } from 'node:crypto';
-import type { Request, Response, NextFunction } from 'express';
 import type { OidcAuthService } from '@gm/lib-rest-auth';
+import type { Request, Response, NextFunction } from 'express';
+
+import { createHmac, timingSafeEqual } from 'node:crypto';
 import 'express-session';
 
 declare module 'express-session' {

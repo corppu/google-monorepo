@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react';
+
 import './StyledLegend.css';
 
 type StyledLegendProps = Omit<HTMLAttributes<HTMLLegendElement>, 'style'> & {

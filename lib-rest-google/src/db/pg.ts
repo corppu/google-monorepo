@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
 import { MOCK_EVENTS } from '@gm/lib-common-google';
+import { Pool } from 'pg';
 
 let pool: Pool | undefined;
 let schemaReady: Promise<void> | undefined;

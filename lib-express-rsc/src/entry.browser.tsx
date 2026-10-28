@@ -1,3 +1,6 @@
+import type { ReactFormState } from 'react-dom/client';
+import type { DataRouter } from 'react-router';
+
 /// <reference types="vite/client" />
 /// <reference types="@vitejs/plugin-rsc/types" />
 import {
@@ -8,8 +11,6 @@ import {
 } from '@vitejs/plugin-rsc/browser';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import type { ReactFormState } from 'react-dom/client';
-import type { DataRouter } from 'react-router';
 import {
   unstable_createCallServer as createCallServer,
   unstable_getRSCStream as getRSCStream,

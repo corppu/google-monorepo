@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node src/start.cjs",
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "dependencies": {
     "@gm/lib-client-common": "*",

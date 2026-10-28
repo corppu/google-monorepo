@@ -1,4 +1,5 @@
 import type { LoaderFunction, RouteObject } from 'react-router';
+
 import { SSRDashboardPage } from './pages/SSRDashboardPage';
 import { SSRLandingPage } from './pages/SSRLandingPage';
 import { SSRScopesPage } from './pages/SSRScopesPage';

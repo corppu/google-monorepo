@@ -1,4 +1,6 @@
+import type { GoogleHandlerContext } from '@gm/lib-express-google';
 import type { Request } from 'express';
+
 import {
   CREATE_EVENT_OPTION_ID,
   MOCK_DASHBOARD_DATA,
@@ -8,7 +10,7 @@ import {
   loadDashboardData,
   userIdOf,
 } from '@gm/lib-express-google';
-import type { GoogleHandlerContext } from '@gm/lib-express-google';
+
 import type { DashboardData } from '../types';
 
 const str = (value: unknown) => (typeof value === 'string' ? value : undefined);

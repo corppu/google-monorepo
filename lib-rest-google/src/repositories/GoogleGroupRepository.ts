@@ -1,6 +1,8 @@
-import type { GroupRepository } from './interfaces';
-import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
+
+import { google } from 'googleapis';
+
+import type { GroupRepository } from './interfaces';
 
 export class GoogleGroupRepository implements GroupRepository {
   constructor(private auth: Auth.OAuth2Client) {}

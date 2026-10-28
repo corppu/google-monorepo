@@ -8,7 +8,9 @@
     "pg": "^8.23.1"
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "devDependencies": {
     "@types/pg": "^8.23.1"

@@ -9,8 +9,8 @@ import { MapsRepository } from '../../repositories/MapsRepository';
 
 export class MapsStatFiService implements IMapsStatFiService {
   readonly contentType = 'application/geo+json-seq';
-  readonly searchParams;
   readonly mapsRepository = new MapsRepository();
+  readonly searchParams;
 
   constructor(rawParams: unknown) {
     this.searchParams = MapsStatFiSearchParamsSchema.parse(rawParams);

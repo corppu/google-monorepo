@@ -1,6 +1,8 @@
-import type { UserRepository } from './interfaces';
-import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
+
+import { google } from 'googleapis';
+
+import type { UserRepository } from './interfaces';
 
 export class GoogleUserRepository implements UserRepository {
   constructor(private auth: Auth.OAuth2Client) {}

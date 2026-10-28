@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { MINIMUM_SCOPES } from '@gm/lib-common-google';
 import type { GoogleScope } from '@gm/lib-common-google';
+
 import {
   Button,
   GenericScopesSelectorFieldset,
   PageTemplate,
 } from '@gm/lib-client-common';
+import { MINIMUM_SCOPES } from '@gm/lib-common-google';
+import { useEffect, useState } from 'react';
 
 export const GoogleScopesPage = () => {
   const [scopes, setScopes] = useState<GoogleScope[]>([]);

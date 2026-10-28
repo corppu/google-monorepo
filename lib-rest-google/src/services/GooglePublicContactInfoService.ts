@@ -1,6 +1,8 @@
-import type { PublicContactInfoRepository } from '../repositories/interfaces';
-import type { Auth } from 'googleapis';
 import type { GooglePublicContactInfo } from '@gm/lib-common-google';
+import type { Auth } from 'googleapis';
+
+import type { PublicContactInfoRepository } from '../repositories/interfaces';
+
 import { GooglePublicContactInfoRepository } from '../repositories/GooglePublicContactInfoRepository';
 
 export class GooglePublicContactInfoService {

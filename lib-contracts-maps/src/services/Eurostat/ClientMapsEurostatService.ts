@@ -5,12 +5,13 @@ import {
   EurostatNutsFeature,
   validateEurostatFeature,
 } from '@gm/lib-contracts-maps';
+
 import { ClientMapsRepository } from '../../repositories/ClientMapsRepository';
 
 export class ClientMapsEurostatService implements IMapsEurostatService {
   readonly contentType = 'application/geo+json-seq';
-  readonly searchParams;
   readonly mapsRepository = new ClientMapsRepository();
+  readonly searchParams;
 
   constructor(rawParams: unknown) {
     this.searchParams = MapsEurostatSearchParamsSchema.parse(rawParams);

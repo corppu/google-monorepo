@@ -2,10 +2,8 @@
 
 .styled-legend {
   padding: 0 var(--gm-space-field);
-
   font-size: var(--gm-font-heading);
   font-weight: var(--gm-font-heading-weight);
   line-height: var(--gm-line-heading);
-
   color: var(--gm-color-ink);
 }

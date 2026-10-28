@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
 import {
   Button,
   GenericScopesSelectorFieldset,
   PageTemplate,
 } from '@gm/lib-client-common';
+import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
+import { useState } from 'react';
 
 export const ScopesClient = () => {
   const [selected, setSelected] = useState<string[]>(MINIMUM_SCOPES);

@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import {
   Button,
   GenericScopesSelectorFieldset,
   PageTemplate,
 } from '@gm/lib-client-common';
 import { GOOGLE_SCOPES, MINIMUM_SCOPES } from '@gm/lib-common-google';
+import { useState } from 'react';
 
 export const SSRScopesPage = () => {
   const [selected, setSelected] = useState<string[]>(MINIMUM_SCOPES);

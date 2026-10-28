@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
 import { ClientMapsStatFiService, StatFiFeature } from '@gm/lib-contracts-maps';
+import { useEffect, useMemo, useState } from 'react';
 
 export const useClientMapsStatFiStream = (params: unknown) => {
   const [data, setData] = useState<StatFiFeature[]>([]);

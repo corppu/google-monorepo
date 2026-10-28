@@ -1,7 +1,9 @@
+import type { TextInputProps } from 'react-native';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { useId, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import type { TextInputProps } from 'react-native';
-import { useTheme } from '@gm/lib-client-theme';
+
 import { Input } from '../atoms/Input';
 
 export const Field = ({

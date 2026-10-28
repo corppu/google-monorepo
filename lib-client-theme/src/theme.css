@@ -12,7 +12,7 @@
   --gm-color-scope-track-active: #9bbec8;
   --gm-color-selected: #356a79;
   --gm-color-subtle-surface: #edf3f5;
-  --gm-color-surface: #ffffff;
+  --gm-color-surface: #fff;
   --gm-radius-control: 6px;
   --gm-size-checkbox: 18px;
   --gm-size-control: 40px;
@@ -36,6 +36,7 @@
 
 [data-gm-theme='dark'] {
   color-scheme: dark;
+
   --gm-color-border: #526169;
   --gm-color-border-subtle: #39464c;
   --gm-color-error: #ff8a80;

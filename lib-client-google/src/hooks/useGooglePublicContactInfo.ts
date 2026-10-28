@@ -1,4 +1,5 @@
 import type { GooglePublicContactInfo } from '@gm/lib-common-google';
+
 import { useApi } from './useApi';
 
 export const useGooglePublicContactInfo = (enabled = true) =>

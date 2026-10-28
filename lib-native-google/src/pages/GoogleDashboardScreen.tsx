@@ -1,5 +1,3 @@
-import { useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type {
   CalendarList,
   Event,
@@ -8,6 +6,8 @@ import type {
   Group,
   Userinfo,
 } from '@gm/lib-common-google';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { CREATE_EVENT_OPTION_ID } from '@gm/lib-common-google';
 import {
   Button,
@@ -17,7 +17,9 @@ import {
   ScreenTemplate,
   SectionFieldset,
 } from '@gm/lib-native-common';
-import { useTheme } from '@gm/lib-client-theme';
+import { useMemo, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
 import { GoogleEventInfo } from '../organisms/GoogleEventInfo';
 import { GoogleGroupInfo } from '../organisms/GoogleGroupInfo';
 import { GoogleUserinfoSectionFieldset } from '../organisms/GoogleUserinfoSectionFieldset';

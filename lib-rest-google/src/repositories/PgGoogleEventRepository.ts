@@ -1,20 +1,14 @@
-import { randomUUID } from 'node:crypto';
-import type { Pool } from 'pg';
 import type { Event } from '@gm/lib-common-google';
-import { ensurePgSchema, getPgPool } from '../db/pg';
+import type { Pool } from 'pg';
+
+import { randomUUID } from 'node:crypto';
+
 import type { EventRepository } from './interfaces';
+
+import { ensurePgSchema, getPgPool } from '../db/pg';
 
 export class PgGoogleEventRepository implements EventRepository {
   constructor(private db: Pool = getPgPool()) {}
-
-  async list(calendarId = 'primary'): Promise<Record<string, any>[]> {
-    await ensurePgSchema(this.db);
-    const { rows } = await this.db.query(
-      'SELECT data FROM google_events WHERE calendar_id = $1 ORDER BY position',
-      [calendarId],
-    );
-    return rows.map((r) => r.data);
-  }
 
   async create(calendarId: string, event: Event): Promise<Record<string, any>> {
     await ensurePgSchema(this.db);
@@ -27,6 +21,15 @@ export class PgGoogleEventRepository implements EventRepository {
       [calendarId, created.id, JSON.stringify(created)],
     );
     return created;
+  }
+
+  async list(calendarId = 'primary'): Promise<Record<string, any>[]> {
+    await ensurePgSchema(this.db);
+    const { rows } = await this.db.query(
+      'SELECT data FROM google_events WHERE calendar_id = $1 ORDER BY position',
+      [calendarId],
+    );
+    return rows.map((r) => r.data);
   }
 
   async update(

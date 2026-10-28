@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
+
+import { useTheme } from '@gm/lib-client-theme';
 import { useMemo } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import type { ReactNode } from 'react';
-import { useTheme } from '@gm/lib-client-theme';
 
 export const Heading = ({ children }: { children: ReactNode }) => {
   const theme = useTheme();

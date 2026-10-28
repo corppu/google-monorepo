@@ -1,8 +1,11 @@
-import { createHash, randomBytes } from 'node:crypto';
-import { google } from 'googleapis';
 import type { Auth } from 'googleapis';
-import { TokenCipher } from './TokenCipher';
+
+import { google } from 'googleapis';
+import { createHash, randomBytes } from 'node:crypto';
+
 import type { OidcRepository, OidcUser } from './types';
+
+import { TokenCipher } from './TokenCipher';
 
 /** Scopes that make the flow OpenID Connect and identify the user. */
 export const OIDC_SCOPES = ['openid', 'email', 'profile'];
@@ -67,6 +70,30 @@ export class OidcAuthService {
     private config: OidcConfig,
   ) {
     this.cipher = new TokenCipher(config.tokenEncryptionKey);
+  }
+
+  /** An OAuth2 client for googleapis. Refreshed tokens are persisted automatically. */
+  async authorizedClient(userId: string): Promise<Auth.OAuth2Client> {
+    const user = await this.repo.findUser(userId);
+    if (!user?.tokens) throw new AuthError('Not authorized with Google');
+    const credentials = JSON.parse(
+      this.cipher.decrypt(user.tokens),
+    ) as Auth.Credentials;
+    const client = this.client();
+    client.setCredentials(credentials);
+    client.on('tokens', (fresh) => {
+      void (async () => {
+        const current = await this.repo.findUser(userId);
+        if (!current) return;
+        await this.repo.upsertUser({
+          ...current,
+          tokens: this.cipher.encrypt(
+            JSON.stringify({ ...credentials, ...fresh }),
+          ),
+        });
+      })().catch(() => undefined);
+    });
+    return client;
   }
 
   /** Creates the authorization URL and remembers `state`, `nonce` and PKCE data. */
@@ -167,60 +194,14 @@ export class OidcAuthService {
     return this.repo.findUser(userId);
   }
 
-  /** An OAuth2 client for googleapis. Refreshed tokens are persisted automatically. */
-  async authorizedClient(userId: string): Promise<Auth.OAuth2Client> {
-    const user = await this.repo.findUser(userId);
-    if (!user?.tokens) throw new AuthError('Not authorized with Google');
-    const credentials = JSON.parse(
-      this.cipher.decrypt(user.tokens),
-    ) as Auth.Credentials;
-    const client = this.client();
-    client.setCredentials(credentials);
-    client.on('tokens', (fresh) => {
-      void (async () => {
-        const current = await this.repo.findUser(userId);
-        if (!current) return;
-        await this.repo.upsertUser({
-          ...current,
-          tokens: this.cipher.encrypt(
-            JSON.stringify({ ...credentials, ...fresh }),
-          ),
-        });
-      })().catch(() => undefined);
-    });
-    return client;
-  }
-
-  /** Starts a native session: returns the first refresh token of a new family. */
-  async issueRefreshToken(userId: string) {
-    return this.mintRefreshToken(userId, randomBytes(16).toString('hex'));
-  }
-
-  /** Single-use rotation: the presented token is consumed and a new one of the same family is returned. */
-  async rotateRefreshToken(token: string) {
-    const old = await this.repo.takeRefreshToken(sha256Base64Url(token));
-    if (!old) throw new AuthError('Invalid refresh token');
-    return this.mintRefreshToken(old.userId, old.familyId);
-  }
-
   /** False once the native session was logged out (or its refresh token expired). */
   isSessionActive(familyId: string): Promise<boolean> {
     return this.repo.isFamilyActive(familyId);
   }
 
-  async revokeSession(familyId: string): Promise<void> {
-    await this.repo.deleteRefreshTokens({ familyId });
-  }
-
-  private async mintRefreshToken(userId: string, familyId: string) {
-    const refreshToken = randomBytes(32).toString('base64url');
-    await this.repo.saveRefreshToken({
-      expiresAt: Date.now() + REFRESH_TTL_MS,
-      familyId,
-      hash: sha256Base64Url(refreshToken),
-      userId,
-    });
-    return { familyId, refreshToken, userId };
+  /** Starts a native session: returns the first refresh token of a new family. */
+  async issueRefreshToken(userId: string) {
+    return this.mintRefreshToken(userId, randomBytes(16).toString('hex'));
   }
 
   /** Revokes the grant at Google and forgets the tokens. The user record is kept. */
@@ -239,6 +220,17 @@ export class OidcAuthService {
     await this.repo.upsertUser({ ...user, scopes: [], tokens: undefined });
   }
 
+  async revokeSession(familyId: string): Promise<void> {
+    await this.repo.deleteRefreshTokens({ familyId });
+  }
+
+  /** Single-use rotation: the presented token is consumed and a new one of the same family is returned. */
+  async rotateRefreshToken(token: string) {
+    const old = await this.repo.takeRefreshToken(sha256Base64Url(token));
+    if (!old) throw new AuthError('Invalid refresh token');
+    return this.mintRefreshToken(old.userId, old.familyId);
+  }
+
   private checkRedirectUri(redirectUri = this.config.redirectUri): string {
     if (
       redirectUri !== this.config.redirectUri &&
@@ -254,5 +246,16 @@ export class OidcAuthService {
       this.config.clientSecret,
       redirectUri,
     );
+  }
+
+  private async mintRefreshToken(userId: string, familyId: string) {
+    const refreshToken = randomBytes(32).toString('base64url');
+    await this.repo.saveRefreshToken({
+      expiresAt: Date.now() + REFRESH_TTL_MS,
+      familyId,
+      hash: sha256Base64Url(refreshToken),
+      userId,
+    });
+    return { familyId, refreshToken, userId };
   }
 }

@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { Linking } from 'react-native';
 import { MINIMUM_SCOPES, GOOGLE_SCOPES } from '@gm/lib-common-google';
 import {
   Button,
   GenericScopesSelectorFieldset,
   ScreenTemplate,
 } from '@gm/lib-native-common';
-import { api, jsonHeaders, REDIRECT_URI, storeTokens } from '../session';
+import { useEffect, useRef, useState } from 'react';
+import { Linking } from 'react-native';
+
 import { createPkcePair } from '../pkce';
+import { api, jsonHeaders, REDIRECT_URI, storeTokens } from '../session';
 
 export const GoogleScopesScreen = ({
   navigation,

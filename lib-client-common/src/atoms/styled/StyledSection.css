@@ -3,7 +3,6 @@
 .styled-section {
   border: 1px solid var(--gm-color-border-subtle);
   border-radius: var(--gm-radius-control);
-
   padding: var(--gm-space-field);
   margin: 0;
 }

@@ -1,4 +1,5 @@
 import type { FC, ReactElement, TextareaHTMLAttributes } from 'react';
+
 import './StyledTextArea.css';
 
 export type StyledTextAreaProps = Omit<

@@ -1,12 +1,10 @@
-import { useMemo, useState } from 'react';
-
 import { StyledSection } from '@gm/lib-client-common';
-
 import {
   MapsEurostatSearchParams,
   MapsStatFiSearchParams,
   MapsNlsFiSearchParams,
 } from '@gm/lib-contracts-maps';
+import { useMemo, useState } from 'react';
 
 import { MapsSearchParamsSelectorFormOrganism } from '../organisms/forms/MapsSearchParamsSelectorFormOrganism';
 import { MapsOutputOrganism } from '../organisms/maps/MapsOutputOrganism';

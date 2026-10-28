@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+
 import { APPS, openPage, PAGES } from './pages';
 
 for (const app of APPS) {

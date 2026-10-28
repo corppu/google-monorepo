@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   EurostatFeature,
   ClientMapsEurostatService,
 } from '@gm/lib-contracts-maps';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export const useClientMapsEurostatStream = (params: unknown) => {
   const [data, setData] = useState<EurostatFeature[]>([]);

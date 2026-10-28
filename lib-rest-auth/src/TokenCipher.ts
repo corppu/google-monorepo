@@ -14,15 +14,6 @@ export class TokenCipher {
     this.key = createHash('sha256').update(secret).digest();
   }
 
-  encrypt(plain: string): string {
-    const iv = randomBytes(12);
-    const cipher = createCipheriv('aes-256-gcm', this.key, iv);
-    const data = Buffer.concat([cipher.update(plain, 'utf8'), cipher.final()]);
-    return [iv, cipher.getAuthTag(), data]
-      .map((b) => b.toString('base64url'))
-      .join('.');
-  }
-
   decrypt(payload: string): string {
     const [iv, tag, data] = payload
       .split('.')
@@ -33,5 +24,14 @@ export class TokenCipher {
     return Buffer.concat([decipher.update(data), decipher.final()]).toString(
       'utf8',
     );
+  }
+
+  encrypt(plain: string): string {
+    const iv = randomBytes(12);
+    const cipher = createCipheriv('aes-256-gcm', this.key, iv);
+    const data = Buffer.concat([cipher.update(plain, 'utf8'), cipher.final()]);
+    return [iv, cipher.getAuthTag(), data]
+      .map((b) => b.toString('base64url'))
+      .join('.');
   }
 }

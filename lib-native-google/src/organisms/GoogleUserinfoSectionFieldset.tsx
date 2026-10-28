@@ -1,10 +1,11 @@
+import type { GooglePublicContactInfo, Userinfo } from '@gm/lib-common-google';
+
 import {
   AddressInfo,
   Paragraph,
   SectionFieldset,
   TextLink,
 } from '@gm/lib-native-common';
-import type { GooglePublicContactInfo, Userinfo } from '@gm/lib-common-google';
 
 const unique = (values: Array<string | null | undefined>) => [
   ...new Set(

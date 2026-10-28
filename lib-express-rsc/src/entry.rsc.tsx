@@ -9,6 +9,7 @@ import {
   renderToReadableStream,
 } from '@vitejs/plugin-rsc/rsc';
 import { unstable_matchRSCServerRequest as matchRSCServerRequest } from 'react-router';
+
 import { routes } from './routes/config';
 
 function fetchServer(request: Request) {

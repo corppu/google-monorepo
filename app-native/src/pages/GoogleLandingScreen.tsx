@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
 import { Button, ScreenTemplate } from '@gm/lib-native-common';
+import { useEffect } from 'react';
+
 import { refreshSession } from '../session';
 
 export const GoogleLandingScreen = ({

@@ -1,11 +1,14 @@
-import type { UserRepository } from '../repositories/interfaces';
-import type { Auth } from 'googleapis';
 import type { Userinfo } from '@gm/lib-common-google';
-import { GoogleUserRepository } from '../repositories/GoogleUserRepository';
+import type { Auth } from 'googleapis';
+
 import {
   GoogleUserinfoValidator,
   unwrapValidationResult,
 } from '@gm/lib-common-google';
+
+import type { UserRepository } from '../repositories/interfaces';
+
+import { GoogleUserRepository } from '../repositories/GoogleUserRepository';
 
 export class GoogleUserService {
   private repo: UserRepository;

@@ -1,4 +1,5 @@
 import type { GooglePublicContactInfo } from '@gm/lib-common-google';
+
 import type { PublicContactInfoRepository } from './interfaces';
 
 export class MockGooglePublicContactInfoRepository implements PublicContactInfoRepository {

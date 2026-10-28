@@ -1,6 +1,7 @@
 import { hydrateRoot } from 'react-dom/client';
 import { createBrowserRouter, redirect } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
+
 import { createSSRRoutes } from '../routes';
 import {
   SSR_BASENAME,

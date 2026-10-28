@@ -4,7 +4,7 @@ const PORT = Number(process.env.E2E_PORT ?? 3190);
 
 export default defineConfig({
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
-  testDir: './tests',
+  testDir: './src',
   use: {
     baseURL: `http://localhost:${PORT}`,
     // The app sends a strict CSP that would block axe-core's injected script.

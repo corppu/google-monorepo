@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
+
 import { APPS, openPage, PAGES } from './pages';
 
 // Every page must render identically in all apps. The SPA is the reference.

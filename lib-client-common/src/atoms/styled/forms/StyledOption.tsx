@@ -1,4 +1,5 @@
 import type { OptionHTMLAttributes } from 'react';
+
 import './StyledOption.css';
 
 type StyledOptionProps = Omit<OptionHTMLAttributes<HTMLOptionElement>, 'style'>;

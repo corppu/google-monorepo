@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react';
+
 import './StyledDatalist.css';
 
 type StyledDatalistProps = Omit<HTMLAttributes<HTMLDataListElement>, 'style'>;

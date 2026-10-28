@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 export interface GoogleRouterPages {

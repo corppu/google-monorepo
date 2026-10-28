@@ -1,7 +1,9 @@
-import type { PublicContactInfoRepository } from './interfaces';
-import { google } from 'googleapis';
-import type { Auth } from 'googleapis';
 import type { GooglePublicContactInfo } from '@gm/lib-common-google';
+import type { Auth } from 'googleapis';
+
+import { google } from 'googleapis';
+
+import type { PublicContactInfoRepository } from './interfaces';
 
 const nonEmptyValues = (values: Array<string | null | undefined>) =>
   values
