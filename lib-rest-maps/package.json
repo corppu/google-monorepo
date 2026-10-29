@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@gm/lib-contracts-maps": "*",
+    "stream-json": "^3.7.0",
     "zod": "latest"
   },
   "scripts": {

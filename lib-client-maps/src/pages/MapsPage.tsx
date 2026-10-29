@@ -4,7 +4,7 @@ import {
   MapsStatFiSearchParams,
   MapsNlsFiSearchParams,
 } from '@gm/lib-contracts-maps';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { MapsSearchParamsSelectorFormOrganism } from '../organisms/forms/MapsSearchParamsSelectorFormOrganism';
 import { MapsOutputOrganism } from '../organisms/maps/MapsOutputOrganism';

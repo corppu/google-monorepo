@@ -1,10 +1,14 @@
-import { Map } from 'maplibre-gl';
-import { useEffect, useRef } from 'react';
+import { Map, setWorkerUrl } from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+import { useRef, useEffect } from 'react';
+
+setWorkerUrl(workerUrl);
 
 type StreamState = {
   data: any[];
   error: unknown;
-  id: string; // <-- REQUIRED
+  id: string;
   loading: boolean;
 };
 
@@ -15,73 +19,104 @@ type Props = {
 export const MapLibreGlOrganism = ({ streams }: Props) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<Map | null>(null);
+  const mapLoaded = useRef(false);
 
-  //
-  // 1. Initialize MapLibre once
-  //
   useEffect(() => {
     if (!mapRef.current) return;
 
-    mapInstance.current = new Map({
-      center: [24.94, 60.17], // Helsinki
+    const map = new Map({
+      center: [24.94, 60.17],
       container: mapRef.current,
       style: 'https://demotiles.maplibre.org/style.json',
       zoom: 5,
     });
 
-    return () => {
-      mapInstance.current?.remove();
-    };
+    map.on('load', () => {
+      mapLoaded.current = true;
+    });
+
+    mapInstance.current = map;
+
+    return () => map.remove();
   }, []);
 
-  //
-  // 2. Update layers when streams change
-  //
   useEffect(() => {
     const map = mapInstance.current;
-    if (!map) return;
+    if (!map || !mapLoaded.current) return;
 
     streams.forEach((stream) => {
       const sourceId = `stream-source-${stream.id}`;
-      const layerId = `stream-layer-${stream.id}`;
+      const fillId = `stream-layer-${stream.id}`;
+      const outlineId = `${fillId}-outline`;
 
-      const features = stream.data ?? [];
-
-      // Remove old layer + source if they exist
-      if (map.getLayer(layerId)) {
-        map.removeLayer(layerId);
+      // REMOVE OUTLINE FIRST
+      if (map.getLayer(outlineId)) {
+        map.removeLayer(outlineId);
       }
+
+      // REMOVE FILL SECOND
+      if (map.getLayer(fillId)) {
+        map.removeLayer(fillId);
+      }
+
+      // REMOVE SOURCE LAST
       if (map.getSource(sourceId)) {
         map.removeSource(sourceId);
       }
 
-      // Add new source
+      // ADD SOURCE
       map.addSource(sourceId, {
         data: {
-          features,
+          features: stream.data ?? [],
           type: 'FeatureCollection',
         },
         type: 'geojson',
       });
 
-      // Add new layer
+      // ADD FILL LAYER
       map.addLayer({
-        id: layerId,
+        id: fillId,
         paint: {
+          'fill-antialias': true,
           'fill-color': [
             'case',
-            ['==', ['get', 'origin'], 'eurostat'],
-            '#1e90ff',
-            ['==', ['get', 'origin'], 'statfi'],
-            '#32cd32',
-            ['==', ['get', 'origin'], 'nlsfi'],
-            '#ff8c00',
-            '#cccccc',
+            ['==', ['get', 'LEVL_CODE'], 2],
+            '#f2c94c',
+            ['==', ['get', 'LEVL_CODE'], 3],
+            '#6fcf97',
+            '#bbdefb',
           ],
-          'fill-opacity': 0.5,
+          'fill-opacity': 0.35,
         },
         source: sourceId,
         type: 'fill',
+      });
+
+      // ADD OUTLINE LAYER
+      map.addLayer({
+        id: outlineId,
+        paint: {
+          'line-blur': 0.2,
+          'line-color': [
+            'case',
+            ['==', ['get', 'LEVL_CODE'], 2],
+            '#000000',
+            ['==', ['get', 'LEVL_CODE'], 3],
+            '#333333',
+            '#555555',
+          ],
+          'line-opacity': 0.9,
+          'line-width': [
+            'case',
+            ['==', ['get', 'LEVL_CODE'], 2],
+            3.5,
+            ['==', ['get', 'LEVL_CODE'], 3],
+            2.5,
+            1.5,
+          ],
+        },
+        source: sourceId,
+        type: 'line',
       });
     });
   }, [streams]);

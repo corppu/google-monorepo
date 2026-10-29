@@ -127,12 +127,12 @@ export type MapsEurostatSearchParams = z.infer<
 /*  NUTS and LAU strict schemas extend this.                                   */
 /* -------------------------------------------------------------------------- */
 
-const PositiveInteger = z.number().int().positive();
+const PositiveInteger = z.number().gte(0);
 
 export const EurostatCommonPropertiesSchema = z.object({
-  AREA_KM2: z.number().positive(),
+  AREA_KM2: z.number().positive().optional(),
   CNTR_CODE: CountryCodeEnum,
-  GISCO_ID: z.string().nonempty(),
+  GISCO_ID: z.string().nonempty().optional(),
 
   ...Object.fromEntries(
     SupportedCommonYears.map((year) => [
@@ -165,8 +165,8 @@ const requirePopulationForYear = (
   const pop = props[popKey];
   const dens = props[densKey];
 
-  const popResult = PositiveInteger.safeParse(pop);
-  const densResult = PositiveInteger.safeParse(dens);
+  const popResult = PositiveInteger.optional().safeParse(pop);
+  const densResult = PositiveInteger.optional().safeParse(dens);
 
   if (!popResult.success) {
     popResult.error.issues.forEach((issue) =>
@@ -218,7 +218,7 @@ export const EurostatNutsPropertiesSchema =
 
 export const EurostatLauPropertiesSchema =
   EurostatCommonPropertiesSchema.extend({
-    LAU_ID: z.string().nonempty(),
+    LAU_ID: z.string().nonempty().optional(),
     LAU_NAME: z.string().nonempty(),
     YEAR: SupportedLauYearSchema,
     ...Object.fromEntries(

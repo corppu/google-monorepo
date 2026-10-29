@@ -30,7 +30,9 @@ export const MapsOutputOrganism = ({ layers }: Props) => {
       <ul>
         {streams.map((stream) => (
           <li key={stream.id}>
-            {stream.loading && <div>Loading…</div>}
+            {(stream.loading && <div>Loading…</div>) || (
+              <div>Loaded total of {stream.data.length} features</div>
+            )}
             {Boolean(stream.error) && <div>{JSON.stringify(stream.error)}</div>}
           </li>
         ))}

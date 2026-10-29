@@ -5,6 +5,7 @@ import {
   EurostatNutsFeature,
   validateEurostatFeature,
   SupportedCommonYears,
+  CountryCode,
 } from '@gm/lib-contracts-maps';
 
 import { MapsRepository } from '../../repositories/MapsRepository';
@@ -32,22 +33,54 @@ export class MapsEurostatService implements IMapsEurostatService {
   async *stream(
     signal: AbortSignal,
   ): AsyncGenerator<EurostatNutsFeature | EurostatLauFeature> {
+    let startedAt = Date.now();
+
     const url = this.buildUrl();
+    const year = this.closestSupportedYear();
+    let accepted = 0;
+    let rejected = 0;
+    let filtered = 0;
 
     for await (const feature of this.mapsRepository.stream(url, signal)) {
+      feature.properties.YEAR = year;
       const parsed = validateEurostatFeature(
         this.searchParams.dataset,
         feature,
       );
 
       if (parsed.success && this.passesFilters(parsed.data)) {
-        console.log('SUCCESS');
+        ++accepted;
         yield parsed.data;
-      }
+      } else if (!parsed.success) {
+        ++rejected;
 
+        if (
+          process.env.NODE_ENV === 'development' &&
+          this.searchParams.countries?.includes(feature.properties.CNTR_CODE)
+        ) {
+          console.error(
+            'MapsEurostatService',
+            feature.properties,
+            parsed.error.issues,
+          );
+        }
+      } else {
+        ++filtered;
+      }
       // invalid features are silently dropped
     }
+
+    console.info(
+      'MapsEurostatService',
+      `Fetched ${url.toString()}\n` +
+        ` total of ${accepted + filtered + rejected} features:\n` +
+        ` accepted ${accepted} features,\n` +
+        ` filtered ${filtered} features\n` +
+        ` and rejected ${rejected} features\n` +
+        ` within ${(Date.now() - startedAt) / 1000} seconds`,
+    );
   }
+
   private closestSupportedYear(): number {
     const requested = this.searchParams.year;
     const supported = SupportedCommonYears;
